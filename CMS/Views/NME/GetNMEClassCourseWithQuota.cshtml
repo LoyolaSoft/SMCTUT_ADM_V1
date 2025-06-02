@@ -1,0 +1,58 @@
+﻿@model CMS.ViewModel.ViewModel.NMEViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="body-content">
+    <div class="col-md-12 m-t-5 col-sm-12 col-lg-12 table-responsive" style="min-height:450px;">
+        @{ int count = 0;}
+        @if (Model.lstBindNMEClassCourse!=null)
+        {
+           
+                <table class="table table-hover" id="NMEClassCourseQuota">
+                    <thead>
+                        <tr>
+                            <th>
+                                #
+                            </th>
+                            <th>Course Code</th>
+                            <th>Course Title</th>
+                            <th>Class Quota</th>
+                            <th>Alloted Seats</th>
+                            <th>Total Quota</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.lstBindNMEClassCourse)
+                        {
+                            <tr>
+                                <td>
+                                    @{ count++;}
+                                    @count
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.COURSE_CODE)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.COURSE_TITLE)
+                                </td>
+                                <td>
+                                    <input id="txtClassQuota" type="number" style="width:75px !important;" step=".01" max="@item.TOTALQUOTA" value="@item.CLASSQUOTA"
+                                           cms-totalquota="@item.TOTALQUOTA"
+                                           cms-sumofquota="@item.REMAININGQUOTA"
+                                           cms-courserootid="@item.COURSE_ROOT_ID" />
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SUMOFQUOTA)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TOTALQUOTA)
+                                </td>
+                            </tr>
+                                        }
+                    </tbody>
+                </table>
+                                    }
+    </div>
+</div>

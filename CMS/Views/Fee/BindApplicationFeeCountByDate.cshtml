@@ -1,0 +1,44 @@
+﻿@model CMS.ViewModel.ViewModel.FeeTransactionViewModel
+@{int count = 0;}
+@if (Model.liFeeReport != null && Model.liFeeReport.Count > 0)
+{
+    var GroupAccounts = Model.liFeeReport.GroupBy(o => o.BANK_ACCOUNT_ID);
+    var GroupDates = Model.liFeeReport.GroupBy(o => o.SETTLEMENT_DATE).ToList();
+
+    <table class="table table-bordered table-hover" border="1">
+
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Count</th>
+                <th>Date</th>
+                <th>Amount</th>
+                @foreach (var item in GroupAccounts)
+                {
+                    <th> @item.FirstOrDefault().PASSBOOK_NO</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.liFeeReport != null && Model.liFeeReport.Count > 0)
+            {
+                foreach (var item in GroupDates)
+                {
+                    <tr>
+                        <td>@{count++;}@count</td>
+                        <td>@item.FirstOrDefault().COUNT</td>
+                        <td>@item.FirstOrDefault().SETTLEMENT_DATE</td>
+                        <td>@item.FirstOrDefault().COLLECTED</td>
+                        @foreach (var account in GroupAccounts)
+                        {
+                            var AmountByDate = Model.liFeeReport.Where(o => o.BANK_ACCOUNT_ID == account.FirstOrDefault().BANK_ACCOUNT_ID && o.SETTLEMENT_DATE == item.FirstOrDefault().SETTLEMENT_DATE);
+                            <td>@AmountByDate.Sum(x=>Convert.ToDouble(x.AMOUNT)).ToString()</td>
+                        }
+
+                    </tr>
+                }
+            }
+        </tbody>
+
+    </table>
+}

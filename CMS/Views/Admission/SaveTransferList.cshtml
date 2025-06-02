@@ -1,0 +1,162 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{
+    Layout = null;
+}
+@if (Model.liAdmissionCancel != null && Model.liAdmissionCancel.Count > 0)
+{
+    <div class="col-lg-offset-2 col-lg-8 table-bordered">
+        <div class="form-horizontal">
+            <table class="table table-bordered" id="TransferList" width="100%">
+                <thead>
+                    <tr>
+                        <td colspan="2" align="center">Programme Transfer Details</td>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td> APPLICATION NO</td>
+                        <td>@Model.liAdmissionCancel.FirstOrDefault().APPLICATION_NO</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>PROGRAMME NAME</td>
+                        <td>@Model.liAdmissionCancel.FirstOrDefault().PROGRAMME_NAME</td>
+                    </tr>
+                    <tr>
+                        <td>STATUS</td>
+                        <td>This programme is  @Model.liAdmissionCancel.FirstOrDefault().PROGRAMME_NAME  Cancel. Please follow the admission cancel rules.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    if (Model.liTransferExist != null && Model.liTransferExist.Count > 0)
+    {
+        <div class="col-lg-offset-2 col-lg-8 table-bordered">
+            <div class="form-horizontal">
+                <table class="table table-bordered" id="TransferList" width="100%">
+                    <thead>
+                        <tr>
+                            <td colspan="2" align="center">Transfered Programme Details</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <td> APPLICATION NO</td>
+                            <td>@Model.liTransferExist.FirstOrDefault().APPLICATION_NO</td>
+                        </tr>
+
+                        <tr>
+                            <td>PROGRAMME Name</td>
+                            <td>@Model.liTransferExist.FirstOrDefault().PROGRAMME_NAME</td>
+                        </tr>
+                        <tr>
+
+                            <td>STATUS</td>
+                            <td>@Model.liTransferExist.FirstOrDefault().STATUS</td>
+                        </tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+}
+else
+{
+    if (Model.liTransfer != null && Model.liTransfer.Count > 0)
+    {
+    <div class="col-lg-offset-2 col-lg-8 table-bordered">
+        <div class="form-horizontal">
+            <table class="table table-bordered" id="TransferList" width="100%">
+                <thead>
+                    <tr>
+                        <td colspan="2" align="center">Programme Transfer Details</td>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td> APPLICATION NO</td>
+                        <td>@Model.liTransfer.FirstOrDefault().APPLICATION_NO</td>
+                    </tr>
+                    <tr>
+
+                        <td>NAME</td>
+                        <td>@Model.liTransfer.FirstOrDefault().FIRST_NAME </td>
+                    </tr>
+                    <tr>
+                        <td>PROGRAMME FROM</td>
+                        <td>@Model.liTransfer.FirstOrDefault().PROGRAMME_FROM</td>
+                    </tr>
+                    <tr>
+
+                        <td>PROGRAMME TO</td>
+                        <td id="pto">@Model.liTransfer.FirstOrDefault().PROGRAMME_TO</td>
+                    </tr>
+
+                    <tr>
+                        <td>APPROVER</td>
+                        <td>@Model.liTransfer.FirstOrDefault().REQUEST_ID</td>
+                    </tr>
+                    <tr>
+
+                        <td>STATUS</td>
+                        <td>Transfered</td>
+                    </tr>
+                    <tr>
+
+                        <td>Transfered Date</td>
+                        <td>@Model.liTransfer.FirstOrDefault().DATETIME</td>
+                    </tr>
+
+                </tbody>
+            </table>
+            </div>
+          </div>
+          <br>
+}
+
+else
+{
+    <div class="alert alert-danger text-center "><b> No Data Found...!</b></div>
+}
+    if (Model.liTransferExist != null && Model.liTransferExist.Count > 0)
+    {
+        <div class="col-lg-offset-2 col-lg-8 table-bordered">
+            <div class="form-horizontal">
+                <table class="table table-bordered" id="TransferList" width="100%">
+                    <thead>
+                        <tr>
+                            <td colspan="2" align="center">Transfered Programme Details</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <td> APPLICATION NO</td>
+                            <td>@Model.liTransferExist.FirstOrDefault().APPLICATION_NO</td>
+                        </tr>
+                        
+                        <tr>
+                            <td>PROGRAMME Name</td>
+                            <td>@Model.liTransferExist.FirstOrDefault().PROGRAMME_NAME</td>
+                        </tr>
+                        <tr>
+
+                            <td>STATUS</td>
+                            <td>@Model.liTransferExist.FirstOrDefault().STATUS</td>
+                        </tr>
+
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+}
+        
+           

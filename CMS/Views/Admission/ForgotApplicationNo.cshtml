@@ -1,0 +1,116 @@
+﻿
+@{
+    ViewBag.Title = "ForgotApplicationNo";
+    Layout = "~/Views/Shared/_AdmissionLayoutPage.cshtml";
+}
+@section styles{
+    <link href="~/Content/assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+ 
+    
+}
+<div id="content" class="content">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb pull-right">
+        <li><a href="javascript:;">Home</a></li>
+        <li class="active">Forgot Application No</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">Forgot Application No</h1>
+    <!-- end page-header -->
+    <!-- begin row -->
+    <div class="row">
+        <!-- begin col-12 -->
+        <div class="col-md-12">
+            <!-- begin panel -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="panel-heading-btn">
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                    </div>
+                    <h4 class="panel-title">Forgot Application No</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-12 form-horizontal" id="dateForm">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Date of birth</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control datepicker" placeholder="dd/mm/yyyy" id="dob" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">HSC Register No</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control " placeholder="HSC Register no" id="hscNo" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group ">
+                                <div class="col-md-4">
+                                    <a class="btn btn-primary m-l-30 " id="btnGet">Get</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="" id="issuedList">
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- end panel -->
+        </div>
+        <!-- end col-12 -->
+    </div>
+    <!-- end row -->
+</div>
+@section Scripts{
+   
+    <script src="~/Content/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.datepicker').datepicker({
+                format: 'dd/mm/yyyy', orientation: 'bottom',
+                maxDate: '0',
+                endDate: new Date(),
+            });
+            $('#btnGet').click(function () {
+                if ($('#hscNo').val() == '' || $('#dob').val()=='') {
+                    alert('Please provide valid input !!')
+                    return false;
+                }
+
+               $.ajax({
+                /**/
+                url: "@Url.Action("GetForgotApplicationNo", "Admission")",
+    /**/
+                method: "get",
+    contentype:'html',
+        data: { sSHC: $('#hscNo').val(), sDOB: $('#dob').val() },
+    success: function (data) {
+        var ddl = $('#issuedList');
+        ddl.empty();
+        ddl.append(data);
+        
+
+    }, error: function (error) {
+        alert('Try Again!!');
+    }
+});
+            });
+
+        });
+
+
+    </script>
+}

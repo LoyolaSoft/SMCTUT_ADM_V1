@@ -1,0 +1,2494 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@using CMS.Utility
+@{
+    ViewBag.Title = "Index";
+    //Layout = "~/Views/Shared/_AdminLayoutPage.cshtml";
+    Layout = null;
+}
+
+<link href="~/Content/assets/plugins/bootstrap-wizard/css/bwizard.min.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/parsley/src/parsley.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/dropzone/min/dropzone.min.css" rel="stylesheet" />
+
+<style>
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        margin: 0;
+    }
+</style>
+<style>
+    [type="radio"]:checked + label,
+    [type="radio"]:not(:checked) + label {
+        padding-left: 28px;
+        vertical-align: middle;
+    }
+</style>
+<style>
+    .upload-btn-wrapper {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+    }
+
+    #btnImage {
+        border: 1px solid gray;
+        color: gray;
+        background-color: white;
+        padding: 7px 15px;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+    .upload-btn-wrapper input[type=file] {
+        font-size: 100px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+    }
+</style>
+
+
+<div id="content" class="content">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb pull-right">
+        <li><a href="javascript:;">Home</a></li>
+        <li class="active">Online Application</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">Online Application</h1>
+    <!-- end page-header -->
+    <!-- begin row -->
+    <div class="row">
+        <!-- begin col-12 -->
+        <div class="col-md-12">
+            <!-- begin panel -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="panel-heading-btn">
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                    </div>
+                    <h4 class="panel-title">Online Application</h4>
+                </div>
+                <div class="panel-body">
+                    @if (ViewBag.Message != string.Empty)
+                    {
+                        @*@Url.Action("APPLICANT", "dashboard")*@
+                        <div class="alert alert-danger" style="color:#fff;">@ViewBag.Message <a href="#" onclick="loadContent('/dashboard/APPLICANT')">Click here to choose course</a> </div>
+                    }
+                    else
+                    {
+
+
+
+                        <form id="devForm" method="POST" data-parsley-validate="true" name="form-wizard" class="form-horizontal">
+                            <div id="info" class="alert alert-danger">
+                                <b>Note:</b><br>
+                                <ul>
+                                    <li><b>Kindly enter your marks after the publication of the result. </b></li>
+                                    <li> <b>Uploaded File size should be less than 500 KB.</b></li>
+                                </ul>
+                            </div>
+                            <div id="wizard">
+                                <ol>
+                                    <li index="1">
+                                        Personal Details
+                                        <small>Don't leave the fields empty. Fill the columns correctly.</small>
+                                    </li>
+                                    <li index="2">
+                                        Contact Details
+                                        <small>If Postal address and Permanent address are same use the check box.</small>
+                                    </li>
+                                    <li index="3" hidden>
+                                        Examination Details
+                                        <small>If you are applying for UG, Please select group. Enter your marks correctly. </small>
+                                    </li>
+                                    <li index="4" hidden>
+                                        Certificate Upload
+                                        <small>Please submit your application.Don't go back to the previous step.</small>
+                                    </li>
+                                </ol>
+                                <!-- begin wizard step-1 -->
+                                <div class="wizard-step-1" id="step-1">
+
+                                    <fieldset>
+                                        <legend class="pull-left width-full">Personal Information</legend>
+                                        <!-- begin row -->
+                                        <div class="row m-b-10">
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-4">
+                                                <div class="block1">
+                                                    <label>Name</label>
+                                                    @*<label><small>விண்ணப்பதாரரின் பெயர் (பத்தாம் வகுப்பு TC யில் இருப்பது போல்)</small></label>*@
+                                                    <input type="text" name="firstname" id="txtFirstName" placeholder="Maria J" class="form-control" data-parsley-group="wizard-step-1" required disabled />
+                                                </div>
+                                            </div>
+                                            <!-- end col-4 -->
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-4">
+                                                <div class="block1">
+                                                    <label>Name (as per Aadhar)</label>
+                                                    @*<label><small>விண்ணப்பதாரரின் பெயர் (பத்தாம் வகுப்பு TC யில் இருப்பது
+                                                        போல்)</small></label>*@
+                                                    <input type="text" name="firstname" id="txtFirstNameaadhar" placeholder="John M"
+                                                           class="form-control" data-parsley-group="wizard-step-1" required
+                                                           style="" />
+                                                </div>
+                                            </div>
+                                            <!-- end col-4 -->
+                                            <!-- begin col-4 -->
+                                            @*<div class="col-md-4">
+                                                    <div class="">
+                                                        <label>Last Name</label>
+                                                        <input type="text" name="lastname" id="txtLastName" placeholder="" class="form-control" data-parsley-group="wizard-step-1" disabled />
+                                                    </div>
+                                                </div>*@
+                                            <!-- end col-4 -->
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-4">
+                                                <div class="block1">
+                                                    <label>Father's Name / Guardian's Name</label>
+                                                    <input type="text" name="fathertname" id="txtFatherName" placeholder="Enter Father's Name" class="form-control" data-parsley-group="wizard-step-1" required />
+                                                </div>
+                                            </div>
+                                            <!-- end col-4 -->
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-4">
+                                                <div class="block1">
+                                                    <label>Mother's Name</label>
+                                                    <input type="text" name="" id="txtMotherName" placeholder="Enter Mother's Name" class="form-control" data-parsley-group="wizard-step-1" required />
+                                                </div>
+                                            </div>
+
+                                            <!-- end col-4 -->
+                                        </div>
+                                        <!-- end row -->
+                                        <!-- begin row -->
+                                        <div class="row m-b-10">
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-4">
+                                                <div class="">
+                                                    <label>Are you a first generation learner?</label>
+                                                    <div class="form-inline">
+                                                        <div class="radio radio-css radio-pink radio-inline">
+                                                            <input type="radio" name="FirstGraduate_radio" id="rbtnFirstGraduationYes" value="1" data-parsley-group="wizard-step-1" required />
+                                                            <label for="rbtnFirstGraduationYes">
+                                                                Yes
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio radio-css radio-danger">
+                                                            <input type="radio" name="FirstGraduate_radio" id="rbtnFirstGraduationNo" value="2" />
+                                                            <label for="rbtnFirstGraduationNo">
+                                                                No
+                                                            </label>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- end col-4 -->
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-4">
+                                                <div class="datepicker">
+                                                    <label>Date of Birth</label>
+                                                    @*<label><small>பிறந்த தேதி</small> </label>*@
+                                                    <input type="text" id="txtdob" placeholder="dd/mm/yyyy" class="form-control" data-parsley-group="wizard-step-1" />
+                                                </div>
+                                            </div>
+                                            <!-- end col-4 -->
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-4">
+                                                <div class="block1">
+                                                    <label>Gender</label>
+                                                    <select id="ddlGender" class="selectpicker form-control" data-live-search="true" required data-parsley-group="wizard-step-1" disabled></select>
+                                                </div>
+                                            </div>
+                                            <!-- end col-4 -->
+                                        </div>
+                                        <!-- end row -->
+                                        <div class="row m-b-10">
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-4">
+                                                <div class="block1">
+                                                    <label>Community</label>
+                                                    <select id="ddlCaste" class="selectpicker form-control" data-live-search="true" required data-parsley-group="wizard-step-1"></select>
+                                                </div>
+                                            </div>
+                                            @*<div class="col-md-2">
+                                                    <div class="block1">
+                                                        <label>Upload the valid proof</label>
+                                                        <div class="fileupload fileupload-new" data-provides="fileupload" id="community">
+                                                            <div class="upload-btn-wrapper">
+                                                                <button class="btn" id="btnImage" title="Upload File"><i class="glyphicon glyphicon-upload"></i></button>
+                                                                <input type="file" title="Upload the valid proof" class="btn bg-purple" imageid="img" name="img" id="communityproof" required data-parsley-group="wizard-step-1" accept=".jpg,.png,.jpeg,.pdf">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>*@
+                                            <!-- end col-4 -->
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-4">
+                                                <div class="block1">
+                                                    <label>Caste</label>
+                                                    <input type="text" name="Community" id="txtCommunity" placeholder="Vanniyar" class="form-control" data-parsley-group="wizard-step-1" required />
+                                                    <label class="label label-info">If No Community.Please Mention NA</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="block1">
+                                                    <label>Community Certificate No:</label>
+                                                    <input type="text" name="Community" id="communitycetno"
+                                                           placeholder="0000000" class="form-control"
+                                                           data-parsley-group="wizard-step-1" required />
+                                                </div>
+                                            </div>
+                                            <!-- end col-4 -->
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-4">
+                                                <div class="block1">
+                                                    <label>Mother Tongue</label>
+                                                    <select id="ddlMotheryTongue" class="selectpicker form-control" data-live-search="true" required data-parsley-group="wizard-step-1"></select>
+                                                </div>
+                                            </div>
+                                            <!-- end col-4 -->
+                                        </div>
+                                        <!-- end row -->
+                                        <!-- begin row -->
+                                        <div class="row m-b-10">
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-3">
+                                                <div class="">
+                                                    <label>Marital Status</label>
+                                                    <div class="form-inline">
+                                                        <div class="radio radio-css radio-pink radio-inline">
+                                                            <input type="radio" name="Marital_radio" id="rbtnMarried" value="1" required data-parsley-group="wizard-step-1" />
+                                                            <label for="rbtnMarried">
+                                                                Married
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio radio-css radio-danger radio-inline">
+                                                            <input type="radio" name="Marital_radio" id="rbtnUnMarried" value="2" />
+                                                            <label for="rbtnUnMarried">
+                                                                UnMarried
+                                                            </label>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- end col-4 -->
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-3">
+                                                <div class="block1">
+                                                    <label>Religion</label>
+                                                    <select id="ddlReligion" class="selectpicker form-control" data-live-search="true" required data-parsley-group="wizard-step-1"></select>
+                                                </div>
+                                            </div>
+                                            <!-- end col-4 -->
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-3">
+                                                <div class="">
+                                                    <label>Native Place</label>
+                                                    <input type="text" name="PlaceOfBirth" id="txtPlaceOfBirth" placeholder="Thoothukudi" class="form-control" data-parsley-group="wizard-step-1" required />
+                                                </div>
+                                            </div>
+                                            <!-- end col-4 -->
+                                            <div class="col-md-3">
+                                                <div class="">
+                                                    <label>District (Native place )</label>
+                                                    <input type="text" name="Native Place District" id="txtNativeDistrict" placeholder="Thoothukudi" class="form-control" data-parsley-group="wizard-step-1" />
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!-- end row -->
+                                        <div class="row m-b-10">
+
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-3">
+                                                <div class="block1">
+                                                    <label>Blood Group</label>
+                                                    <select id="ddlBloodGroup" class="selectpicker form-control" data-live-search="true" required data-parsley-group="wizard-step-1"></select>
+                                                </div>
+                                            </div>
+                                            <!-- end col-4 -->
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-3">
+                                                <div class="">
+                                                    <label>Father Annual Income</label>
+                                                    <input type="text" name="PlaceOfBirth" id="txtAnnualIncome" placeholder="120000" class="form-control" data-parsley-group="wizard-step-1" />
+                                                </div>
+                                            </div>
+                                            <!-- end col-4 -->
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-3">
+                                                <div class="">
+                                                    <label>Income Certificate No:</label>
+                                                    <input type="text" name="PlaceOfBirth" id="txtAnnualIncomeno"
+                                                           placeholder="00000000" class="form-control"
+                                                           data-parsley-group="wizard-step-1" />
+                                                </div>
+                                            </div>
+                                            <!-- end col-4 -->
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-3">
+                                                @*<div class="block1">
+                                                        <label>Father's Occupation</label>
+                                                        <select id="ddlFatherOccupation" class="selectpicker form-control" data-live-search="true" required data-parsley-group="wizard-step-1"></select>
+                                                    </div>*@
+                                                <div class="">
+                                                    <label>Father's Occupation</label>
+                                                    <input type="text" id="txtFatherOccupation" placeholder="Enter Father's Occupation" class="form-control" data-parsley-group="wizard-step-1" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="block1">
+                                                    <label>Father's Mobile No.</label>
+                                                    <input type="text" name="LastStudiedPlace" id="txtfathermobileno" placeholder="Ex : 9894xxxxxx" class="form-control" data-parsley-group="wizard-step-1" required />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="block1">
+                                                    <label>Is Orphan?</label>
+                                                    <div class="form-inline" style="display: flex;">
+                                                        <div class="radio radio-css radio-pink radio-inline">
+                                                            <input type="radio" name="orphan_radio" id="orphan" value="1"
+                                                                   required data-parsley-group="wizard-step-1" />
+                                                            <label for="orphan">
+                                                                Yes
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio radio-css radio-danger radio-inline">
+                                                            <input type="radio" name="orphan_radio" id="orphanno"
+                                                                   value="2" />
+                                                            <label for="orphanno">
+                                                                No
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- end col-4 -->
+                                        </div>
+                                        <!-- begin row -->
+                                        <div class="row m-b-10">
+                                            <div class="col-md-3">
+                                                <div class="block1">
+                                                    <label>Last Studied Place</label>
+                                                    <input type="text" name="LastStudiedPlace" id="txtLastStudiedPlace" placeholder="Thoothukudi" class="form-control" data-parsley-group="wizard-step-1" required />
+                                                </div>
+                                            </div>
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-3">
+                                                <div class="">
+                                                    <label>Mother Annual Income</label>
+                                                    <input type="text" name="PlaceOfBirth" id="txtMAnnualIncome" placeholder="120000" class="form-control" data-parsley-group="wizard-step-1" />
+                                                </div>
+                                            </div>
+                                            <!-- end col-4 -->
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-3">
+                                                <div class="">
+                                                    <label>Mother's Occupation</label>
+                                                    <input type="text" id="txtMotherOccupation" placeholder="Enter Mother's Occupation" class="form-control" data-parsley-group="wizard-step-1" />
+                                                </div>
+                                            </div>
+                                            <!-- end col-4 -->
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-3">
+                                                <div class="block1">
+                                                    <label>Mother's Mobile No.</label>
+                                                    <input type="text" name="LastStudiedPlace" id="txtmothermobileno" placeholder="Ex : 9894xxxxxx" class="form-control" data-parsley-group="wizard-step-1" required />
+                                                </div>
+                                            </div>
+                                            <!-- end col-4 -->
+                                        </div>
+                                        <!-- end row -->
+                                        <!-- begin row -->
+                                        <div class="row m-b-10">
+
+
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-4">
+                                                <div class="block1">
+                                                    <label>Are you the son/daughter of an Ex-service man?</label>
+                                                    <div class="form-inline">
+                                                        <div class="radio radio-css radio-pink radio-inline">
+                                                            <input type="radio" name="Army_radio" id="rbtnArmyYes" value="1" required data-parsley-group="wizard-step-1" />
+                                                            <label for="rbtnArmyYes">
+                                                                Yes
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio radio-css radio-danger radio-inline">
+                                                            <input type="radio" name="Army_radio" id="rbtnArmyNo" value="2" />
+                                                            <label for="rbtnArmyNo">
+                                                                No
+                                                            </label>
+                                                        </div>
+                                                        <div class="fileupload fileupload-new hidden" data-provides="fileupload" id="exserviceman">
+                                                            <label>Upload the valid proof</label>
+                                                            <div class="upload-btn-wrapper">
+                                                                <button class="btn" id="btnImage" title="Upload File"><i class="glyphicon glyphicon-upload"></i></button>
+                                                                <input type="file" title="Upload File" class="btn bg-purple" imageid="img" name="img" id="exservice" required accept=".jpg,.png,.jpeg">
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- end col-4 -->
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-4">
+                                                <div class="">
+                                                    @*<label>Single Girl Child</label>*@
+                                                    <label>Are you a Single Girl Child without siblings?</label>
+                                                    <div class="form-inline">
+                                                        <div class="radio radio-css radio-pink radio-inline">
+                                                            <input type="radio" name="SingleGirl_Radio" id="rbtnSingleGirlYes" value="1" required data-parsley-group="wizard-step-1" />
+                                                            <label for="rbtnSingleGirlYes">
+                                                                Yes
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio radio-css radio-danger radio-inline">
+                                                            <input type="radio" name="SingleGirl_Radio" id="rbtnSingleGirlNo" value="2" />
+                                                            <label for="rbtnSingleGirlNo">
+                                                                No
+                                                            </label>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- end col-4 -->
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-4">
+                                                <div class="">
+                                                    <label>Whether the applicant is physically challenged?</label>
+                                                    <div class="form-inline">
+                                                        <div class="radio radio-css radio-pink radio-inline">
+                                                            <input type="radio" name="Physical_radio" id="rbtnPhysicalYes" value="1" required data-parsley-group="wizard-step-1" />
+                                                            <label for="rbtnPhysicalYes">
+                                                                Yes
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio radio-css radio-danger radio-inline">
+                                                            <input type="radio" name="Physical_radio" id="rbtnPhysicalNo" value="2" />
+                                                            <label for="rbtnPhysicalNo">
+                                                                No
+                                                            </label>
+                                                        </div>
+                                                        <div class="fileupload fileupload-new hidden" data-provides="fileupload" id="physicaly">
+                                                            <label>Upload the valid proof</label>
+                                                            <div class="upload-btn-wrapper">
+                                                                <button class="btn" id="btnImage" title="Upload File"><i class="glyphicon glyphicon-upload"></i></button>
+                                                                <input type="file" title="Upload the valid proof" class="btn bg-purple" imageid="img" name="img" id="physicalychallanged" required accept=".jpg,.png,.jpeg">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="block1 hidden" id="divphysicalytpe">
+                                                            <label>Type</label>
+                                                            <select id="ddlphysicalytype" class="selectpicker form-control" data-live-search="true"></select>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- end col-4 -->
+                                        </div>
+                                        <!-- end row -->
+                                        <!-- begin row-->
+                                        <div class="row m-b-10">
+
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-4" id="dvEducationMode">
+                                                <div class="">
+                                                    <label>@*Specify Whether State Board / CBSE?*@ Education Board</label>
+                                                    <div class="form-inline">
+                                                        <select id="ddlEducationboard" class="selectpicker form-control" data-live-search="true" required data-parsley-group="wizard-step-1"></select>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- end col-4 -->
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-4">
+                                                <div class="block1">
+                                                    <label>Extracurricular Activities(Sports/NSS/NCC/Others)</label>
+                                                    <input type="text" name="ExtraCurricularActivity" id="txtExtraCurricularActivity" placeholder="Sports / NCC / NSS / Others" class="form-control" data-parsley-group="wizard-step-1" />
+                                                </div>
+                                            </div>
+                                            <!-- end col-4 -->
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-4">
+                                                <div class="" id="dvLastStudiedSchool">
+                                                    <label>Name of the School Last Studied</label>
+                                                    <input type="text" name="LastStudiedSchool" id="txtLastStudiedSchool" placeholder="st.Xavier's hr sec school" class="form-control" data-parsley-group="wizard-step-1" />
+                                                </div>
+                                                <div class="hidden" id="dvLastStudiedCollege">
+                                                    <label>Name of the University Last Studied</label>
+                                                    <select id="txtLastStudiedCollege" class="selectpicker form-control" data-live-search="true" data-parsley-group="wizard-step-1"></select>
+                                                    @*<input type="text" name="LastStudiedCollege" id="txtLastStudiedCollege" placeholder="AUXILIUM College" class="form-control" data-parsley-group="wizard-step-1" />*@
+                                                </div>
+                                            </div>
+                                            <!-- end col-4 -->
+                                            <div class="col-md-4">
+                                                <div class="hidden" id="dvLastStudiedCol">
+                                                    <label>Name of the College Last Studied</label>
+                                                    <input type="text" name="LastStudiedCollege" id="txtLastStudiedCol" placeholder="st.Xavier's hr sec school" class="form-control" data-parsley-group="wizard-step-1" />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 col-md-4">
+                                                <div class="block1">
+                                                    <label>EMIS NO</label>
+                                                    <input type="text" name="" id="txtemis" placeholder="EMIS NO"
+                                                           class="form-control" data-parsley-group="wizard-step-1" />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 col-md-4 hidden" id="dvumis">
+                                                <div class="block1">
+                                                    <label>UMIS NO</label>
+                                                    <input type="text" name="" id="txtumis" placeholder="UMIS NO"
+                                                           class="form-control" data-parsley-group="" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- end row-->
+                                        <!-- begin row -->
+                                        <div class="row m-b-10">
+                                            <!-- begin col-4 -->
+                                            <!-- end col-4 -->
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-4">
+                                                <div class="">
+                                                    <label>Nationality - Indian ?</label>
+                                                    <div class="form-inline">
+                                                        <div class="radio radio-css radio-pink radio-inline">
+                                                            <input type="radio" name="RomanNRI_Radio" id="rbtnNRIYes" value="1" data-parsley-group="wizard-step-1" required />
+                                                            <label for="rbtnNRIYes">
+                                                                No
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio radio-css radio-danger radio-inline">
+                                                            <input type="radio" name="RomanNRI_Radio" id="rbtnNRINo" value="2" />
+                                                            <label for="rbtnNRINo">
+                                                                Yes
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="block1" id="divAadharNumber">
+                                                    <label>Aadhar Number</label>
+                                                    <input type="text" name="AadharNumber" id="txtAadharNumber" placeholder="Enter Aadhar Number" class="form-control" data-parsley-group="wizard-step-1" required />
+                                                </div>
+                                                <div class="block1 hidden" id="divPassportNumber">
+                                                    <label>Passport Number</label>
+                                                    <input type="text" name="PassportNumber" id="txtPassportNumber" placeholder="Enter Passport Number" class="form-control" data-parsley-group="wizard-step-1" />
+                                                </div>
+
+                                            </div>
+
+                                            <div id="dvRomanCatholic" class="col-md-4 hidden">
+                                                <div class="">
+                                                    <label>Are You Roman Catholic?</label>
+                                                    <div class="form-inline">
+                                                        <div class="radio radio-css radio-pink radio-inline">
+                                                            <input type="radio" name="RomanCatholic_Radio" id="rbtnCatholicYes" value="1" />
+                                                            <label for="rbtnCatholicYes">
+                                                                Yes
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio radio-css radio-danger radio-inline">
+                                                            <input type="radio" name="RomanCatholic_Radio" id="rbtnCatholicNo" value="2" />
+                                                            <label for="rbtnCatholicNo">
+                                                                No
+                                                            </label>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="dvparish" class="col-md-4 hidden">
+                                                <div class="block1">
+                                                    <label>Mention name of the parish</label>
+                                                    <input type="text" name="parishname" id="txtparishname" data-parsley-maxlength="50" placeholder="Enter Your Parish Name" class="form-control" />
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row m-b-10">
+
+                                        </div>
+                                        <div class="row m-b-12">
+                                            <div class="col-md-4">
+                                                <div class="">
+                                                    <div id="dvImportStudentImage">
+                                                        <label>Upload Your Passport Size Photo</label>
+                                                        @*<label class="col-md-3 control-label">Photo</label>*@
+                                                        <div class="fileupload fileupload-new" data-provides="fileupload">
+                                                            <div class="fileupload-new thumbnail" style="width: 150px; height: 195px;">
+                                                                <img src="" id="img" style="width: 145px; height: 185px;" accesskey=".jpg,.jpeg,.png" />
+                                                            </div>
+                                                            <div class="upload-btn-wrapper">
+                                                                <button class="btn" id="btnImage">Select Image</button>
+                                                                <input type="file" class="btn bg-purple" imageid="img" name="img" id="inputimg" data-parsley-group="wizard-step-1" onchange="encodeImagetoBase64(this,this.name,this.id)" accept=".jpg,.png,.jpeg">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @*Single Parent*@
+                                            @*<div class="col-md-4 hidden" id="physicaly">
+                                                    <div class="">
+                                                        <div id="dvImportStudentImage">
+
+                                                            <div class="fileupload fileupload-new" data-provides="fileupload">
+
+                                                                <div class="upload-btn-wrapper">
+                                                                    <button class="btn" id="btnImage">Physically Challanged</button>
+                                                                    <input type="file" class="btn bg-purplek" imageid="img" name="img" id="physicall" data-parsley-group="wizard-step-1" onchange="encodeImagetoBase64(this,this.name,this.id)" accept=".jpg,.png,.jpeg">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>*@
+
+                                        </div>
+                                        <!-- end row -->
+
+                                        <div class="col-md-12">
+                                            <legend class="text-center width-full bg-primary-header">Bank Account Information</legend>
+
+
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="block1">
+                                                    <label>Bank Name</label>
+                                                    <input type="text" placeholder="Enter Bank Name" class="form-control" id="bankname" />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="block1">
+                                                    <label>Bank Branch</label>
+                                                    <input type="text" placeholder="Enter Bank Branch" class="form-control" id="bankbranch" />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="block1">
+                                                    <label>Bank City</label>
+                                                    <input type="text" placeholder="Enter Bank City" class="form-control" id="bankcity" />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="block1">
+                                                    <label>Account NO:</label>
+                                                    <input type="text" placeholder="Enter Bank Ac No" class="form-control" id="bankaccountno" />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="block1">
+                                                    <label>IFSC Code:</label>
+                                                    <input type="text" placeholder="Enter Bank IFSC" class="form-control" id="bankifsc" />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6">
+                                                <div class="block1">
+                                                    <label>Account Type:</label>
+                                                    <select id="accounttype" class="selectpicker form-control"
+                                                            data-live-search="true" required>
+                                                        <option>--select--</option>
+                                                        <option value="1">Savings</option>
+                                                        <option value="2">Current</option>
+                                                        <option value="3">Other</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <!-- end wizard step-1 -->
+                                <!-- begin wizard step-2 -->
+                                <div class="wizard-step-2">
+                                    <fieldset>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" id="chAddress" name="Address" /> Click if both are same
+                                            </label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <legend class="pull-left width-full">Postal Address</legend>
+                                            <!-- begin row -->
+                                            <div>
+                                                <div class="block1">
+                                                    <label>Door No</label>
+                                                    <input type="text" name="firstname" id="txtCDoorNo" placeholder="Enter Door No" class="form-control" data-parsley-group="wizard-step-2" required maxlength="20" />
+                                                </div>
+
+                                                <div class="block1">
+                                                    <label>Street</label>
+                                                    <input type="text" name="firstname" id="txtCStreet" placeholder="Enter Street Name" class="form-control" data-parsley-group="wizard-step-2" required maxlength="50" />
+                                                </div>
+
+                                                @*<div class="block1">
+                                                        <label>Place</label>
+                                                        <input type="text" name="firstname" id="txtCPlace" placeholder="Enter Your Place" class="form-control" data-parsley-group="wizard-step-2" required maxlength="100" />
+                                                    </div>*@
+                                                <div class="block1">
+                                                    <label>Village</label>
+                                                    <input type="text" name="firstname" id="txtCVillage" placeholder="Enter Your Village" class="form-control" data-parsley-group="wizard-step-2" maxlength="50" />
+                                                </div>
+
+
+                                                <div class="block1">
+                                                    <label>City</label>
+                                                    <input type="text" name="firstname" id="txtCCity" placeholder="Enter Your City" class="form-control" data-parsley-group="wizard-step-2" maxlength="50" />
+                                                </div>
+
+                                                <div class="block1">
+                                                    <label>Pin Code</label>
+                                                    <input type="text" name="firstname" id="txtCPinCode" placeholder="Enter Pin Code" class="form-control" data-parsley-group="wizard-step-2" maxlength="6" />
+                                                </div>
+
+                                                <div class="block1">
+                                                    <label>District</label>
+                                                    <input type="text" name="firstname" id="txtCDistrict" placeholder="Enter District" class="form-control" data-parsley-group="wizard-step-2" maxlength="50" />
+                                                </div>
+
+                                                <div class="block1">
+                                                    <label>Country</label>
+                                                    <select id="ddlCCountry" class="selectpicker form-control" required data-parsley-group="wizard-step-2" data-live-search="true"></select>
+                                                </div>
+
+                                                <div class="block1">
+                                                    <label>State</label>
+                                                    <select id="ddlCState" class="selectpicker form-control" required data-live-search="true" data-parsley-group="wizard-step-2"></select>
+                                                </div>
+
+
+                                                <div class="block1">
+                                                    <label>Phone No</label>
+                                                    <input type="number" name="firstname" id="txtCPhoneNo" placeholder="Enter Your Phone No" class="form-control" data-parsley-group="wizard-step-2" maxlength="10" />
+                                                </div>
+                                                <div class="block1">
+                                                    <label>Mobile No</label>
+                                                    <input type="text" name="firstname" id="txtCMobileNo" placeholder="Enter Your Mobile No" class="form-control" data-parsley-group="wizard-step-2" disabled />
+                                                </div>
+                                            </div>
+                                            <!-- end row -->
+                                        </div>
+                                        <div class="col-md-6" id="PermanentAddress">
+                                            <legend class="pull-left width-full">Permanent Address</legend>
+                                            <!-- begin row -->
+                                            <div>
+                                                <div class="block1">
+                                                    <label>Door No</label>
+                                                    <input type="text" name="firstname" id="txtPDoorNo" placeholder="Enter Door No" class="form-control" data-parsley-group="wizard-step-2" maxlength="20" />
+                                                </div>
+
+                                                <div class="block1">
+                                                    <label>Street</label>
+                                                    <input type="text" name="firstname" id="txtPStreet" placeholder="Enter Street Name" class="form-control" data-parsley-group="wizard-step-2" maxlength="50" />
+                                                </div>
+
+                                                @*<div class="block1">
+                                                        <label>Place</label>
+                                                        <input type="text" name="firstname" id="txtPPlace" placeholder="Enter Your Place" class="form-control" data-parsley-group="wizard-step-2" maxlength="100" />
+                                                    </div>*@
+                                                <div class="block1">
+                                                    <label>Village</label>
+                                                    <input type="text" name="firstname" id="txtPVillage" placeholder="Enter Your Village" class="form-control" data-parsley-group="wizard-step-2" maxlength="50" />
+                                                </div>
+
+                                                <div class="block1">
+                                                    <label>City</label>
+                                                    <input type="text" name="firstname" id="txtPCity" placeholder="Enter Your City" class="form-control" data-parsley-group="wizard-step-2" maxlength="50" />
+                                                </div>
+
+                                                <div class="block1">
+                                                    <label>Pin Code</label>
+                                                    <input type="text" name="firstname" id="txtPPinCode" placeholder="Enter Pin Code" class="form-control" data-parsley-group="wizard-step-2" maxlength="6" />
+                                                </div>
+
+                                                <div class="block1">
+                                                    <label>District</label>
+                                                    <input type="text" name="firstname" id="txtPDistrict" placeholder="Enter District" class="form-control" data-parsley-group="wizard-step-2" maxlength="50" />
+                                                </div>
+
+                                                <div class="block1">
+                                                    <label>Country</label>
+                                                    <select id="ddlPCountry" class="selectpicker form-control" data-live-search="true"></select>
+                                                </div>
+
+                                                <div class="block1">
+                                                    <label>State</label>
+                                                    <select id="ddlPState" class="selectpicker form-control" data-live-search="true"></select>
+                                                </div>
+
+
+
+                                                <div class="block1">
+                                                    <label>Phone No</label>
+                                                    <input type="number" name="firstname" id="txtPPhoneNo" placeholder="Enter Your Phone No" class="form-control" data-parsley-group="wizard-step-2" maxlength="10" />
+                                                </div>
+                                                <div class="block1">
+                                                    <label>Mobile No</label>
+                                                    <input type="text" name="firstname" id="txtPMobileNo" placeholder="Enter Your Mobile No" class="form-control" data-parsley-group="wizard-step-2" disabled />
+                                                </div>
+                                            </div>
+                                            <!-- end row -->
+                                        </div>
+                                        <!-- end row -->
+                                    </fieldset>
+                                </div>
+                                <!-- end wizard step-2 -->
+                                <!-- begin wizard step-3 -->
+                                <div class="wizard-step-3 ">
+                                    <div class="row" id="exam-mark">
+                                        <div class="col-md-12">
+                                            @*<div id="dvddlMarks" class="col-md-6">
+                                                    <label>Group Name</label>
+                                                    <select id="ddlHSSGroups" onchange="FetchHSSMarks()" class="selectpicker form-control" data-live-search="true"></select>
+                                                </div>*@
+                                            <div class="col-md-6">
+                                                <label>Last Studied Class</label>
+
+                                                <input type="text" id="txtLastStudiedClass" placeholder="Enter Last Studied Class" class="form-control" data-parsley-group="wizard-step-3" required />
+                                            </div>
+
+                                            @* for pg and mca alone *@
+                                            <div class="col-md-6 hidden" id="dvSemester">
+                                                <label>Semester</label>
+
+                                                <select id="ddlSemester" class="selectpicker form-control" data-live-search="true" data-parsley-group="wizard-step-3"></select>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 table-responsive">
+                                            <fieldset>
+                                                <legend class="pull-left width-full">Examination Information</legend>
+                                                <!-- begin row -->
+                                                <div class="row" id="fdUGMarks">
+                                                    <!-- Begin Table -->
+                                                    <!-- End Table-->
+                                                </div>
+                                                <!-- end row -->
+                                                <!-- begin row -->
+                                                <div class="row" id="fdPGMarks">
+                                                    <!-- Begin Table -->
+                                                    <!-- End Table-->
+                                                </div>
+                                                <!-- end row -->
+                                            </fieldset>
+                                        </div>
+                                        <input type="hidden" id="eleventhpass">
+                                    </div>
+                                </div>
+                                <!-- end wizard step-3 -->
+                                <!-- begin wizard step-4 -->
+                                <div class="wizard-step-4" id="wizard-step-4">
+                                    <fieldset id="file-upload">
+                                        <legend class="pull-left width-full">Certificate Upload</legend>
+
+
+                                        <div class="row">
+                                            <b>Note:</b>
+                                            <ol class="alert alert-info">
+                                                <li class="m-l-10">
+                                                    <p>Copy of Mark Statements, Community Certificate, Transfer Certificate, Aadhar Id and Eligibility Certificate <b>for Students from other States / Universities</b> are to be  uploaded.</p>
+                                                </li>
+                                                @*<li class="m-l-10">
+                                                        <p>Click the Uploaded image to delete.</p>
+                                                    </li>*@
+                                                <li class="hidden m-l-10" id="dvForMCA">
+                                                    <p>You should attend the Entrance test below:<b>Tamilnadu Common Entrance Test(TANCET) conducted be Anna University</b></p>
+                                                </li>
+                                                <li class="hidden m-l-10" id="dvForRC">
+                                                    <p>The Catholic Students should get a Baptism Certificate from the Parish Priest and upload with other documents.</p>
+                                                </li>
+                                                @*<li class="hidden m-l-10" id="dvForMphil">
+                                                        <p>You should attend the Entrance test for M.phil and upload Mark Statement along with other documents. </p>
+                                                    </li>*@
+                                                <li class="m-l-10" id="dvForRC">
+                                                    <p><b>Finally, Click the submit button to submit your application</b></p>
+                                                </li>
+                                            </ol>
+                                        </div>
+
+                                        <div id="ForPg">
+                                            <div class="col-md-12">
+                                                <div class="">
+                                                    <label>Do you have consolidated mark statement ?</label>
+                                                    <div class="form-inline">
+                                                        <div class="radio radio-css radio-pink radio-inline">
+                                                            <input type="radio" name="consolidate_radio" id="rbtnconsolidateYes" value="1" data-parsley-group="wizard-step-4" />
+                                                            <label for="rbtnconsolidateYes">
+                                                                Yes
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio radio-css radio-danger">
+                                                            <input type="radio" name="consolidate_radio" id="rbtnconsolidateNo" value="2" />
+                                                            <label for="rbtnconsolidateNo">
+                                                                No
+                                                            </label>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <div id="dvConsolidateMarksheet" class="hidden">
+                                                <div id="dvUploadFile" class="col-md-12">
+                                                    <div id="dvImportImage1" class="col-md-3">
+                                                        <div class="fileupload fileupload-new" data-provides="fileupload">
+                                                            <div class="fileupload-new thumbnail" style="width: 150px; height: 195px;">
+                                                                <img class="img-responsive" src="" id="img1" style="width: 145px; height: 185px;" accesskey=".jpg,.jpeg,.png" />
+                                                            </div>
+                                                            <div class="upload-btn-wrapper">
+                                                                <button class="btn" id="btnImage1">Consolidate Marksheet</button>
+                                                                <input type="file" class="btn bg-purple" imageid="img1" name="img1" id="Marksheet1" onchange="encodeImagetoBase64(this,this.name,this.id)" accept=".jpg,.png,.jpeg">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <br /><br /><br /><br />
+                                        <div class="row" id="UploadSemesterFiles"></div>
+                                        <br /><br />
+                                        <div class="row" id="UploadedFiles"></div>
+
+                                        <br />
+
+                                        @*<div class="row pull-right">
+                                                <a class="btn btn-success pull-right   m-b-5" onclick="CloneDiv()" href="#"><i class="fa fa-plus" title="Add">Upload More File</i></a>
+                                            </div>*@
+                                        <br />
+                                        <div class="panel-body text-inverse">
+                                            <div id="dropzone">
+                                                <div class="dropzone needsclick" id="demo-upload">
+                                                    <div class="dz-message needsclick">
+                                                        Drop files <b>here</b> or <b>click</b> to upload.<br />
+                                                        @*<span class="dz-note needsclick">
+                                                                (This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)
+                                                            </span>*@
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row pull-right">
+                                            <a class="btn btn-success pull-right   m-b-5" href="#" id="uploadfiles">Save Files</a>
+                                        </div>
+
+
+
+
+                                        <div class="col-md-12">
+                                            <h3 class="pull-left width-full">Declaration</h3>
+                                            <input type="checkbox" id="chkDeclaration" />&nbsp;<label for="chkDeclaration" class="control-label"> I declare that all the particulars furnished above are true and correct. I submit that I will abide by the rules and regulations of the college.</label>
+                                        </div>
+                                        <div class="col-md-12 pull-right">
+                                            @*<a id="btnSubmit" value="Submit" class="btn btn-primary">Submit</a>*@
+                                            @if (Convert.ToInt32(ViewBag.STATUS) >= 2 && ViewBag.IS_BLOCKED == "1")
+                                            {
+                                                <p>You never can make changes now..!</p>
+                                            }
+                                            else
+                                            {
+                                                <a id="btnSubmit" value="Submit" class="btn btn-primary">Submit</a>
+                                            }
+
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <!-- end wizard step-4 -->
+                            </div>
+                        </form>
+                        <div class="text-center">
+                            <label class="label label-info">Click top taps to proceed Next..!</label>
+                        </div>
+                    }
+                </div>
+            </div>
+            <!-- end panel -->
+        </div>
+        <!-- end col-12 -->
+    </div>
+    <!-- end row -->
+</div>
+<!-- end #content -->
+<!--Begin Hidden Feild -->
+@Html.HiddenFor(model => model.Status)
+@Html.Hidden("apptype")
+@Html.Hidden("board")
+
+<!-- End Hidden Feild -->
+
+<script src="~/Content/assets/plugins/parsley/dist/parsley.js"></script>
+<script src="~/Content/assets/plugins/bootstrap-wizard/js/bwizard.js"></script>
+<script src="~/Content/assets/js/form-wizard-for-admission.js"></script>
+
+<script src="~/Content/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="~/Content/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+<script src="~/Content/assets/plugins/gritter/js/jquery.gritter.js"></script>
+<script src="~/Content/assets/plugins/dropzone/min/dropzone-amd-module.min.js"></script>
+
+<script src="~/Content/assets/plugins/dropzone/min/dropzone.min.js"></script>
+<script>
+    $('.selectpicker').selectpicker({
+        size: 6
+    });
+
+    var count=2;var nFile=1;
+    $("input[name='consolidate_radio']").change(function()
+    {
+        if ($('#rbtnconsolidateYes').is(":checked"))
+        {
+            nFile=3;
+          //   $('#dvConsolidateMarksheet').removeClass('hidden');
+            $('#UploadSemesterFiles').empty();
+            var clone = $("#dvImportImage1").clone();
+            clone.attr("id", "dvImportImage1");
+            clone.find("#Marksheet1").attr("id","Marksheet2");
+            clone.find("#btnImage1").attr("id","btnImage2");
+            clone.find("#img1").attr("id", "img2");
+            clone.find("#img2").attr("src","");
+            clone.find('#Marksheet2').attr("name","img2");
+            clone.appendTo('#UploadSemesterFiles');
+        }
+        else
+        {
+            $('#UploadSemesterFiles').empty(); var nFile = 0; var nArray = ["I", "II", "III", "IV", "V","VI"];
+            for (var i = 2; i <= 7; i++)
+            {
+                var clone = $("#dvImportImage1").clone();
+                clone.attr("id", "dvImportImage1");
+                clone.find("#Marksheet1").attr("id","Marksheet"+i);
+                clone.find("#btnImage1").attr("id","btnImage"+i);
+                clone.find("#btnImage"+i).empty();
+                clone.find("#btnImage" + i).append(nArray[nFile]+" - Semester Marksheet");
+                clone.find("#img1").attr("id", "img" + i);
+                clone.find("#img"+i).attr("src","");
+                clone.find('#Marksheet'+i).attr("name","img"+i);
+                clone.appendTo('#UploadSemesterFiles');
+                nFile++;
+            }
+        }
+
+    });
+
+    $("input[name='Physical_radio']").change(function()
+    {
+
+        if ($('#rbtnPhysicalYes').is(":checked"))
+        {
+            $('#physicaly').removeClass('hidden')
+            $('#divphysicalytpe').removeClass('hidden')
+
+            if($('#rbtnPhysicalYes').attr('status')=="0")
+            {
+
+                $('#physicalychallanged').attr("data-parsley-group","wizard-step-1");
+            }
+        }
+        else
+        {
+            $('#physicaly').addClass('hidden')
+            $('#divphysicalytpe').addClass('hidden')
+            $('#physicalychallanged').attr("data-parsley-group","");
+        }
+
+    });
+    $("input[name='Army_radio']").change(function()
+    {
+
+        if ($('#rbtnArmyYes').is(":checked"))
+        {
+            $('#exserviceman').removeClass('hidden')
+            if($('#rbtnArmyYes').attr('status')=="0")
+            {
+                $('#exservice').attr("data-parsley-group","wizard-step-1");
+            }
+        }
+        else
+        {
+            $('#exserviceman').addClass('hidden')
+            $('#exservice').attr("data-parsley-group","");
+        }
+
+    });
+
+    var message= @Html.Raw(Json.Encode(ViewBag.Message));
+
+    if(message=="")
+    {
+        myDropzone = new Dropzone('#demo-upload', {
+            addRemoveLinks: true,
+            autoProcessQueue: false,
+            uploadMultiple: true,
+            parallelUploads: 100,
+            maxFiles: 10,
+            maxFilesize: 0.75,
+            paramName: 'file',
+            acceptedFiles: ".jpeg,.jpg,.png,.gif",
+            clickable: true,
+            url: '/Admission/SaveUploadedFiles',
+            init: function () {
+                var myDropzone = this;
+                // Update selector to match your button
+
+            },
+            error: function (file, response){
+                if ($.type(response) === "string")
+                    var message = response; //dropzone sends it's own error messages in string
+                else
+                    var message = response.message;
+                file.previewElement.classList.add("dz-error");
+                _ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+                _results = [];
+                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                    node = _ref[_i];
+                    _results.push(node.textContent = message);
+                }
+                return _results;
+            },
+            successmultiple: function (file, response) {
+                console.log(file, response);
+                $modal.modal("show");
+            },
+
+            reset: function () {
+                console.log("resetFiles");
+                this.removeAllFiles(true);
+            }
+        });
+
+        $('#uploadfiles').on('click', function ()
+        {
+            var fileData = new FormData();
+
+            var files = $('#demo-upload').get(0).dropzone.getAcceptedFiles();
+            if(files.length>0 && files.length!=0)
+            {
+                for (var i = 0; i < files.length; i++)
+                {
+                    var file = files[i];
+                    fileData.append(files[i].name,files[i]);
+
+                }
+            }
+            else
+
+            {
+                myAlert('Please upload files...!', 'gritter-error', '');
+            }
+
+
+            $.ajax({
+                url: "@Url.Action("SaveDropzoneFile", "Admission")",
+                method: "POST",
+                contentType: false, // Not to set any content header
+                processData: false,
+                data: fileData,
+                async:false,
+                success: function (data)
+                {
+                    myAlert(data.Message, 'gritter-success', '');
+                    RefreshFileSource();
+                    FetchFileUploads();
+
+                }, error: function (error) {
+                    alert('Try Again!!');
+                    return false;
+                }
+
+            })
+
+        });
+    }
+
+
+
+    $().ready(function () {
+        $('ul.pager.wizard li.previous').addClass('hidden');
+    });
+</script>
+<script defer>
+    var ImputImg;
+    var baseimage64;
+    var extension;
+    var ApplicationType;
+    var TotalMarksSecured;
+    $(document).ready(function ()
+    {
+
+        $('.next').addClass('hidden');
+        FormWizardValidation.init();
+        handleDatepicker = function () {
+            "use strict";
+            $("#txtdob").datepicker({
+                todayHighlight: !0,
+                autoclose: !0,
+                format: "dd/mm/yyyy",
+                orientation: "left bottom"
+                // 'top': top,
+                // 'left': left
+            }
+            )
+        }
+        FetchAdmissionIssueApplicationById = function () {
+            var sApplicationType;
+            var Receive_id;
+            var IsFirstGraduation;
+            var IsAgricultureLabour="0";
+            var IsMarried;
+            var IsExServiceMan;
+            var IsPhysicallyChalanged;
+            var IsStateBoard;
+            var IsSubmitted;
+            var IsRomanCatholic;
+            var IsHostel="0";
+            var IsSingleGirlChild;
+            var IsDalit="0";
+            var IsNRI="0";
+            var IsEleventhPass;
+            var IsHaveConsolidate;
+            var Today=new Date();
+            var DateOfBirth;
+            var currentYear = (new Date).getFullYear();
+            var Year;
+            var Age;
+
+            $.ajax({
+                url: "@Url.Action("FetchAdmissionIssueApplicationById", "Admission")",
+                method: "POST",
+                datatype: "html",
+                success: function (objResult) {
+                    if (objResult.Message==null) {
+                        $('#txtFirstName').val(objResult[0].FIRST_NAME);
+                        //$('#txtFatherAge').val(objResult[0].FATHER_AGE);
+                        $('#txtMotherName').val(objResult[0].MOTHER_NAME);
+                        //$('#txtMotherAge').val(objResult[0].MOTHER_AGE);
+                        $('#txtPassportNumber').val(objResult[0].PASSPORT_NUMBER);
+                        $('#txtAadharNumber').val(objResult[0].AADHAR_NUMBER);
+                        $('#txtInitial').val(objResult[0].LAST_NAME);
+                        $('#txtdob').val(objResult[0].DATE_OF_BIRTH);
+                        $('#txtCMobileNo').val(objResult[0].SMS_MOBILE_NO);
+                        $('#txtPMobileNo').val(objResult[0].SMS_MOBILE_NO);
+                        DateOfBirth =new Date(objResult[0].DOB);
+                        Year=DateOfBirth.getFullYear();
+                        $('#txtAge').val(currentYear-Year);
+                        Receive_id = objResult[0].RECEIVE_ID;
+                        if (Receive_id!=null) {
+                            IsFirstGraduation=objResult[0].IS_FIRSTGENERATION;
+                            IsMarried=objResult[0].MARITAL_STATUS_ID;
+                            IsAgricultureLabour=objResult[0].MARITAL_STATUS_ID;
+                            IsExServiceMan=objResult[0].EXSERVICE_MAN;
+                            IsPhysicallyChalanged=objResult[0].SPECIALLYABLED_ID;
+                            IsStateBoard=objResult[0].EDUCATION_BOARD_ID;
+                            IsRegisteredTenant=objResult[0].IS_REGISTERED_TENANT;
+                            IsSubmitted=objResult[0].IS_SUBMITTED;
+                            IsSingleGirlChild = objResult[0].IS_SINGLE_GIRL_CHILD;
+                            IsHostel=objResult[0].HOSTEL_FACILITY;
+                            IsRomanCatholic=objResult[0].IS_ROMAN_CATHOLIC;
+                            IsDalit = objResult[0].IS_DALIT;
+                            IsNRI=objResult[0].IS_NRI;
+                            IsSingleParent=objResult[0].IS_SINGLE_PARENT;
+
+                            TotalMarksSecured=objResult[0].HSTOTAL;
+                            IsEleventhPass = objResult[0].IS_ELEVENTH_PASS;
+                            IsHaveConsolidate = objResult[0].IS_HAVE_CONSOLIDATE_MARKSHEET;
+                            $('#eleventhpass').val(objResult[0].IS_ELEVENTH_PASS);
+                            $('#txtFatherName').val(objResult[0].FATHER_NAME);
+                            $('#txtCDoorNo').val(objResult[0].CDOORDETAIL);
+                            $('#txtPDoorNo').val(objResult[0].PDOORDETAIL);
+                            $('#txtCStreet').val(objResult[0].CSTREET);
+                            $('#txtPStreet').val(objResult[0].PSTREET);
+                            $('#txtCPlace').val(objResult[0].CPOST_PLACE_TOWN);
+                            $('#txtPPlace').val(objResult[0].PPOST_PLACE_TOWN);
+                            $('#txtCCity').val(objResult[0].CTALUK_CITY);
+                            $('#txtPCity').val(objResult[0].PTALUK_CITY);
+                            $('#txtCPinCode').val(objResult[0].CPINCODE);
+                            $('#txtPPinCode').val(objResult[0].PPINCODE);
+                            $('#txtCommunity').val(objResult[0].COMMUNITY_ID);
+                            $('#txtCDistrict').val(objResult[0].CDISTRICT);
+                            $('#txtCDistrict').val(objResult[0].CDISTRICT);
+                            $('#txtPDistrict').val(objResult[0].PDISTRICT);
+                            $('#txtCVillage').val(objResult[0].CVILLAGE_AREA);
+                            $('#txtPVillage').val(objResult[0].PVILLAGE_AREA);
+                            $('#ddlCCountry').val(objResult[0].CCOUNTRY);
+                            $('#ddlPCountry').val(objResult[0].PCOUNTRY);
+                            $('#ddlCState').val(objResult[0].CSTATE);
+                            $('#ddlPState').val(objResult[0].PSTATE);
+                            $('#txtCPhoneNo').val(objResult[0].CPHONENO);
+                            $('#txtPPhoneNo').val(objResult[0].PPHONENO);
+                            $('#txtLastStudiedClass').val(objResult[0].LAST_STUDIED_CLASS);
+                            $('#txtAnnualIncome').val(objResult[0].ANNUAL_INCOME);
+                            $('#txtNativeDistrict').val(objResult[0].NATIVE_DISTRICT);
+                            $('#txtMAnnualIncome').val(objResult[0].MOTHER_INCOME);
+                            $('#txtPlaceOfBirth').val(objResult[0].PLACE_OF_BIRTH);
+                            $('#txtLastStudiedSchool').val(objResult[0].LAST_STUDIED_SCHOOL);
+                            $('#txtLastStudiedCol').val(objResult[0].LAST_STUDIED_SCHOOL);
+                            $('#txtLastStudiedCollege').val(objResult[0].UNIVERSITY);
+                            $('#txtLastStudiedPlace').val(objResult[0].LAST_STUDIED_PLACE);
+                            $('#txtExtraCurricularActivity').val(objResult[0].EXTRA_CURRICULAR);
+                            $('#ddlCaste').val(objResult[0].CASTE);
+                            $('#ddlGender').val(objResult[0].GENDER);
+                            $('#ddlCaste').val(objResult[0].CASTE_ID);
+                            $('#ddlphysicalytype').val(objResult[0].PHYSICALY_CHALLANGED_TYPE);
+                            $('#img').attr("src",objResult[0].PHOTO_PATH);
+                            $('#ddlMotheryTongue').val(objResult[0].MOTHER_TONGUE);
+                            $('#ddlReligion').val(objResult[0].RELIGION_ID);
+                            $('#txtparishname').val(objResult[0].PARISHI_FRC);
+                            $('#ddlBloodGroup').val(objResult[0].BLOOD_GROUP);
+                            $('#txtFatherOccupation').val(objResult[0].OCCUPATION);
+                            $('#txtMotherOccupation').val(objResult[0].MOTHER_OCCUPATION);
+                            $('#txtfathermobileno').val(objResult[0].FATHER_MOBILE_NUMBER);
+                            $('#txtmothermobileno').val(objResult[0].MOTHER_MOBILE_NUMBER);
+                            $('#ddlEducationboard').val(objResult[0].EDUCATION_BOARD_ID);
+                            $('#Status').val(objResult[0].STATUS);
+
+                            $('#txtcollegedistrict').val(objResult[0].COLLEGE_DISTRICT);
+                            $('#txtcollegeregion').val(objResult[0].COLLEGE_REGION);
+                            $('#txtFirstNameaadhar').val(objResult[0].AADHAR_NAME);
+                            $('#txtAnnualIncomeno').val(objResult[0].INCOME_CERT_NO);
+                            $('#bankname').val(objResult[0].BANK_NAME);
+                            $('#bankcity').val(objResult[0].CITY);
+                            $('#bankifsc').val(objResult[0].IFSC_CODE);
+                            $('#accounttype').val(objResult[0].ACCOUNT_TYPE);
+                            $('#communitycetno').val(objResult[0].COMMUNITY_CERT_NO);
+                            $('#bankaccountno').val(objResult[0].ACCOUNT_NO);
+                            $('#bankbranch').val(objResult[0].BANK_BRANCH);
+
+
+                            if (objResult[0].IS_ORPHAN == '1') {
+                                $('#orphan').prop('checked', true);
+                            }
+                            if (objResult[0].IS_ORPHAN == '0') {
+                                $('#orphanno').prop('checked', true);
+                            }
+                            if (objResult[0].APPLICATION_TYPE_ID == "1")
+                            {
+                                $('#ForPg').addClass('hidden');
+                                $('#txtLastStudiedClass').attr('placeholder', 'Ex: +2');
+                            } else {
+                                $('#txtLastStudiedClass').attr('placeholder', 'Ex: B.Sc. Physcis');
+                            }
+                            //proof stats
+                            if (objResult[0].PHYSICALY_CHALLENGED_PROOF!='')
+                            {
+                                $("#rbtnPhysicalYes").attr("status","1");
+                            }
+                            else
+                            {
+                                $("#rbtnPhysicalYes").attr("status","0");
+                            }
+                            if (objResult[0].EX_SERVICEMAN_PROOF!='')
+                            {
+                                $("#rbtnArmyYes").attr("status","1");
+                            }
+                            else
+                            {
+                                $("#rbtnArmyYes").attr("status","0");
+
+                            }
+                            if (objResult[0].NRI_PROOF!='')
+                            {
+                                $("#rbtnNRIYes").attr("status","1");
+                            }
+                            else
+                            {
+                                $("#rbtnNRIYes").attr("status","0");
+
+                            }
+
+                            //proof required
+                            if(objResult[0].PHYSICALY_CHALLENGED_PROOF=='' && IsPhysicallyChalanged=='1')
+                            {
+                                $('#physicalychallanged').attr("data-parsley-group","wizard-step-1");
+                            }
+                            if(objResult[0].EX_SERVICEMAN_PROOF=='' && IsExServiceMan=='1')
+                            {
+                                $('#exservice').attr("data-parsley-group","wizard-step-1");
+                            }
+
+                                if (IsEleventhPass=='1')
+                                {
+                                    $('#rbtnPassNo').prop('checked', true);
+                                }
+                                if (IsEleventhPass=='0')
+                                {
+
+                                    $('#rbtnPassYes').prop('checked', true);
+                            }
+
+
+                            if (IsHaveConsolidate == '1') {
+                                $('#rbtnconsolidateYes').prop('checked', true);
+                            }
+                            if (IsHaveConsolidate == '0') {
+
+                                $('#rbtnconsolidateNo').prop('checked', true);
+                            }
+
+                            if (IsFirstGraduation=='1') {
+                                $('#rbtnFirstGraduationYes').attr('checked', true);
+                            }
+                            if (IsFirstGraduation=='0') {
+                                $('#rbtnFirstGraduationNo').attr('checked', true);
+                            }
+                            if (IsSubmitted=='1') {
+                                $('#chkDeclaration').attr('checked',true);
+                            }
+
+                            if (IsNRI == '1') {
+                                $('#rbtnNRIYes').attr('checked', true);
+                                $('#divAadharNumber').addClass('hidden');
+                                $('#divPassportNumber').removeClass('hidden');
+                            }
+                            if (IsNRI == '0') {
+                                $('#rbtnNRINo').attr('checked', true);
+                                $('#divAadharNumber').removeClass('hidden');
+                            }
+
+                            if (IsMarried=='1') {
+                                $('#rbtnMarried').attr('checked',true);
+                            }
+                            if (IsMarried=='0') {
+                                $('#rbtnUnMarried').attr('checked',true);
+                            }
+                            if (IsExServiceMan=='1') {
+                                $('#rbtnArmyYes').attr('checked',true);
+                            }
+                            if (IsExServiceMan=='0') {
+                                $('#rbtnArmyNo').attr('checked',true);
+                            }
+                            if (IsPhysicallyChalanged=='1')
+                            {
+
+                                $('#rbtnPhysicalYes').attr('checked',true);
+                                $('#divphysicalytpe').removeClass('hidden')
+
+                            }
+                            if (IsPhysicallyChalanged=='0')
+                            {
+                                $('#rbtnPhysicalNo').attr('checked',true);
+
+                            }
+
+                            if (IsSingleGirlChild=='1') {
+                                $('#rbtnSingleGirlYes').attr('checked',true);
+                            }
+                            if (IsSingleGirlChild=='0') {
+                                $('#rbtnSingleGirlNo').attr('checked',true);
+                            }
+                            if (IsRomanCatholic == '1') {
+                                $('#rbtnCatholicYes').attr('checked',true);
+                                $('#dvForRC').removeClass('hidden');
+                                $('#dvRomanCatholic').removeClass('hidden');
+                                $('#dvparish').removeClass('hidden');
+                                $('#txtparishname').removeAttr('required');
+
+                            }
+                            if (IsRomanCatholic=='0') {
+                                $('#dvForRC').addClass('hidden');
+                                $('#dvparish').addClass('hidden');
+                                $('#rbtnCatholicNo').attr('checked',true);
+                            }
+
+                            var ReligionId=$('#ddlReligion').val();
+                            if (ReligionId=='1')
+                            {
+                                $('#dvRomanCatholic').removeClass('hidden');
+                            }
+                            else
+                            {
+                                $('#dvRomanCatholic').addClass('hidden');
+                            }
+
+                        }
+                        $('.selectpicker').selectpicker('refresh');
+                        sApplicationType = objResult[0].APPLICATION_TYPE_ID;
+                        $('#apptype').val(objResult[0].APPLICATION_TYPE_ID);
+                        $('#board').val(IsStateBoard);
+
+
+                        if(objResult[0].APPLICATION_TYPE_ID!="1" && objResult[0].APPLICATION_TYPE_ID!="5" &&  objResult[0].APPLICATION_TYPE_ID!="8")
+                        {
+                            // for pg and mca
+                            $('#dvLastStudiedCollege').removeClass('hidden');
+                            $('#txtLastStudiedCollege').attr('required', true);
+                            $('#dvLastStudiedCol').removeClass('hidden');
+                            $('#txtLastStudiedCol').attr('required', true);
+
+                            $('#dvLastStudiedSchool').addClass('hidden');
+                            $('#txtLastStudiedSchool').removeAttr('required');
+
+
+                            //$('#dvEducationMode :input').attr('disabled', true);
+                            $('#dvEducationMode').addClass('hidden');
+
+
+                            $('#ddlEducationboard').removeAttr('required');
+
+
+                            $('#dvSemester').removeClass('hidden');
+                            $('#ddlSemester').attr('required',true);
+
+                            $('#ddlSemester').val(objResult[0].UG_TOTAL_SEMESTER);
+                            $('.selectpicker').selectpicker('refresh');
+                        }
+                        if( objResult[0].APPLICATION_TYPE_ID!="3")
+                        {
+                            // for mphil
+                            $('#dvForMphil').removeClass('hidden');
+                        }
+                        loadMarks();
+                        // ValidateApplicationType(sApplicationType,IsStateBoard);
+                    }
+                    else {
+                        myAlert(objResult.Message, 'gritter-danger', '');
+                    }
+                }, error: function (error) {
+                    alert(error.Message);
+                }
+            });
+        }
+
+        GetDropDown = function () {
+            $.ajax({
+                url: "@Url.Action("FetchSupportDataForDropDown", "Admission")",
+                method: "POST",
+            datatype: "html",
+            success: function (objResult) {
+
+                var ddl = JSON.parse(objResult);
+                $('#ddlCCountry').empty();
+                $('#ddlCCountry').append('<option value="">-- select --</option>' + ddl.CCOUNTRY);
+                $('#ddlPCountry').empty();
+                $('#ddlPCountry').append('<option value="">-- select --</option>' + ddl.CCOUNTRY);
+                $('#ddlCState').empty();
+                $('#ddlCState').append('<option value="">-- select --</option>' + ddl.CSTATE);
+                $('#ddlPState').empty();
+                $('#ddlPState').append('<option value="">-- select --</option>' + ddl.CSTATE);
+                $('#ddlMotheryTongue').empty();
+                $('#ddlMotheryTongue').append('<option value="">-- select --</option>' + ddl.MOTHER_TONGUE);
+                $('#ddlReligion').empty();
+                $('#ddlReligion').append('<option value="">-- select --</option>' + ddl.RELIGION_ID);
+                $('#ddlCaste').empty();
+                $('#ddlCaste').append('<option value="">-- select --</option>' + ddl.CASTE);
+                $('#ddlGender').empty();
+                $('#ddlGender').append('<option value="">-- select --</option>' + ddl.GENDER);
+                $('#ddlHSSGroups').empty();
+                $('#ddlHSSGroups').append('<option value="">-- select --</option>' + ddl.HSS_GROUP_ID);
+                $('#ddlFatherOccupation').empty();
+                $('#ddlFatherOccupation').append('<option value="">-- select --</option>' + ddl.OCCUPATION);
+                $('#txtLastStudiedCollege').empty();
+                $('#txtLastStudiedCollege').append('<option value="">-- select --</option>' + ddl.UNIVERSITY);
+                $('#ddlBloodGroup').empty();
+                $('#ddlBloodGroup').append('<option value="">-- select --</option>' + ddl.BLOOD_GROUP);
+                $('#ddlEducationboard').empty();
+                $('#ddlEducationboard').append('<option value="">-- select --</option>' + ddl.EDUCATION_BOARD_ID);
+                $('#ddlphysicalytype').append('<option value="0">-- select --</option>' + ddl.PHYSICALY_CHALLANGED_TYPE);
+                $('#ddlSemester').append('<option value="">-- select --</option>' + ddl.UG_TOTAL_SEMESTER);
+
+                FetchAdmissionIssueApplicationById();
+
+            }, error: function (error) {
+                alert(error);
+            }
+        });
+    }
+        handleDatepicker();
+        GetDropDown();
+        //  FetchFileUploads();
+        $(document).on("wheel", "input[type=number]", function (e)
+        {
+            $(this).blur();
+        });
+    });
+
+
+    $('#rbtnPhysicalYes').on('click', function () {
+        if (rbtnPhysicalYes.checked == true) {
+            $('#dvAddPhysicalStatus').removeClass('hidden');
+        }
+    });
+    $('#rbtnNRIYes').on('click', function () {
+
+        if (this.checked == true)
+        {
+            $('#NRI').removeClass('hidden')
+            $('#nri').attr("data-parsley-group","wizard-step-1");
+            $('#divPassportNumber').removeClass('hidden');
+            $('#txtAadharNumber').removeAttr('required');
+            $('#divAadharNumber').addClass('hidden');
+            $('#txtPassportNumber').attr('required', 'true');
+        }
+    });
+    $('#rbtnNRINo').on('click', function () {
+        if (this.checked == true)
+        {
+            $('#NRI').addClass('hidden')
+            $('#nri').attr("data-parsley-group","");
+            $('#divAadharNumber').removeClass('hidden');
+            $('#txtPassportNumber').removeAttr('required');
+            $('#txtAadharNumber').attr('required','true');
+            $('#divPassportNumber').addClass('hidden');
+        }
+    });
+    $("#chAddress").on("click", function () {
+        $("#PermanentAddress").toggle();
+    });
+    function FetchHSSMarks(HSSGroupId)
+    {
+        var IsEleventhPass=$('#eleventhpass').val();
+
+
+        //var HSSGroupId=$("#ddlHSSGroups").val();
+        $.ajax({
+            url: "@Url.Action("FetchSubejectsByHSSGroupId", "Admission")",
+            method: "POST",
+            datatype: "html",
+            data:{sHSSGroupId:HSSGroupId},
+            async: false,
+            success: function (option)
+            {
+                $('#fdUGMarks').removeClass('hidden');
+                var dvfdUGMarks = $('#fdUGMarks');
+                dvfdUGMarks.empty();
+                dvfdUGMarks.append(option);
+               // DisableDiv();
+                if (IsEleventhPass=='1')
+                {
+                    $('#rbtnPassNo').prop('checked', true);
+                }
+                if (IsEleventhPass=='0')
+                {
+
+                    $('#rbtnPassYes').prop('checked', true);
+                }
+
+            }, error: function (error) {
+                alert(error);
+            }
+        });
+    }
+    function FetchUGMarks(sGroupId) {
+        var HSSGroupId=$("#ddlHSSGroups").val();
+        $.ajax({
+            url: "@Url.Action("FetchSubejectsByHSSGroupId", "Admission")",
+            method: "POST",
+            datatype: "html",
+            data:{sHSSGroupId:sGroupId},
+            async: false,
+            success: function (option) {
+                var dvfdPGMarks = $('#fdUGMarks');
+                dvfdPGMarks.empty();
+                dvfdPGMarks.append(option);
+                //DisableDiv();
+            }, error: function (error) {
+                alert(error);
+            }
+        });
+    }
+    function FetchFileUploads() {
+        $.ajax({
+            url: "@Url.Action("FetchUploadedFiles", "Admission")",
+            method: "POST",
+            datatype: "html",
+            async: false,
+            success: function (option) {
+                var dvUploadedFiles = $('#UploadedFiles');
+                dvUploadedFiles.empty();
+                dvUploadedFiles.append(option);
+            }, error: function (error) {
+                alert(error);
+            }
+        });
+    }
+
+    GetConfirm=function(FileId){
+        if (!confirm('Are you sure to delete this image ?')) {
+            return false;
+        }
+        $.ajax({
+            url: "@Url.Action("DeleteUploadedFile", "Admission")",
+            method: "POST",
+            datatype: "html",
+            data:{sFileId:FileId},
+            async: false,
+            success: function (ObjJsonData) {
+                myAlert(ObjJsonData.Message, 'gritter-success', '');
+                FetchFileUploads();
+            }, error: function (error) {
+                alert(error);
+            }
+        });
+        FetchFileUploads();
+    }
+    $('#rbtnCatholicYes').on('change',function(){
+        if ($('#rbtnCatholicYes').is(":checked")){
+            $('#dvForRC').removeClass('hidden');
+            $('#dvparish').removeClass('hidden');
+        }
+        else {
+            $('#dvForRC').addClass('hidden');
+            $('#dvparish').addClass('hidden');
+        }
+    });
+    $('#rbtnCatholicNo').on('change',function(){
+        if ($('#rbtnCatholicNo').is(":checked")){
+            $('#dvForRC').addClass('hidden');
+            $('#dvparish').addClass('hidden');
+        }
+        else {
+            $('#dvForRC').removeClass('hidden');
+            $('#dvparish').removeClass('hidden');
+
+        }
+    });
+
+
+    $('#ddlReligion').on('change',function(){
+        var ReligionId=$('#ddlReligion').val();
+        if (ReligionId=='1')
+            $('#dvRomanCatholic').removeClass('hidden');
+        else
+            $('#dvRomanCatholic').addClass('hidden');
+    });
+
+
+
+    $('#rbtnCBSE').on('change',function(){
+        var UGApplicationTypeId=@Common.ApplicationType.UG;
+        if (ApplicationType==UGApplicationTypeId) {
+            $('#fdPGMarks').addClass('hidden');
+            $('#dvddlMarks').addClass('hidden');
+            $('#dvNoteForDiplomaAndCBSE').removeClass('hidden');
+            var GroupId='138';
+            FetchUGMarks(GroupId);
+        }
+    });
+    $('#ddlEducationboard').on('change',function(){
+        var UGApplicationTypeId=@Common.ApplicationType.UG;
+        if (ApplicationType==UGApplicationTypeId) {
+            $('#fdPGMarks').addClass('hidden');
+            $('#dvddlMarks').removeClass('hidden');
+            $('#fdUGMarks').addClass('hidden');
+            $('#dvNoteForDiplomaAndCBSE').addClass('hidden');
+        }
+    });
+
+    function SaveOrUpdateIssuePersonal()
+    {
+       // alert($('#Status').val());
+        if(parseInt($('#Status').val())>2){
+           // alert($('#Status').val());
+        }
+        else{
+            var json;
+            var IsFirstGraduation;
+            var IsAgricultureLabour="0";
+            var IsMarried;
+            var IsExServiceMan;
+            var IsPhysicallyChalanged;
+            var IsStateBoard;
+            var IsSingleGirlChild;
+            var IsRomanCatholic;
+            var IsHostel="0";
+            var IsSubmitted;
+            var IsDalit="0";
+            var IsNRI="0";
+            var IsSingleParent = "0";
+            var LastStudied;
+            var sTotalSemester;
+            sTotalSemester=$('#ddlSemester').val();
+            IsStateBoard = $('#ddlEducationboard').val();
+            var ReligionId = $('#ddlReligion').val();
+            var fileData = new FormData();
+            if ($('#rbtnNRIYes').is(":checked"))
+            {
+                IsNRI = 1;
+            }
+            else
+                IsNRI = 0;
+
+            if ($('#rbtnFirstGraduationYes').is(":checked"))
+                IsFirstGraduation = 1;
+            else
+                IsFirstGraduation = 0;
+            if ($('#rbtnMarried').is(":checked"))
+                IsMarried = 1;
+            else
+                IsMarried = 0;
+            if ($('#apptype').val()=='1') {
+                LastStudied = $('#txtLastStudiedSchool').val();
+            }
+            else{
+                LastStudied = $('#txtLastStudiedCol').val();
+            }
+
+            if ($('#rbtnArmyYes').is(":checked"))
+            {
+                var fileUpload = $("#exservice").get(0);
+                var files =fileUpload.files;
+                if(files.length>0 && files.length!=0)
+                {
+                    // Looping over all files and add it to FormData object
+                    for (var j=0; j < files.length; j++)
+                    {
+                        fileData.append('exservice', files[j]);
+                    }
+                }
+                IsExServiceMan = 1;
+            }
+            else
+                IsExServiceMan = 0;
+
+
+            if ($('#rbtnPhysicalYes').is(":checked"))
+            {
+                var fileUpload = $("#physicalychallanged").get(0);
+                var files =fileUpload.files;
+                if(files.length>0 && files.length!=0)
+                {
+                    // Looping over all files and add it to FormData object
+                    for (var j=0; j < files.length; j++)
+                    {
+                        fileData.append('physicaly', files[j]);
+                    }
+                }
+
+                IsPhysicallyChalanged = 1;
+            }
+            else
+                IsPhysicallyChalanged = 0;
+
+            if ($('#rbtnSingleGirlYes').is(":checked"))
+                IsSingleGirlChild = 1;
+            else
+                IsSingleGirlChild = 0;
+
+
+
+            if (ReligionId=='1'){
+                if ($('#rbtnCatholicYes').is(":checked"))
+                    IsRomanCatholic = 1;
+                else
+                    IsRomanCatholic = 0;
+            }
+            else
+                IsRomanCatholic = 0;
+
+            if ($('#chkDeclaration').is(":checked"))
+                IsSubmitted = 1;
+            else
+                IsSubmitted = 0;
+            var Total=0;
+            var MaxTotal=0;
+            var Percentage=0;
+            var rowCount = $('#UGMarkList tr').length;
+            $('#UGMarkList tbody tr').each(function () {
+                Total=$(this).find('td').find('#total_sum_value').val();
+                MaxTotal=$(this).find('td').find('#total_max_value').val();
+            });
+            if (Total=='0')
+            {
+                Total=0;
+                MaxTotal=0;
+                Percentage=0;
+            }
+            else
+            {
+                if (Total=='')
+                {
+                    Total=0;
+                    MaxTotal=0;
+                    Percentage=0;
+                }else
+                {
+                    Percentage=(Total/MaxTotal)*100;
+                }
+            }
+            //if (parseFloat(Total)>parseFloat(MaxTotal)) {
+            //    alert('Total should be less than or equal to Maximum mark...');
+            //    return false;
+            //}
+            var Part;
+            var MainSubjectTotal=0;
+            $('#UGMarkList tbody tr').each(function () {
+                Part = $(this).attr("cms-partid");
+                tdMarksecured=$(this).find('td').find('#tdmarksecured').val();
+                if (Part=='3') {
+                    MainSubjectTotal=MainSubjectTotal+parseFloat(tdMarksecured);
+                }
+            });
+            if ($('#chAddress').is(":checked"))
+            {
+                json = '{"FATHER_NAME":"' + $('#txtFatherName').val() + '","PARISHI_FRC":"' + $('#txtparishname').val() + '","COLLEGE_DISTRICT": "' + $('#txtcollegedistrict').val() + '","COLLEGE_REGION": "' + $('#txtcollegeregion').val() + '","AADHAR_NAME": "' + $('#txtFirstNameaadhar').val() + '","IS_ORPHAN": "' + $('#orphan').val() + '","INCOME_CERT_NO": "' + $('#txtAnnualIncomeno').val() + '","BANK_NAME": "' + $('#bankname').val() + '","BANK_BRANCH": "' + $('#bankbranch').val() + '","CITY": "' + $('#bankcity').val() + '","IFSC_CODE": "' + $('#bankifsc').val() + '","ACCOUNT_TYPE": "' + $('#accounttype').val() + '","COMMUNITY_CERT_NO": "' + $('#communitycetno').val() + '","ACCOUNT_NO": "' + $('#bankaccountno').val() + '","MOTHER_NAME":"' + $('#txtMotherName').val() + '","FATHER_AGE":"0","MOTHER_AGE":"0","IS_NRI":"' + IsNRI + '","AADHAR_NUMBER":"' + $('#txtAadharNumber').val() + '","PASSPORT_NUMBER":"' + $('#txtPassportNumber').val() + '","EXTRA_CURRICULAR":"' + $('#txtExtraCurricularActivity').val() + '","BLOOD_GROUP":"' + $('#ddlBloodGroup').val() + '","LAST_STUDIED_CLASS":"' + $('#txtLastStudiedClass').val() + '","IS_SUBMITTED":"' + IsSubmitted + '","TOTAL_CUT_OFF_MARK":"' + MainSubjectTotal + '","IS_DALIT":"0","OCCUPATION":"' + $('#txtFatherOccupation').val() + '","MOTHER_OCCUPATION":"' + $('#txtMotherOccupation').val() + '","FATHER_MOBILE_NUMBER":"' + $('#txtfathermobileno').val() + '","MOTHER_MOBILE_NUMBER":"' + $('#txtmothermobileno').val() + '","LAST_STUDIED_PLACE":"' + $('#txtLastStudiedPlace').val() + '","HSPERCENTAGE":"' + Percentage + '","HS_MAX_MARK":"' + MaxTotal + '","HSTOTAL":"' + Total + '","IS_ROMAN_CATHOLIC":"' + IsRomanCatholic + '","IS_REGISTERED_TENANT":"0","PLACE_OF_BIRTH":"' + $('#txtPlaceOfBirth').val() + '","MOBILE_NO":"' + $('#txtCMobileNo').val() + '","FIRST_NAME":"' + $('#txtFirstName').val() + '","LAST_NAME":"' + $('#txtInitial').val() + '","FATHER_NAME":"' + $('#txtFatherName').val() + '","IS_FORMER":"0","IS_FIRSTGENERATION":"' + IsFirstGraduation + '","DOB":"' + $('#txtdob').val() + '","GENDER":"' + $('#ddlGender').val() + '","AGE":"' + $('#txtAge').val() + '","PLACE_OF_BIRTH":"' + $('#txtPlaceOfBirth').val() + '","MOTHER_TONGUE":"' + $('#ddlMotheryTongue').val() + '","MARITAL_STATUS_ID":"' + IsMarried + '","RELIGION_ID":"' + $('#ddlReligion').val() + '","CASTE":"' + $('#ddlCaste').val() + '","COMMUNITY_ID":"' + $('#txtCommunity').val() + '","ANNUAL_INCOME":"' + $('#txtAnnualIncome').val() + '","NATIVE_DISTRICT":"' + $('#txtNativeDistrict').val() + '","MOTHER_INCOME":"' + $('#txtMAnnualIncome').val() + '","EXSERVICE_MAN":"' + IsExServiceMan + '","SPECIALLYABLED_ID":"' + IsPhysicallyChalanged + '","LAST_STUDIED_SCHOOL":"' + LastStudied + '","UNIVERSITY":"' + $('#txtLastStudiedCollege').val() + '","EDUCATION_BOARD_ID":"' + IsStateBoard + '","IS_SINGLE_GIRL_CHILD":"' + IsSingleGirlChild + '","CDOORDETAIL":"' + $('#txtCDoorNo').val() + '","CSTREET":"' + $('#txtCStreet').val() + '","CTALUK_CITY":"' + $('#txtCCity').val() + '","CPINCODE":"' + $('#txtCPinCode').val() + '","CDISTRICT":"' + $('#txtCDistrict').val() + '","CCOUNTRY":"' + $('#ddlCCountry').val() + '","CSTATE":"' + $('#ddlCState').val() + '","CVILLAGE_AREA":"' + $('#txtCVillage').val() + '","CPHONENO":"' + $('#txtCPhoneNo').val() + '","PDOORDETAIL":"' + $('#txtCDoorNo').val() + '","PSTREET":"' + $('#txtCStreet').val() + '","PTALUK_CITY":"' + $('#txtCCity').val() + '","PPINCODE":"' + $('#txtCPinCode').val() + '","PDISTRICT":"' + $('#txtCDistrict').val() + '","PCOUNTRY":"' + $('#ddlCCountry').val() + '","PSTATE":"' + $('#ddlCState').val() + '","PVILLAGE_AREA":"' + $('#txtCVillage').val() + '","PPHONENO":"' + $('#txtCPhoneNo').val() + '","IS_SINGLE_PARENT":"0","PHYSICALY_CHALLANGED_TYPE":"' + $('#ddlphysicalytype').val() + '","UG_TOTAL_SEMESTER":"' + sTotalSemester + '"}';
+            }
+            else
+            {
+                json = '{"FATHER_NAME":"' + $('#txtFatherName').val() + '","PARISHI_FRC":"' + $('#txtparishname').val() + '","COLLEGE_DISTRICT": "' + $('#txtcollegedistrict').val() + '","COLLEGE_REGION": "' + $('#txtcollegeregion').val() + '","AADHAR_NAME": "' + $('#txtFirstNameaadhar').val() + '","IS_ORPHAN": "' + $('#orphan').val() + '","INCOME_CERT_NO": "' + $('#txtAnnualIncomeno').val() + '","BANK_NAME": "' + $('#bankname').val() + '","BANK_BRANCH": "' + $('#bankbranch').val() + '","CITY": "' + $('#bankcity').val() + '","IFSC_CODE": "' + $('#bankifsc').val() + '","ACCOUNT_TYPE": "' + $('#accounttype').val() + '","COMMUNITY_CERT_NO": "' + $('#communitycetno').val() + '","ACCOUNT_NO": "' + $('#bankaccountno').val() + '","MOTHER_NAME":"' + $('#txtMotherName').val() + '","FATHER_AGE":"0","MOTHER_AGE":"0","IS_NRI":"' + IsNRI + '","AADHAR_NUMBER":"' + $('#txtAadharNumber').val() + '","PASSPORT_NUMBER":"' + $('#txtPassportNumber').val() + '","EXTRA_CURRICULAR":"' + $('#txtExtraCurricularActivity').val() + '","BLOOD_GROUP":"' + $('#ddlBloodGroup').val() + '","LAST_STUDIED_CLASS":"' + $('#txtLastStudiedClass').val() + '","IS_SUBMITTED":"' + IsSubmitted + '","TOTAL_CUT_OFF_MARK":"' + MainSubjectTotal + '","IS_DALIT":"0","OCCUPATION":"' + $('#txtFatherOccupation').val() + '","MOTHER_OCCUPATION":"' + $('#txtMotherOccupation').val() + '","FATHER_MOBILE_NUMBER":"' + $('#txtfathermobileno').val() + '","MOTHER_MOBILE_NUMBER":"' + $('#txtmothermobileno').val() + '","LAST_STUDIED_PLACE":"' + $('#txtLastStudiedPlace').val() + '","HSPERCENTAGE":"' + Percentage + '","HS_MAX_MARK":"' + MaxTotal + '","HSTOTAL":"' + Total + '","IS_ROMAN_CATHOLIC":"' + IsRomanCatholic + '","IS_REGISTERED_TENANT":"0","PLACE_OF_BIRTH":"' + $('#txtPlaceOfBirth').val() + '","MOBILE_NO":"' + $('#txtCMobileNo').val() + '","FIRST_NAME":"' + $('#txtFirstName').val() + '","LAST_NAME":"' + $('#txtInitial').val() + '","FATHER_NAME":"' + $('#txtFatherName').val() + '","IS_FORMER":"0","IS_FIRSTGENERATION":"' + IsFirstGraduation + '","DOB":"' + $('#txtdob').val() + '","GENDER":"' + $('#ddlGender').val() + '","AGE":"' + $('#txtAge').val() + '","PLACE_OF_BIRTH":"' + $('#txtPlaceOfBirth').val() + '","MOTHER_TONGUE":"' + $('#ddlMotheryTongue').val() + '","MARITAL_STATUS_ID":"' + IsMarried + '","RELIGION_ID":"' + $('#ddlReligion').val() + '","CASTE":"' + $('#ddlCaste').val() + '","COMMUNITY_ID":"' + $('#txtCommunity').val() + '","ANNUAL_INCOME":"' + $('#txtAnnualIncome').val() + '","NATIVE_DISTRICT":"' + $('#txtNativeDistrict').val() + '","MOTHER_INCOME":"' + $('#txtMAnnualIncome').val() + '","EXSERVICE_MAN":"' + IsExServiceMan + '","SPECIALLYABLED_ID":"' + IsPhysicallyChalanged + '","LAST_STUDIED_SCHOOL":"' + LastStudied + '","UNIVERSITY":"' + $('#txtLastStudiedCollege').val() + '","EDUCATION_BOARD_ID":"' + IsStateBoard + '","IS_SINGLE_GIRL_CHILD":"' + IsSingleGirlChild + '","CDOORDETAIL":"' + $('#txtCDoorNo').val() + '","CSTREET":"' + $('#txtCStreet').val() + '","CTALUK_CITY":"' + $('#txtCCity').val() + '","CPINCODE":"' + $('#txtCPinCode').val() + '","CDISTRICT":"' + $('#txtCDistrict').val() + '","CCOUNTRY":"' + $('#ddlCCountry').val() + '","CSTATE":"' + $('#ddlCState').val() + '","CVILLAGE_AREA":"' + $('#txtCVillage').val() + '","CPHONENO":"' + $('#txtCPhoneNo').val() + '","PDOORDETAIL":"' + $('#txtPDoorNo').val() + '","PSTREET":"' + $('#txtPStreet').val() + '","PTALUK_CITY":"' + $('#txtPCity').val() + '","PPINCODE":"' + $('#txtPPinCode').val() + '","PDISTRICT":"' + $('#txtPDistrict').val() + '","PCOUNTRY":"' + $('#ddlPCountry').val() + '","PSTATE":"' + $('#ddlPState').val() + '","PVILLAGE_AREA":"' + $('#txtPVillage').val() + '","PPHONENO":"' + $('#txtPPhoneNo').val() + '","IS_SINGLE_PARENT":"0","PHYSICALY_CHALLANGED_TYPE":"' + $('#ddlphysicalytype').val() + '","UG_TOTAL_SEMESTER":"' + sTotalSemester + '"}';
+            }
+
+
+            for (var i = 1; i < count; i++)
+            {
+                var fileUpload = $("#inputimg").get(0);
+                var files =fileUpload.files;
+                // Looping over all files and add it to FormData object
+                for (var j=0; j < files.length; j++)
+                {
+                    fileData.append('photo', files[j]);
+                }
+            }
+            fileData.append("REGISTER_NO",i);
+            fileData.append("SaveAdmIssueApplication",json);
+            fileData.append("Status",$('#Status').val());
+
+            $.ajax({
+                url: "@Url.Action("SaveOrUpdateAdmissionIssueApplicationAndReceiveApplication", "Admission")",
+                method: "POST",
+                contentType: false, // Not to set any content header
+                processData: false,
+                data: fileData,
+                async: false,
+                success: function (data) {
+                    //loadMarks();
+                    FetchFileUploads();
+                    myAlert(data.Message, 'gritter-success', '');
+                }, error: function (error) {
+                    alert('Try Again!!');
+                    return false;
+                }
+
+            });
+        }
+    }
+    function SaveOrUpdateFiles(e) {
+        var IsSubmitted;
+        var nFile;
+        if ($('#chkDeclaration').is(":checked"))
+            IsSubmitted = 1;
+        else
+            IsSubmitted = 0;
+        var fileData = new FormData();
+        var Isconsolidate="0";
+        if ($('#rbtnconsolidateYes').is(":checked"))
+        {
+            nFile=3;
+            Isconsolidate="1";
+        }
+        else
+        {
+            nFile=7;
+        }
+
+        if ($('#apptype').val() == "2")
+        {
+
+            for (var i = 2; i < nFile; i++)
+            {
+                // var fileupload = $("#Marksheet" + i).get(0);
+                var pgfiles = $("#Marksheet" + i)[0].files;
+                // looping over all files and add it to formdata object
+                for (var j = 0; j < pgfiles.length; j++) {
+                    fileData.append(pgfiles[j].name, pgfiles[j]);
+                }
+            }
+        }
+
+        fileData.append("Is_Submit_Click", e);
+        fileData.append("IS_SUBMITTED",IsSubmitted);
+        fileData.append("Status",$('#Status').val());
+        fileData.append("ConsolidateMarkSheet",Isconsolidate);
+        $.ajax({
+            url: "@Url.Action("SaveUploadedFiles", "Admission")",
+            method: "POST",
+            contentType: false, // Not to set any content header
+            processData: false,
+            data: fileData,
+            async:false,
+            success: function (data) {
+                myAlert(data.Message, 'gritter-success', '');
+                RefreshFileSource();
+                FetchFileUploads();
+            }, error: function (error) {
+                alert('Try Again!!');
+                return false;
+            }
+
+        });
+
+    }
+    function SaveOrUpdateIssueMarks() {
+        if(parseInt($('#Status').val())>2){
+            // alert($('#Status').val());
+        }
+        else{
+
+            var No = 0;
+            var No11th=0;
+            var MarkId;
+            var Markjson;
+            var MarkjsonFot11th;
+            var SubjectId;
+            var tdMark;
+            var tdMarksecured;
+            var tdmpass;
+            var tdnoofattempts;
+            var iseleventhpass;
+            //var Total;
+            //var MaxTotal;
+            //var Percentage;
+            //var MainSubjectTotal=0;
+            var Part;
+            var LastStudiedClass=$('#txtLastStudiedClass').val();
+            var rowCount = $('#UGMarkList tr').length;
+            var rowCountFor11th = $('#MarkListFor11th tr').length;
+
+            if ($('#rbtnPassNo').is(":checked"))
+                iseleventhpass = 1;
+            else
+                iseleventhpass = 0;
+            $('#UGMarkList tbody tr').each(function () {
+                Total=$(this).find('td').find('#total_sum_value').val();
+                MaxTotal = $(this).find('td').find('#total_max_value').val();
+            });
+            //if ($('#apptype').val() == '3'){
+
+            //}
+            //else{
+            //    if (parseFloat(Total)>parseFloat(MaxTotal)) {
+            //        alert('Total should be less than or equal to Maximum Total...');
+            //        return false;
+            //    }
+            //}
+
+            //Percentage=(Total/MaxTotal)*100;
+            if (Validate()) {
+                alert('Mark should be less than or equal to Maximum mark...');
+                return false;
+            }
+            //SUBJECT SELECTION VALIDATION
+
+            if(ValidateSubject()){
+                alert('Select your Main Subject Correctly...');
+                $(this).attr('index')="3";
+            };
+            Markjson = '{"SAVE_ADM_SUB_STU_MARKS":[';
+            $('#UGMarkList tbody tr').each(function ()
+            {
+                //SubjectId = $(this).attr("cms-subjectid");
+                MarkId = $(this).attr("cms-markid");
+                Part = $(this).attr("cms-partid");
+                SubjectId = $(this).find('td').find('select option:Selected').val();
+                //MarkId = $(this).find('td').find('select option:Selected').attr("cms-markid");
+                //Part = $(this).find('td').find('select option:Selected').attr("cms-partid");
+                //MarkId=$(this).find('td').find('#tdmarkid').val();
+                tdMarksecured=$(this).find('td').find('#tdmarksecured').val();
+                tdMark=$(this).find('td').find('#tdmark').val();
+                tdmpass = $(this).find('td').find('#tdmpass').val();
+                tdregisterno = $(this).find('td').find('#tdregisterno').val();
+                tdnoofattempts=$(this).find('td').find('#tdnoofattempts').val();
+                //if (Part=='3') {
+                //    MainSubjectTotal = MainSubjectTotal + parseInt(tdMarksecured);
+                //}
+                No++;
+                if (No<rowCount-1) {
+                    Markjson += '{"MARK_ID":"' + MarkId + '","SUBJECT_ID":"' + SubjectId + '","PART":"' + Part + '","MAX_MARK":"' + tdMark + '","MARK":"' + tdMarksecured + '","M_PASS":"' + tdmpass + '","NO_OF_ATTEMPTS":"' + tdnoofattempts + '","REGISTER_NO":"'+tdregisterno+'"},';
+                }
+
+            });
+
+            if (No>0) {
+                Markjson = Markjson.slice(0, -1);
+            }
+            Markjson += ']}';
+            MarkjsonFot11th = '{"SAVE_ADM_SUB_STU_MARKS":[';
+            $('#MarkListFor11th tbody tr').each(function () {
+                //SubjectId = $(this).attr("cms-subjectid");
+                MarkId = $(this).attr("cms-markid");
+                Part = $(this).attr("cms-partid");
+                SubjectId = $(this).find('td').find('select option:Selected').val();
+                //MarkId = $(this).find('td').find('select option:Selected').attr("cms-markid");
+                //Part = $(this).find('td').find('select option:Selected').attr("cms-partid");
+                //MarkId=$(this).find('td').find('#tdmarkid').val();
+                tdMarksecured = $(this).find('td').find('#tdmarksecured').val();
+                tdMark = $(this).find('td').find('#tdmark').val();
+                tdmpass = $(this).find('td').find('#tdmpass').val();
+                tdregisterno = $(this).find('td').find('#tdregisterno').val();
+                tdnoofattempts = $(this).find('td').find('#tdnoofattempts').val();
+                //if (Part=='3') { tdregisterno
+                //    MainSubjectTotal = MainSubjectTotal + parseInt(tdMarksecured);
+                //}
+                No11th++;
+                if (No11th < rowCountFor11th - 1) {
+                    MarkjsonFot11th += '{"MARK_ID":"' + MarkId + '","SUBJECT_ID":"' + SubjectId + '","PART":"' + Part + '","MAX_MARK":"' + tdMark + '","MARK":"' + tdMarksecured + '","M_PASS":"' + tdmpass + '","NO_OF_ATTEMPTS":"' + tdnoofattempts + '","REGISTER_NO":"' + tdregisterno +'"},';
+                }
+
+            });
+            if (No11th > 0) {
+                MarkjsonFot11th = MarkjsonFot11th.slice(0, -1);
+            }
+            MarkjsonFot11th += ']}';
+            $.ajax({
+                url: "@Url.Action("SaveOrUpdateStudentMarks", "Admission")",
+                method: "POST",
+                datatype: "html",
+                data: { sMarkjson: Markjson, sLastStudiedClass: LastStudiedClass, sMarkjsonFot11th:MarkjsonFot11th,sEleventhPass:iseleventhpass},
+                async: false,
+                success: function (ObjJsonData) {
+                    SaveOrUpdateIssuePersonal();
+                }, error: function (error) {
+                    alert(error);
+                }
+            });
+        }
+    }
+    function encodeImagetoBase64(element,imageid,id) {
+        if (element != null && element != "") {
+            var file = element.files[0];
+            extension = String(file.value).substr(String(file.value).lastIndexOf('.') + 1);
+            var reader = new FileReader();
+            reader.onloadend = function () {
+
+                $(".link").attr("href", reader.result);
+
+                $(".link").text(reader.result);
+
+                $('#'+imageid).attr("src", reader.result);
+                //only this is required to send file in ajax
+                baseimage64 = reader.result;
+            }
+
+
+        }
+        //this is method call
+        reader.readAsDataURL(file);
+    }
+    function getBase64AndExtension() {
+        var file = String($('#inputimg').val());
+        extension = file.split('.').pop();
+        return { base64String: baseimage64, sextension: extension }
+    }
+    function RefreshFileSource(){
+        $('.img-responsive').attr("src","");
+    }
+    CloneDiv=function(){
+        var clone = $("#dvImportImage1").clone();
+        clone.attr("id", "dvImportImage1");
+        clone.find("#inputimg1").attr("id","inputimg"+count);
+        clone.find("#btnImage1").attr("id","btnImage"+count);
+        clone.find("#img1").attr("id", "img" + count);
+        clone.find("#img"+count).attr("src","");
+        clone.find('#inputimg'+count).attr("name","img"+count);
+        clone.appendTo('#dvUploadFile');
+        count++;
+        //$("#dvImportImage").clone().appendTo('#dvUploadFile').attr('id', 'id1').after("#dvImportImage");
+        //$("#dvImportImage").clone().appendTo("#dvUploadFile").attr('dvImportImage','CloneImage'+count++).insertAfter('#dvImportImage');
+    }
+    $('#btnSubmit').on('click',function(){
+        var Total;
+        var DoorNo=$('#txtCDoorNo').val();
+        //var StudentImage=$('#img').attr('src');
+        //if (StudentImage=="") {
+        //    alert('Please Upload Your Photo...!!!');
+        //    return false;
+        //}
+        if (DoorNo=="") {
+            alert('Please Enter all the values...!!!');
+            return false;
+        }
+        var LastStudiedClass=$('#txtLastStudiedClass').val();
+        if (LastStudiedClass=='') {
+            alert('Please Enter all the values...!!!');
+            return false;
+        }
+        else {
+            if ($('#chkDeclaration').is(":checked"))
+            {
+                SaveOrUpdateFiles(1);
+                window.location.reload();
+            }else {
+                alert('Please confirm your declaration ...!!!');
+            }
+        }
+    });
+
+    function Validate() {
+        var validate = false;
+        $('#UGMarkList tbody tr').each(function () {
+            if (parseFloat($(this).find('#tdmarksecured').val()) > parseFloat($(this).find('#tdmark').val())) {
+                $(this).find('#tdmarksecured').css('color', 'red');
+                validate = true;
+                alert('Mark should be less than or equal to Maximum mark...');
+            } else {
+                $(this).find('#tdmarksecured').css('color', 'black');
+            }
+        });
+
+        $('#MarkListFor11th tbody tr').each(function () {
+            if (parseFloat($(this).find('#tdmarksecured').val()) > parseFloat($(this).find('#tdmark').val())) {
+                $(this).find('#tdmarksecured').css('color', 'red');
+                validate = true;
+                alert('Mark should be less than or equal to Maximum mark...');
+            } else {
+                $(this).find('#tdmarksecured').css('color', 'black');
+            }
+        });
+
+
+        return validate;
+    }
+
+    // validate 11 th mark
+
+    //function Validate11th() {
+    //    var validate = false;
+    //    $('#MarkListFor11th tbody tr').each(function () {
+    //        if (parseFloat($(this).find('#tdmarksecured').val()) > parseFloat($(this).find('#tdmark').val())) {
+    //            $(this).find('#tdmarksecured').css('color', 'red');
+    //            validate = true;
+    //            alert('Mark should be less than or equal to Maximum mark...');
+    //        } else {
+    //            $(this).find('#tdmarksecured').css('color', 'black');
+    //        }
+    //    });
+    //    return validate;
+    //}
+
+
+    //subject validation
+    function ValidateSubject() {
+        var validate = 0;
+        var SubjectId=0;
+        $('#UGMarkList tbody tr').each(function () {
+            {
+                SubjectId = $(this).find('td').find('select option:Selected').val();
+                if(SubjectId =='53' || SubjectId=='54' || SubjectId=='57' ||SubjectId=='58'||SubjectId=='0' ){
+                    $(this).find('#cms-subjectid').css('color', 'red');
+                    validate = 1;
+                }
+                else {
+                    $(this).find('#cms-subjectid').css('color', 'black');
+                }
+
+            }
+        });
+        return validate;
+    }
+    $('#wizard ol li').on('click',function()
+    {
+        var UGApplicationTypeId=@Common.ApplicationType.UG;
+        var PGApplicationTypeId=@Common.ApplicationType.PG;
+        var MCAApplicationTypeId=@Common.ApplicationType.MPHIL;
+
+
+
+        if($(this).attr('index')=="4")
+        {
+
+            FetchFileUploads();
+            //var ID = $('#apptype').val();
+            //FetchFileUploads();
+            //if (ID == PGApplicationTypeId) {
+
+            //    $('#file-upload').removeAttr('hidden');
+            //    FetchFileUploads();
+
+            //}
+            //else {
+
+            //}
+
+        }
+
+        // for pg validation and mca
+        if($(this).attr('index')=="1")
+        {
+            var ID = $('#apptype').val();
+            if (ID== PGApplicationTypeId )
+            {
+
+                $('#dvLastStudiedSchool').addClass('hidden');
+                $('#txtLastStudiedSchool').removeAttr('required');
+
+                $('#dvumis').removeClass('hidden');
+
+                $('#dvLastStudiedCollege').removeClass('hidden');
+                $('#txtLastStudiedCollege').attr('required');
+
+                $('#dvLastStudiedCol').removeClass('hidden');
+                $('#txtLastStudiedCol').attr('required');
+
+            }
+
+            if (ID== MCAApplicationTypeId)
+            {
+                $('#dvumis').removeClass('hidden');
+                $('#dvLastStudiedSchool').addClass('hidden');
+                $('#txtLastStudiedSchool').removeAttr('required');
+
+                $('#dvLastStudiedCollege').removeClass('hidden');
+                $('#txtLastStudiedCollege').attr('required');
+
+                $('#dvLastStudiedCol').removeClass('hidden');
+                $('#txtLastStudiedCol').attr('required');
+
+            }
+        }
+
+
+
+
+        if($(this).attr('index')=="3")
+        {
+            loadMarks();
+
+            //var ID = $('#apptype').val();
+            //// loadMarks();
+            //if (ID == PGApplicationTypeId) {
+
+            //    $('#exam-mark').removeAttr('hidden');
+            //    loadMarks();
+            //}
+            //else {
+
+            //}
+        }
+    });
+
+    function loadMarks()
+    {
+        var sIsStateBoard = $('#ddlEducationboard').val();
+        var ID = $('#apptype').val();
+        ApplicationType = ID;
+        console.log(ID);
+        if (ID == "1") {
+            console.log('Fetch UG Mark');
+            $('#dvumis').addClass('hidden');
+            $('#dvLastStudiedCollege').addClass('hidden');
+            $('#txtLastStudiedCollege').removeAttr('required');
+
+            $('#fdPGMarks').addClass('hidden');
+            $('#divLastStudiedClass').addClass('hidden');
+            var GroupId = '139';
+            FetchHSSMarks(GroupId);
+        }
+        else if(ID == "2") {
+            console.log('Fetch PG Mark');
+
+            $('#dvLastStudiedSchool').addClass('hidden');
+            $('#txtLastStudiedSchool').removeAttr('required');
+            $('#fdPGMarks').addClass('hidden');
+            $('#dvddlMarks').addClass('hidden');
+            var GroupId = '136';
+            FetchUGMarks(GroupId);
+        }
+        else  {
+            console.log('Fetch M.phil Mark');
+            $('#dvForMphil').removeClass('hidden');
+            $('#dvLastStudiedSchool').addClass('hidden');
+            $('#txtLastStudiedSchool').removeAttr('required');
+            $('#fdPGMarks').addClass('hidden');
+            $('#dvddlMarks').addClass('hidden');
+            var GroupId = '142';
+            FetchUGMarks(GroupId);
+        }
+    }
+</script>
+
+<script defer>
+    function Sum() {
+        $("#UGMarkList").find('input').keyup(function () {
+            var calculated_total_sum = 0;
+            $("#UGMarkList .txtCal").each(function () {
+                var get_textbox_value = $(this).val();
+                if ($.isNumeric(get_textbox_value)) {
+                    calculated_total_sum += parseFloat(get_textbox_value);
+                }
+            });
+            $('#total_sum_value').val(calculated_total_sum);
+        });
+        $("#MarkListFor11th").find('input').keyup(function () {
+            var calculated_total_sum = 0;
+            $("#MarkListFor11th .txtCal").each(function () {
+                var get_textbox_value = $(this).val();
+                if ($.isNumeric(get_textbox_value)) {
+                    calculated_total_sum += parseFloat(get_textbox_value);
+                }
+            });
+            $('#total_sum_valueFor11th').val(calculated_total_sum);
+        });
+    }
+    function MaxSum() {
+        $("#UGMarkList").find('input').keyup(function () {
+            var calculated_total_sum = 0;
+            $("#UGMarkList .editable").each(function () {
+                var get_textbox_value = $(this).val();
+                if ($.isNumeric(get_textbox_value)) {
+                    calculated_total_sum += parseFloat(get_textbox_value);
+                }
+            });
+            $('#total_max_value').val(calculated_total_sum);
+        });
+        $("#MarkListFor11th").find('input').keyup(function () {
+            var calculated_total_sum = 0;
+            $("#MarkListFor11th .editable").each(function () {
+                var get_textbox_value = $(this).val();
+                if ($.isNumeric(get_textbox_value)) {
+                    calculated_total_sum += parseFloat(get_textbox_value);
+                }
+            });
+            $('#total_max_valueFor11th').val(calculated_total_sum);
+        });
+
+        //$("#MarkListFor11th").find('input').keyup(function () {
+        //    var calculated_total_sum = 0;
+        //    $("#MarkListFor11th .editable").each(function () {
+        //        var get_textbox_value = $(this).val();
+        //        if ($.isNumeric(get_textbox_value)) {
+        //            calculated_total_sum += parseFloat(get_textbox_value);
+        //        }
+        //    });
+        //    $('#total_max_valueFor11th').val(calculated_total_sum);
+
+        //    $('#MarkListFor11th tbody tr').each(function () {
+        //        if (parseFloat($(this).find('#tdmarksecured').val()) > parseFloat($(this).find('#tdmark').val())) {
+        //            $(this).find('#tdmarksecured').removeClass('parsley-success');
+        //            $(this).find('#tdmarksecured').addClass('parsley-error');
+        //            validate1 = 1;
+        //        } else {
+        //            $(this).find('#tdmarksecured').removeClass('parsley-error');
+        //        }
+
+        //        var PassMark = parseFloat($(this).find('#tdmark').val()) * parseFloat(0.35);
+        //        if (PassMark > $(this).find('#tdmarksecured').val()) {
+        //            //$(this).find('#tdmarksecured').addClass('parsley-error');
+        //            $(this).find('#tdmarksecured').attr('data-parsley-min', PassMark);
+        //            $(this).find('#tdmarksecured').attr('data-parsley-max', $(this).find('#tdmark').val());
+
+        //        }
+        //    });
+        //});
+    }
+
+</script>

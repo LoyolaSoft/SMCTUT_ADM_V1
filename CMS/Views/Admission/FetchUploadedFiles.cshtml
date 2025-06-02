@@ -1,0 +1,19 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+
+
+
+    @if (Model.liUploadedFile != null && Model.liUploadedFile.Count > 0)
+    {
+        foreach (var item in Model.liUploadedFile)
+        {
+            <img class="img-rounded" src="@item.FILE_PATH" height="160" width="110" id="@item.FILE_ID" onclick="GetConfirm(@item.FILE_ID)" title="click the image to delete" cms-fileid="@item.FILE_ID" cms-filepath="@item.FILE_PATH" class="col-md-3" />
+            <i class="fa-fa-close"></i>
+        }
+
+
+    }
+
+
+
+
+

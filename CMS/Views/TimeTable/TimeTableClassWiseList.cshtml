@@ -1,0 +1,292 @@
+﻿@model CMS.ViewModel.ViewModel.TimeTableViewModel
+
+@{
+    ViewBag.Title = "TimeTableClassWiseList";
+    Layout = "~/Views/Shared/_AdminLayoutPage.cshtml";
+}
+@section styles{
+    <link href="~/Content/assets/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/assets/css/style.min.css" rel="stylesheet" />
+}
+<div class="content" id="content">
+    @using (Html.BeginForm())
+    { @Html.AntiForgeryToken()
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">Home</a></li>
+
+            <li class="active">Time Table Classwise List </li>
+        </ol>
+        <h2 class="page-header"> Time Table </h2>
+        <div class="panel">
+            <div class="panel-heading bg-primary">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                </div>
+                <h4 class="panel-title">Time Table Classwise List </h4>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+
+                    <div class="col-md-12">
+
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(model => model.ClassList, htmlAttributes: new { @class = "control-label col-md-1" })
+                            <div class="col-md-7">
+                                @Html.DropDownListFor(model => model.ClassList, Model.ClassList, "-- Select --", new { @class = "drop-down form-control  input-sm" })
+                                @Html.ValidationMessageFor(model => model.ClassList, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <a class="btn btn-success pull-right form-group m-b-5" href="@Url.Action("ClassWiseTimeTableInfo", "TimeTable")"><i class="fa fa-plus" title="Add"> Add</i></a>
+
+                    </div>
+
+                    <div class="col-lg-12 m-b-5">
+                        <div id="divTimeTableInfo">
+                            <!--Need to use this fied to bind Student List-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+</div>
+@section scripts{
+    <script src="~/Content/assets/plugins/select2/dist/js/select2.min.js"></script>
+    <script>
+        $("#ClassList").select2();
+    </script>
+    <script>
+        $('#ClassList').on('change', function () {
+            loadGird();
+        });
+        function loadGird() {
+            var vClassId = $('#ClassList').val();
+            if (vClassId != 0) {
+                $.ajax({
+                    url: '@Url.Action("BindTimeTableInfo", "TimeTable")',
+                    data: { sClassId: vClassId },
+                    success: function (option) {
+                        var dvStudentPromotion = $('#divTimeTableInfo');
+                        dvStudentPromotion.empty();
+                        dvStudentPromotion.append(option);
+                    },
+                    error: function (xhr, textStatus, error) {
+                        alert(error + "\n");
+                    }
+                });
+
+            } else {
+                alert('Please Select Class...!!!');
+            }
+        }
+    </script>
+    <script>
+        var sCourseId;
+        var sStaffId;
+        $("table.table td.editable").live("click", function () {
+            var ClassId = $('#ClassList').val();
+            var HourId = $(this).attr('cms-hourid');
+            var DayId = $(this).attr('cms-dayid');
+            var HourType = $(this).attr('cms-hourtype');
+            var TimeTableId = $(this).attr('cms-timetalbeid');
+            var SemesterId = $(this).attr('cms-semesterid');
+            var CourseId = $(this).attr('cms-courseid');
+            var StaffId = $(this).attr('cms-staffid');
+            $.ajax({
+                url: '@Url.Action("EditClassWiseTimeTable", "TimeTable")',
+                data: { sClassId: ClassId, sHourId: HourId, sDayId: DayId, sHourType: HourType, sSemesterId: SemesterId, sCourseId: CourseId, sStaffId: StaffId },
+                success: function (option) {
+                    if ((option.Time_Table_Id) != null) {
+                        $('#EditModal-dialog').modal();
+                    }
+                    else {
+                        alert(option.Time_Table_Id);
+                        alert("Can not edit this hour...!!!");
+                    }
+                    sCourseId = option.Course_Id;
+                    sStaffId = option.Staff_Id;
+                    GetDropDown();
+                    $('#txtTimeTableId').val(option.Time_Table_Id);
+                    $('#txtClassId').val(option.Class_Id);
+                    $('#txtClass').val(option.CLASS_CODE);
+                    $('#txtDayOrder').val(option.Day_Order_Id);
+                    $('#txtHour').val(option.Hour_Id);
+                    $('#txtHourType').val(option.hourType);
+                    $('#txtSemesterId').val(option.Semester_Id);
+                },
+                error: function (xhr, textStatus, error) {
+                    alert(error + "\n");
+                }
+            });
+        });
+    </script>
+    <script>
+        GetDropDown = function () {
+            var ClassId = $('#ClassList').val();
+            $.ajax({
+                url: "@Url.Action("GetCourseAndStaff", "TimeTable")",
+                method: "POST",
+                data: { sClassId: ClassId },
+                datatype: "json",
+                success: function (data) {
+
+                    var ddl = JSON.parse(data);
+
+                    $('#ddlCourse').empty();
+                    $('#ddlCourse').append('<option value="0">-- select --</option>' + ddl.Course_Id);
+                    $('#ddlCourse').val(sCourseId);
+                    $('#ddlStaff').empty();
+                    $('#ddlStaff').append('<option value="0">-- select --</option>' + ddl.Staff_Id);
+                    $('#ddlStaff').val(sStaffId);
+
+                }, error: function (error) {
+                    alert('No Data Found ...!');
+                }
+            });
+        }
+    </script>
+    <script>
+        $("table.table td.alert").live("click", function () {
+            alert('Please assign course and staff for this hour...!!!');
+        });
+    </script>
+    <script>
+        $('#ddlCourse').on('change', function () {
+            var CourseId = $('#ddlCourse').val();
+            var ClassId = $('#ClassList').val();
+            alert(CourseId);
+            if (CourseId != null) {
+                $.ajax({
+                    url: '@Url.Action("GetStaffByCourseId", "TimeTable")',
+                    data: { sCourseId: CourseId, sClassId: ClassId },
+                    success: function (option) {
+                        var ddl = JSON.parse(option);
+                        $('#ddlStaff').empty();
+                        if ((option.Staff_Id)!=0) {
+                            $('#ddlStaff').append('<option value="0">-- select --</option>' + ddl.Staff_Id);
+                        }
+                        else {
+                            alert('Please assign the staff for this course in class course staff...!!!');
+                        }
+                        
+                        //$('#ddlStaff').val(sStaffId);
+                    },
+                    error: function (xhr, textStatus, error) {
+                        alert(error + "\n");
+                    }
+                });
+            }
+        });
+    </script>
+    <script>
+        $('#btnSubmit').on('click', function () {
+            var TimeTableId = $('#txtTimeTableId').val();
+            var ClassId = $('#ClassList').val();
+            var CourseId = $('#ddlCourse').val();
+            var StaffId = $('#ddlStaff').val();
+            var DayOrderId = $('#txtDayOrder').val();
+            var HourId = $('#txtHour').val();
+            var HourType = $('#txtHourType').val();
+            var SemesterId = $('#txtSemesterId').val();
+            if (CourseId != null) {
+                $.ajax({
+                    url: '@Url.Action("UpdateClassWiseTimeTable", "TimeTable")',
+                    data: { sCourseId: CourseId, sClassId: ClassId, sTimeTableId: TimeTableId, sStaffId: StaffId, sDayOrderId: DayOrderId, sHourId: HourId, sHourType: HourType, sSemesterId: SemesterId },
+                    success: function (option) {
+                        alert(option);
+                    },
+                    error: function (xhr, textStatus, error) {
+                        alert(error + "\n");
+                    }
+                });
+            }
+        });
+    </script>
+}
+<div class="modal fade" id="EditModal-dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Edit Class Wise Time Table</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="col-md-12">
+                        <div class="form-group hidden">
+                            <label class="control-label col-md-3">Time Table Id</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control input-sm" disabled id="txtTimeTableId" />
+                            </div>
+                        </div>
+                        <div class="form-group hidden">
+                            <label class="control-label col-md-3">Time Table Id</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control input-sm" disabled id="txtHourType" />
+                            </div>
+                        </div>
+                        <div class="form-group hidden">
+                            <label class="control-label col-md-3">Time Table Id</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control input-sm" disabled id="txtSemesterId" />
+                            </div>
+                        </div>
+                        <div class="form-group hidden">
+                            <label class="control-label col-md-3">Class</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control input-sm" disabled id="txtClassId" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Class</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control input-sm" disabled id="txtClass" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Course</label>
+                            <div class="col-md-9">
+                                <select id="ddlCourse" class="form-control input-sm">
+                                    <option value="0">-- select --</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Staff</label>
+                            <div class="col-md-9">
+                                <select id="ddlStaff" class="form-control input-sm">
+                                    <option value="0">-- select --</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Day Order</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control input-sm" disabled id="txtDayOrder" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Hour</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control input-sm" disabled id="txtHour" />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" id="btnSubmit" class="btn btn-default" data-dismiss="modal">Submit</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

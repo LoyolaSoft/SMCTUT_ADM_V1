@@ -1,0 +1,68 @@
+﻿@model CMS.ViewModel.ViewModel.FeeTransactionViewModel
+@{
+    Layout = null;
+}
+
+@{ int count = 0;}
+<div class="table-responsive col-md-12">
+    <table class="table table-hover" id="PaymentDetailsList">
+        <thead>
+            <tr>
+                <th>
+                    #
+                </th>
+                <th>
+                    Application No
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Programme
+                </th>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Payment Mode
+                </th>
+                <th>
+                    Amount
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.liFeeTransaction != null)
+            {
+                foreach (var item in Model.liFeeTransaction)
+                {
+                    <tr>
+                        <td>
+                            @{ count++;}
+                            @count
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.APPLICATION_NO)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FIRST_NAME)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PROGRAMME_NAME)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PAYMENT_DATE)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PAYMENT_MODE)
+                        </td>
+                        <td><i class="fa fa-inr"></i>@Html.DisplayFor(modelItem => item.COLLECTED)</td>
+                    </tr>
+                                    }
+                                }
+        </tbody>
+    </table>
+</div>
+<div class="pull-right">
+    <a class="btn btn-primary input-sm" href="#" onclick="BindFeeDetails()" title="Back">Back</a>
+</div>

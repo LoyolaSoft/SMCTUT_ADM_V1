@@ -1,0 +1,86 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{
+    ViewBag.Title = "BindStatusWiseStudent";
+    Layout = null;
+}
+
+<div class="row" style="content:attr();display:table;clear: both;padding-left:9px;padding-right:9px" id="rowid">
+        @if (Model.liIssueApplication != null && Model.liIssueApplication.Count > 0)
+        {
+            foreach (var item in Model.liIssueApplication)
+            {
+               
+          <div class="column" style="float: left;width:25%;padding: 10px;height:241px;border:1px solid">
+              
+              <table  id="studentdetails" style="font-size:11px;">
+                  <tbody>
+                      <tr>
+                          <td rowspan="3" ><img src="@item.IMAGE_PATH" alt="Student Image" style="width:50px;height:45px"></td>
+                          <td ><b>Roll No</b></td>
+                          <td>@item.ROLL_NO</td>
+                  
+                      </tr>
+                      <tr>
+                          
+                          <td ><b>DOB</b></td>
+                          <td >@item.DOB</td>
+                      </tr>
+                    
+                      
+                      <tr>
+                          <td  @*style="padding:3px"*@><b>B.Group</b></td>
+                          <td @*style="padding:3px"*@>
+                              @item.BLOOD_GROUP_NAME
+                          </td>
+                       
+                      </tr>
+                      <tr>
+                          <td style="padding:2px"><b>Name</b></td>
+                          <td colspan="2" style="padding:2px">
+                              @item.FIRST_NAME
+                          </td>
+
+                      </tr>
+                      <tr >
+                          <td style="padding:2px"><b>Programme</b></td>
+                          <td style="padding:2px" colspan="2">@item.PROGRAMME_NAME</td>
+                          
+                      </tr>
+                      <tr>
+                          <td style="padding:2px"><b>Mobile No</b></td>
+                          <td style="padding:2px" colspan="2">@item.SMS_MOBILE_NO</td>
+
+                      </tr>
+                     
+                      <tr>
+                          <td style="padding:2px"><b>Aadhar No</b></td>
+                          <td style="padding:2px" colspan="2">@item.AADHAR_NUMBER</td>
+
+                      </tr>
+                      <tr>
+                          <td style="padding:2px"><b>Address</b></td>
+                          <td style="padding:1px" colspan="2">@item.CDOORDETAIL.ToUpper(),@item.CSTREET.ToUpper(),</td>
+
+                      </tr>
+                      <tr>
+                          <td style="padding:2px"></td>
+                          <td style="padding:1px" colspan="2">@item.CVILLAGE_AREA.ToUpper(), @item.CTALUK_CITY.ToUpper(),</td>
+
+                      </tr>
+                      <tr>
+                          <td style="padding:2px" ></td>
+                          <td style="padding:1px" colspan="2">@item.CDISTRICT.ToUpper(),@item.CPINCODE.ToUpper().</td>
+
+                      </tr>
+
+                  </tbody>
+              </table>
+            </div>
+                         
+            }
+        }
+</div>
+
+
+
+

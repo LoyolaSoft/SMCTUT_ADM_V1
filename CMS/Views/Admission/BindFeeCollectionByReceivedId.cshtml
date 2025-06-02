@@ -1,0 +1,51 @@
+﻿@model List<CMS.ViewModel.Model.FEE_STUDENT_ACCOUNT>
+
+<div class="form-horizontal ">
+    <h4 class="lead"><img src="~/Content/assets/img/hcc-img/hcclogo.jpg" width="70px" style="box-shadow:1px 1px #eee;" class="img-circle img" alt="HCC Logo" /> St. Mary's College,Thoothukudi-620002</h4>
+
+    <hr />
+
+    <table class="table table-bordered table-hover" width="100%">
+        @if (Model != null && Model.Count > 0)
+        {
+            <tr>
+                <td>Name</td>
+                <td>@Model.FirstOrDefault().FIRST_NAME.ToUpper()</td>
+            </tr>
+            <tr><td>Application No </td><td>@Model.FirstOrDefault().APPLICATION_NO</td></tr>
+            <tr><td>Programme</td><td>@Model.FirstOrDefault().PROGRAMME_NAME</td></tr>
+
+            foreach (var item in Model)
+            {
+                <tr><td>@item.MAIN_HEAD </td><td><i class="fa fa-rupee"></i> @item.BALANCE</td></tr>
+
+            }
+            <tr><td>Total </td><td><b><i class="fa fa-rupee"></i> @Model.Sum(o => Convert.ToDouble(o.BALANCE))</b></td></tr>
+        }
+        else
+        {
+            <tr><td>Erorr Message</td><td>Your Account is not available,Please meet software admin. </td></tr>
+        }
+
+
+
+    </table>
+    <div class="form-group">
+        <div class="col-md-10">
+
+            @if (Model != null && Model.Count > 0)
+            {
+                if (Model.Sum(o => Convert.ToDouble(o.BALANCE)) > 0)
+                {
+                    <a href="#" onclick="PayInOffline()" class="btn btn-success ">Pay Now</a>
+                }
+
+
+            }
+            else
+            {
+                <a href="#" class="btn btn-success disabled">Pay Now</a>
+            }
+        </div>
+    </div>
+</div>

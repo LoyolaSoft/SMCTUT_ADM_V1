@@ -1,0 +1,72 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{int count = 0; Layout = null;}
+<table class="table table-hover table-bordered" id="SelectionProcessList">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Application No</th>
+            <th>Name</th>
+            <th>Mobile No</th>
+            <th>Subject Mark</th>
+            <th>Cut off</th>
+            <th>Status</th>
+            <th>Action</th>
+            <th>App.Status</th>
+            <th>Cancel</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.liSelectionProcess != null)
+        {
+
+            foreach (var item in Model.liSelectionProcess)
+            {
+
+                <tr>
+                    <td>
+                        @{ count++;}@count
+                    </td>
+                    <td>@item.APPLICATION_NO</td>
+                    <td>@item.FIRST_NAME</td>
+                    <td>@item.SMS_MOBILE_NO</td>
+                    <td>@item.TOTAL_SECURED / @item.MAX_TOTAL</td>
+                    <td>@item.TOTAL_CUT_OFF_MARK</td>
+                    @if (item.IS_VERIFIED == "1")
+                    {
+                        <td>Verified</td>
+                        <td>
+                            <a class="btn btn-primary viewbtn" href="#" onclick="loadContent('/Admission/ViewApplicantDetails?id=@item.RECEIVE_ID&sProgrammeId=@item.PROGRAMME_ID&sVerified=@item.IS_VERIFIED')" title="Click to view the Applicant Details">View</a>
+                        </td>
+
+                    }
+                    else
+                    {
+                        <td>Not Yet Verified</td>
+                        <td>
+                            <a class="btn btn-primary viewbtn" href="#" onclick="loadContent('/Admission/ViewApplicantDetails?id=@item.RECEIVE_ID&sProgrammeId=@item.PROGRAMME_ID&sVerified=@item.IS_VERIFIED')" title="Click to view the Applicant Details">Verify</a>
+                        </td>
+
+                    }
+                    <td>@item.STATUS_NAME</td>
+                    @if (item.STATUS == "5")
+                    {
+                        <td>
+                            <a class="btn btn-danger disabled" href="#" title="Click to Cancel Application">Cancel</a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <a class="btn btn-danger" href="#" onclick="SelectionCancel(@item.RECEIVE_ID,@item.PROGRAMME_ID,@item.IS_VERIFIED)" title="Click to Cancel Application">Cancel</a>
+                        </td>
+                    }
+
+
+
+                </tr>
+                                }
+                            }
+
+
+    </tbody>
+</table>

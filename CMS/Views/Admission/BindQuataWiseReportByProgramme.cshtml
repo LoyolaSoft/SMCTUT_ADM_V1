@@ -1,0 +1,68 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{
+    Layout = null;
+}
+<style type="text/css" media="print">
+    @@page {
+        size: landscape;
+    }
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+</style>
+<div class="form-group">
+    <table align="left" style="width:100%; border:1px solid; table-layout:fixed;">
+        <thead>
+            <tr>
+                <th width="25% !important" rowspan="2" style="border:1px solid; padding:8px;" align="left">Programme (Selected|Verified|Admitted-Alloted)</th>
+                <th rowspan="2" style="border:1px solid; padding:8px;" align="left">Total</th>
+                <th rowspan="2" style="border:1px solid; padding:8px;" align="left">Minority</th>
+                <th colspan="4" style="border:1px solid; padding:8px;" align="left">Others</th>
+                <th rowspan="2" style="border:1px solid; padding:8px;" align="left">Op.Category</th>
+            </tr>
+            <tr>
+                <th width="25% !important"  style="border:1px solid; padding:8px;" align="left">BC</th>
+                <th  style="border:1px solid; padding:8px;" align="left">SC/ST</th>
+                <th  style="border:1px solid; padding:8px;" align="left">MBC/DNC</th>
+                <th style="border:1px solid; padding:8px;" align="left">OC</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.liCourses != null && Model.liCourses.Count > 0)
+            {
+                var Programme = Model.liCourses.GroupBy(s => s.PROGRAMME_GROUP_ID).ToList();
+                if (Programme != null && Programme.Count > 0)
+                {
+                    foreach (var items in Programme)
+                    {
+                        <tr>
+                            @{
+                                var procaste = Model.liCasteWise_Quata.Where(s => s.PROGRAMME_ID == items.FirstOrDefault().PROGRAMME_GROUP_ID).ToList();
+                                if (procaste != null && procaste.Count > 0)
+                                {
+                                    <td width="25% !important" style="border:1px solid; padding:8px;" align="left">@items.FirstOrDefault().PROGRAMME_NAME</td>
+                                    <td  style="border:1px solid; padding:8px;" align="left">@procaste.FirstOrDefault().TOTAL_SELECTED | @procaste.FirstOrDefault().TOTAL_VERIFIED | @procaste.FirstOrDefault().TOTAL_ADMITTED - @procaste.FirstOrDefault().NO_OF_SEATS</td>
+                                    <td  style="border:1px solid; padding:8px;" align="left">@procaste.FirstOrDefault().MINORITY_SELECTED | @procaste.FirstOrDefault().MINORITY_VERIFIED | @procaste.FirstOrDefault().MINORITY_ADMITTED - @procaste.FirstOrDefault().MINORITY_ALLOATED</td>
+                                    <td  style="border:1px solid; padding:8px;" align="left">@procaste.FirstOrDefault().BC_SELECTED | @procaste.FirstOrDefault().BC_VERIFIED | @procaste.FirstOrDefault().BC_ADMITTED - @procaste.FirstOrDefault().BC_ALLOATED</td>
+                                    <td  style="border:1px solid; padding:8px;" align="left">@procaste.FirstOrDefault().SC_ST_SELECTED | @procaste.FirstOrDefault().SC_ST_VERIFIED | @procaste.FirstOrDefault().SC_ST_ADMITTED - @procaste.FirstOrDefault().SC_ST_ADMITTED</td>
+                                    <td  style="border:1px solid; padding:8px;" align="left">@procaste.FirstOrDefault().MBC_DNC_SELECTED | @procaste.FirstOrDefault().MBC_DNC_VERIFIED | @procaste.FirstOrDefault().MBC_DNC_ADMITTED - @procaste.FirstOrDefault().MBC_DNC_ALLOATED</td>                                    
+                                    <td  style="border:1px solid; padding:8px;" align="left">@procaste.FirstOrDefault().OTHER_SELECTED | @procaste.FirstOrDefault().OTHER_VERIFIED | @procaste.FirstOrDefault().OTHER_ADMITTED</td>
+                                    <td  style="border:1px solid; padding:8px;" align="left">@procaste.FirstOrDefault().OC_SELECTED | @procaste.FirstOrDefault().OC_VERIFIED | @procaste.FirstOrDefault().OC_ADMITTED - @procaste.FirstOrDefault().OC_ALLOATED</td>
+                                }
+                            }
+                        </tr>
+
+                                        }
+                                    }
+                                }
+        </tbody>
+    </table>
+</div>

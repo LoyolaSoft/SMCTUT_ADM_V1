@@ -1,0 +1,111 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+
+@if (Model.liADMStudentMarks != null && Model.liADMStudentMarks.Count > 0)
+{
+    <table class="table table-bordered table-responsive" id="MarkList">
+        <thead>
+            <tr>
+                <th>
+                    Subject
+                </th>
+                <th>
+                    Marks Secured
+                </th>
+                <th>
+                    Maximum Marks
+                </th>
+                <th>
+                    Month & Year of Passing
+                </th>
+                <th>
+                    No.of.Attempts
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.liADMStudentMarks)
+            {
+                <tr cms-subjectid="@item.SUBJECT_ID" cms-markid="@item.MARK_ID" cms-partid="@item.PART">
+                    <td id="tdmarkid">
+                        @item.HSS_SUBJECT
+                    </td>
+                    <td cms-mark="@item.MARK">
+                        @item.MARK
+                    </td>
+                    <td cms-mas-mark="@item.MAX_MARK">
+                        @item.MAX_MARK
+                    </td>
+                    <td cms-year="@item.M_PASS">
+                        @item.M_PASS
+                    </td>
+                    <td cms-attempts="@item.NO_OF_ATTEMPTS">
+                        @item.NO_OF_ATTEMPTS
+                    </td>
+                </tr>
+            }
+
+            <tr>
+                <td>Total</td>
+                <td>@Model.liADMStudentMarks.Sum(x => Convert.ToDecimal(x.MARK))</td>
+                <td>@Model.liADMStudentMarks.Sum(x => Convert.ToDecimal(x.MAX_MARK))</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+ }
+
+@if (Model.liEleventhMarks != null && Model.liEleventhMarks.Count > 0)
+{
+    <center><h4>11th Marks</h4></center>
+    <table class="table table-bordered table-responsive" id="MarkList11th">
+        <thead>
+            <tr>
+                <th>
+                    Subject
+                </th>
+                <th>
+                    Marks Secured
+                </th>
+                <th>
+                    Maximum Marks
+                </th>
+                <th>
+                    Month & Year of Passing
+                </th>
+                <th>
+                    No.of.Attempts
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.liEleventhMarks)
+            {
+                <tr cms-subjectid="@item.SUBJECT_ID" cms-markid="@item.MARK_ID" cms-partid="@item.PART">
+                    <td id="tdmarkid">
+                        @item.HSS_SUBJECT
+                    </td>
+                    <td cms-mark="@item.MARK">
+                        @item.MARK
+                    </td>
+                    <td cms-mas-mark="@item.MAX_MARK">
+                        @item.MAX_MARK
+                    </td>
+                    <td cms-year="@item.M_PASS">
+                        @item.M_PASS
+                    </td>
+                    <td cms-attempts="@item.NO_OF_ATTEMPTS">
+                        @item.NO_OF_ATTEMPTS
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td>Total</td>
+                <td>@Model.liEleventhMarks.Sum(x=>Convert.ToDecimal(x.MARK))</td>
+                <td>@Model.liEleventhMarks.Sum(x=>Convert.ToDecimal(!string.IsNullOrEmpty(x.MAX_MARK)?x.MAX_MARK.ToString():"0"))</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+}

@@ -1,0 +1,309 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@using CMS.Utility
+@{
+    ViewBag.Title = "APPLICANT";
+    //Layout = "~/Views/Shared/_AdminLayoutPage.cshtml";
+    Layout = null;
+    //string sCourseType = string.Empty;
+}
+<div id="content" class="content">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb pull-right">
+        <li><a href="javascript:;">Home</a></li>
+        <li class="active">Applicant Dashboard</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">Applicant Dashboard</h1>
+    @{ int Count = 0;}
+    <!-- begin row -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="panel-heading-btn">
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                            </div>
+                            <h3 class="panel-title"><i class="fa fa-inbox"></i>Application Status</h3>
+                        </div>
+                        <div class="panel-body noPadding">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-bordered" border="1">
+                                    <thead>
+                                        <tr style="text-align:center;">
+                                            <th><center>S.No.</center></th>
+                                            <th><center>Application No.</center></th>
+                                            <th><center>Programme Name</center></th>
+                                            <th><center>Status</center></th>
+                                            <th><center>Payment Mode</center></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model.liIssuedApplictionsInfo != null)
+                                        {
+                                            Count = 0;
+                                            foreach (var o in Model.liIssuedApplictionsInfo)
+                                            {
+                                                Count++;
+                                                <tr>
+                                                    <td><center>@Count</center></td>
+                                                    <td>@o.APPLICATION_NO</td>
+                                                    <td>@o.PROGRAMME_NAME</td>
+                                                    <td><center><label class="label label-primary">@o.STATUS</label> </center></td>
+                                                    <td><center><label class="label label-success">@o.PAYMENT_MODE</label> </center></td>
+                                                </tr>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <div class="alert alert-danger">Please Register Application !</div>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="alert alert-info">
+                                Application form will be opened after the payment. If you paid already <a onclick="loadContent('/Admission/index')">click here<img src="/Content/hcc_img/new_icon.gif"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (Model.liHostel != null)
+        {
+            if (Model.liHostel.FirstOrDefault().HOSTEL_FACILITY == "1" || Model.liHostel.FirstOrDefault().HOSTEL_FACILITY=="2")
+            {
+
+            }
+            else
+            {
+                Html.RenderPartial("AppDownloaded");
+            }
+        }
+        @if (Model.liApplicant != null && Model.liApplicant.Count > 0)
+        {
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <div class="panel-heading-btn">
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                                </div>
+                                <h3 class="panel-title"><i class="fa fa-inbox"></i>Hostel Status</h3>
+                            </div>
+                            <div class="panel-body noPadding">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-bordered">
+                                        <thead>
+                                            <tr style="text-align:center;">
+                                                <th>S.No.</th>
+                                                <th>Appication</th>
+                                                <th>Programme Name</th>
+                                                <th>Hostel</th>
+                                                <th>Status</th>
+                                                <th>Payment Mode</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var o in Model.liApplicant)
+                                            {
+                                                <tr>
+                                                    <td>@Count</td>
+                                                    <td>@o.APPLICATION_NO</td>
+                                                    <td>@o.PROGRAMME_NAME</td>
+                                                    <td>@o.HOSTEL_NAME</td>
+                                                    @if (string.IsNullOrEmpty(o.STATUS))
+                                                    {
+                                                        <td><label class="label label-primary">Applied</label> </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td><label class="label label-primary">@o.STATUS</label> </td>
+                                                    }
+                                                    <td><label class="label label-success">@o.PAYMENT_MODE</label> </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <!-- begin col-4 -->
+        <div class="col-md-12">
+            <div class="panel">
+                <div class="panel-heading bg-purple">
+                    <div class="panel-heading-btn">
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                    </div>
+                    <h3 class="panel-title"><i class="fa fa-calendar-o"></i> Applications </h3>
+                </div>
+                <div class="panel-body noPadding">
+                    <div class="row myMargin" id="Holidays">
+                        @if (Model.liCourses == null)
+                        {
+                            <div class="alert bg-warning alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                No Data Found.
+                            </div>}
+                        else
+                        {
+                            <div class="col-md-12">
+                                <div class="panel-group" id="accordion">
+                                    @{
+                                        Count = 0;
+                                        var applicationTypes = Model.liCourses.GroupBy(o => o.APPLICATION_TYPE);
+                                        foreach (var item in applicationTypes)
+                                        {
+
+                                            <div class="panel panel-primary overflow-hidden">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title">
+                                                        <a class="accordion-toggle accordion-toggle-styled " data-toggle="collapse" data-parent="#accordion" href="#@item.FirstOrDefault().APPLICATION_TYPE.Replace(".","")" aria-expanded="true">
+                                                            <i class="fa fa-plus-circle pull-right"></i>
+                                                            <center>
+                                                                <h4 class="text-white">
+                                                                    <img src="~/Content/hcc_img/new_icon.gif" />  APPLY @item.FirstOrDefault().APPLICATION_TYPE - COURSES
+                                                                </h4>
+                                                            </center>
+                                                        </a>
+                                                    </h3>
+                                                </div>
+                                                <div id="@item.FirstOrDefault().APPLICATION_TYPE.Replace(".","")" class="panel-collapse collapse in" aria-expanded="true" style="">
+                                                    <div class="panel-body">
+                                                        @{var shift = Model.liCourses.Where(x => x.APPLICATION_TYPE == item.FirstOrDefault().APPLICATION_TYPE).GroupBy(o => o.SHIFT_NAME);
+                                                            foreach (var itemShift in shift)
+                                                            {
+                                                                Count = 0;
+                                                                var courses = Model.liCourses.Where(x => x.APPLICATION_TYPE == item.FirstOrDefault().APPLICATION_TYPE && x.SHIFT_NAME == itemShift.FirstOrDefault().SHIFT_NAME);
+                                                                <div class="table-responsive">
+                                                                    <p><center>Aided - <b>Regular</b> , Self Supporting Courses - <b>SSC</b> </center></p>
+                                                                    <table class="table table-hover table-bordered">
+                                                                        <thead>
+                                                                            <tr style="text-align:center;">
+                                                                                <th><center>S.No.</center></th>
+                                                                                <th><center>Programme Name</center></th>
+                                                                                @*<th>SHIFT</th>
+                                                                                    <th>TIME</th>*@
+                                                                                <th><center>Action</center></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            @foreach (var course in courses)
+                                                                            {
+                                                                                Count++;
+                                                                                <tr>
+                                                                                    <td><center>@Count</center></td>
+                                                                                    <td>@course.PROGRAMME_NAME</td>
+                                                                                    @*<td>@course.SHIFT_NAME</td>
+                                                                                        <td>@course.TIME</td>*@
+                                                                                    <td><center><a href="@Url.Action("ApplicationFeePayment","fee",new {@sFrequencyTypeId=Common.FrequencyType.AdmissionApplicationFee,@sFeeRootId=Common.FeeRoot.CollegeFee,@sProgrammeGroupId=course.PROGRAMME_GROUP_ID,@sUserId=Session[Common.SESSION_VARIABLES.RECEIVE_ID].ToString() })" class="btn btn-success btn-sm">Apply here</a> </center></td>
+                                                                                @*<td><center><button class="btn btn-primary btn-sm disabled"> Coming Soon ...</button></center></td>*@
+                                                                                </tr>
+                                                                            }
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            }
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end col-4 -->
+    </div>
+    <!-- Begin Event -->
+</div>
+
+<div class="modal fade shadow-lg p-3 mb-5 rounded" id="Admissioninfo">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title"><b class="text-primary">Information for Applicant</b> </h4>
+            </div>
+            <div class="modal-body ">
+
+                <div class="col-md-12">
+
+                    <h4>1. See below picture for applying the course</h4>
+                    <div>
+                        <img src="~/Content/assets/applicant_dashboard/h1.PNG" width='100%' height='100%' />
+                    </div>
+
+                    <h4>2.	See below picture for application fee payment </h4>
+                    <div>
+                        @*<img src="~/Content/assets/applicant_dashboard/h2.PNG" width='100%' height='100%'/>*@
+                    </div>
+
+                    <h4>3. See below picture for your application status </h4>
+                    <div>
+                        <img src="~/Content/assets/applicant_dashboard/h3.PNG" width='100%' height='100%' />
+                    </div>
+
+
+                    <h4>4. See below picture for filling your application form to submit.</h4>
+                    <div>
+                        <img src="~/Content/assets/applicant_dashboard/h4.PNG" width='100%' height='100%' />
+                    </div>
+
+                    <h4>5. See below picture for your status as submitted</h4>
+                    <div>
+                        <img src="~/Content/assets/applicant_dashboard/h5.PNG" width='100%' height='100%' />
+                    </div>
+
+
+                    <h4>6.See below picture for admission fee payment.(Once you selected and verified will get a message for paying admission fee)</h4>
+                    <div>
+                        <img src="~/Content/assets/applicant_dashboard/h6.PNG" width='100%' height='100%' />
+                    </div>
+
+
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+
+    //$(document).ready(function () {
+    //  $('#Admissioninfo').modal('show');
+
+    //    $('#startModal').trigger("click");
+    //});
+</script>
+
+

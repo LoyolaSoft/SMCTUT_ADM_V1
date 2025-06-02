@@ -1,0 +1,342 @@
+﻿@model IEnumerable<CMS.ViewModel.Model.StudentCertificate>
+
+<div id="dvCertificate">
+    <div class="row">
+        <div class="form-group pull-right">
+            <a href="#Certificate-dialog" class="btn btn-sm btn-success pull-right" data-toggle="modal"><i class="fa fa-plus"></i></a>
+        </div>
+    </div>
+    <div class="form-horizontal row">
+        @{int count = 0; }
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <tr>
+                    <th>S.No</th>
+                    <th>Certificate No</th>
+                    <th>Recieve Date</th>
+                    <th>Given Date</th>
+                    <th>Archive</th>
+                    <th class="col-md-2">Purpose</th>
+                    <th>Register No</th>
+                    <th>Certificate Name</th>
+                    <th>Action</th>
+                </tr>
+                @if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@{count++;} @count</td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CertificateNo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RecieveDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.GivenDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Archive)
+                            </td>
+                            <td class="col-md-2">
+                                @Html.DisplayFor(modelItem => item.Purpose)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RegisterNo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CertificateName)
+                            </td>
+                            <td>
+                                <a href="#Certificate-dialog" onclick="BindCertificate(@item.CeretificateID)" data-toggle="modal" class="fa fa-edit text-primary"></a>
+                                <a href="javascript:;" onclick="GetConfirm(@item.CeretificateID)" class="fa fa-trash text-danger"></a>
+                                <a></a>
+                            </td>
+                        </tr>
+                     }
+                 }
+                 else
+                 {
+                     <tr>
+                         <td>No Data Found ...!</td>
+                     </tr>
+                 }
+            </table>
+        </div>
+
+        <script>
+
+            $(document).ready(function ()
+            {
+                $("#btnEditCertificate").hide();
+                ////FormMultipleUpload.init();
+                handleDatePicker = function ()
+                {
+                    "use strict";
+                    $("#ReceiveDate,#GivenDate").datepicker({
+                        todayHighlight: true,
+                        autoclose: true,
+                        endDate: new Date(),
+                        format: "dd/mm/yyyy",
+                        orientation: "right bottom"
+                        // 'top': top,
+                        // 'left': left
+                    });
+                }
+                handleDatePicker();
+
+                BindDDLAchivement = function ()
+                {
+                    $.ajax({
+                        url: "@Url.Action("BindDDLAchivement", "Student")",
+                        method: "POST",
+                        datatype: "json",
+                        success: function (option)
+                        {
+                            $("#ddlArchive").empty();
+                            $("#ddlArchive").append('<option value="">-- select --</option>' + option);
+
+                        }, error: function (error)
+                        {
+                            alert(error);
+                        }
+                    });
+               }
+                BindDDLAchivement();
+            });
+
+            // Delete Certificate ...
+            function GetConfirm(ID)
+            {
+                if (!confirm('Are you sure to delete ?'))
+                {
+                    return false;
+                } else
+                {
+                    $.ajax({
+                        url:"@Url.Action("DeleteCertificate", "Student")",
+                        method: "POST",
+                        datatype:"json",
+                        data: { sCertificateId: ID },
+                        success:function(data)
+                        {
+                            alert(data);
+                            GetCertificateInfo();
+                        },error:function(error)
+                        {
+                            alert(error);
+                        }
+                    });
+                }
+            }
+            // Bind Certificate Details ...
+            GetCertificateInfo = function ()
+            {
+                $.ajax({
+                    url: "@Url.Action("EditStuCertificateInfo", "Student")",
+                    method: "POST",
+                    datatype: "json",
+                    success: function (data)
+                    {
+                        $('#dvCertificate').empty();
+                        $('#dvCertificate').append(data);
+                    }, error: function (error)
+                    {
+                        alert('No data Found ...!');
+                    }
+                });
+            }
+            // Bind values To the Controles ...
+            BindCertificate=function(ID)
+            {
+                $.ajax({
+                    url:"@Url.Action("BindCertificate", "Student")",
+                    method:"POST",
+                    datatype:"json",
+                    data: { sCertificateId : ID},
+                    success:function(data)
+                    {
+                        $("#txtCertificateNo").val(data.CertificateNo);
+                        $("#ReceiveDate").val(data.RecieveDate);
+                        $("#GivenDate").val(data.GivenDate);
+                        $("#ddlArchive").val(data.Archive);
+                        $("#purpose").val(data.Purpose);
+                        $("#RegisterNo").val(data.RegisterNo);
+                        $("#CertificateName").val(data.CertificateName);
+                        $("#btnCertificate").hide();
+                        $("#btnEditCertificate").show();
+                    },error:function(error)
+                    {
+                        alert(error);
+                    }
+                });
+            }
+
+            // Add Student Certificate ..
+            $("#btnCertificate").on("click", function ()
+            {
+                var isValid = true;
+                if ($('#nav-tab2-6').parsley().validate() !== true) isValid = false;
+                if (!isValid) {
+                    //gritter-info,danger,success,warning,default
+                    myAlert('Something went wrong ! Please check your inputs !', 'gritter-warning', '');
+                    return false;
+                }
+                var CERTIFICATENO = $("#txtCertificateNo").val();
+                var RECEIVEDDATE = $("#ReceiveDate").val();
+                var GIVENDATE = $("#GivenDate").val();
+                var ARCHIVE = $("#ddlArchive").val();
+                var PURPOSE = $("#purpose").val();
+                var REGISTERNUMBER = $("#RegisterNo").val();
+                var CERTIFICATENAME = $("#CertificateName").val();
+                var JsonData;
+                if (JsonData == null)
+                {
+                    JsonData = '{"CertificateNo":"' + CERTIFICATENO + '","RecieveDate":"' + RECEIVEDDATE + '","GivenDate":"' + GIVENDATE + '","Archive":"' + ARCHIVE + '","Purpose":"' + PURPOSE + '","RegisterNo":"' + REGISTERNUMBER + '","CertificateName":"' + CERTIFICATENAME + '"}';
+                }
+
+                $.ajax({
+                    url:"@Url.Action("InsertStudentCertificate", "Student")",
+                    method: "POST",
+                    datatype: "html",
+                    data: { str: JsonData },
+                    success:function(data)
+                    {
+                        alert(data);
+                        GetCertificateInfo();
+                    },error:function(error)
+                    {
+                        alert('Your record not saved try again ...!');
+                    }
+                });
+            });
+
+            // Edit Student Certificate ..
+            $("#btnEditCertificate").on("click", function ()
+            {
+                var isValid = true;
+                if ($('#nav-tab2-6').parsley().validate() !== true) isValid = false;
+                if (!isValid) {
+                    //gritter-info,danger,success,warning,default
+                    myAlert('Something went wrong ! Please check your inputs !', 'gritter-warning', '');
+                    return false;
+                }
+                var CERTIFICATENO = $("#txtCertificateNo").val();
+                var RECEIVEDDATE = $("#ReceiveDate").val();
+                var GIVENDATE = $("#GivenDate").val();
+                var ARCHIVE = $("#ddlArchive").val();
+                var PURPOSE = $("#purpose").val();
+                var REGISTERNUMBER = $("#RegisterNo").val();
+                var CERTIFICATENAME = $("#CertificateName").val();
+                var JsonData;
+                if (JsonData == null)
+                {
+                    JsonData = '{"CertificateNo":"' + CERTIFICATENO + '","RecieveDate":"' + RECEIVEDDATE + '","GivenDate":"' + GIVENDATE + '","Archive":"' + ARCHIVE + '","Purpose":"' + PURPOSE + '","RegisterNo":"' + REGISTERNUMBER + '","CertificateName":"' + CERTIFICATENAME + '"}';
+                }
+
+                $.ajax({
+                    url:"@Url.Action("UpdateCertificate", "Student")",
+                    method: "POST",
+                    datatype: "html",
+                    data: { str: JsonData },
+                    success:function(data)
+                    {
+                        alert(data);
+                        GetCertificateInfo();
+                    },error:function(error)
+                    {
+                        alert('Your record not saved try again ...!');
+                    }
+                });
+            });
+        </script>
+    </div>
+</div>
+
+
+<div class="modal fade" id="Certificate-dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Student Certificate</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="form-horizontal">
+                            <div class="col-md-12">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">Certificate No</label>
+                                    <div class="col-md-9">
+                                        <input type="text" id="txtCertificateNo" class="form-control input-sm" placeholder="Enter Certificate Number" data-parsley-required="true" data-parsley-length="[3,20]" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">Receive Date</label>
+                                    <div class="col-md-9">
+                                        <div class="input-group date" id="datetimepicker1">
+                                            <input type="text" id="ReceiveDate" class="form-control input-sm" placeholder="Select Date" />
+                                            <span class="input-group-addon bg-purple"><i class="fa fa-calendar"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">Given Date</label>
+                                    <div class="col-md-9">
+                                        <div class="input-group date" id="datetimepicker1">
+                                            <input type="text" id="GivenDate" class="form-control input-sm" placeholder="Select Date" data-parsley-required="true" />
+                                            <span class="input-group-addon bg-purple"><i class="fa fa-calendar"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">Archive</label>
+                                    <div class="col-md-9">
+                                        <select class="form-control input-sm" id="ddlArchive">
+                                            <option value=""> -- select --</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">Purpose</label>
+                                    <div class="col-md-9">
+                                        <textarea id="purpose" rows="3" class="form-control" placeholder="Purpose" data-parsley-required="true" data-parsley-length="[3,250]"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">Register Number</label>
+                                    <div class="col-md-9">
+                                        <input type="text" id="RegisterNo" class="form-control input-sm" placeholder="Enter Register Number" data-parsley-required="true" data-parsley-length="[3,20]" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3">Certificate Name</label>
+                                    <div class="col-md-9">
+                                        <input type="text" id="CertificateName" class="form-control input-sm" placeholder="Enter Certificate Name" data-parsley-required="true" data-parsley-length="[3,30]" />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:;" id="btnCertificate" class="btn btn-sm btn-primary" data-dismiss="modal">Submit</a>
+                <a href="javascript:;" id="btnEditCertificate" class="btn btn-sm btn-primary" data-dismiss="modal">Update</a>
+                <a href="javascript:;" class="btn btn-sm btn-danger" data-dismiss="modal">Cancel</a>
+
+            </div>
+        </div>
+    </div>
+</div>

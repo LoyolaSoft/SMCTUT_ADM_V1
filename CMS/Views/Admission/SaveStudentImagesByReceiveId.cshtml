@@ -1,0 +1,39 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{
+    ViewBag.Title = "SaveStudentImagesByReceiveId";
+    Layout =null;
+    int count = 0;
+}
+
+<div class="col-md-12">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Roll No</th>
+                <th>Download</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.liApplicant != null && Model.liApplicant.Count > 0)
+            {
+                    foreach (var item in Model.liApplicant)
+                    {
+                        <tr>
+                        <td>@count++</td>
+                         <td>@item.ROLL_NO</td>
+                         <td><a href="@item.PHOTO_PATH" download><i class="glyphicon glyphicon-download"></i></a></td>
+                        </tr>
+                    }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="3">NO Data Found...!!</td>
+                 
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

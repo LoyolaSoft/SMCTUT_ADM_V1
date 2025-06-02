@@ -1,0 +1,169 @@
+﻿@model CMS.ViewModel.ViewModel.OfflineCollectionViewModel
+@{
+    ViewBag.Title = "OfflineCollectionForAdmission";
+   // Layout = "~/Views/Shared/_AdminLayoutPage.cshtml";
+    Layout = null;
+}
+
+    <link href="~/Content/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="content" id="content">
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">Home</a></li>
+            <li class="active"> offline Fee Collection</li>
+        </ol>
+        <h2 class="page-header"> offline Fee Collection</h2>
+        <div class="panel">
+            <div class="panel-heading bg-primary">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                </div>
+                <h4 class="panel-title">offline Fee Collection</h4>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+
+                    <div class="col-lg-12"><div class="alert-info alert "> Please wait for moment after requesting for Payment.</div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                @Html.Label("Fee Type", htmlAttributes: new { @class = "control-label col-md-3 input-sm" })
+                                <div class="col-md-7">
+                                    @if (Model.FeeTypeList != null && Model.FeeTypeList.Count > 0)
+                                    {
+                                        <select class="selectpicker form-control  input-sm  show-menu-arrow show-tick drop-down" id="feeTypeList" data-live-search="true">
+                                            <option value="0">--Select--</option>
+                                            @foreach (var item in Model.FeeTypeList)
+                                            {
+                                                <option value="@item.FREQUENCY_ID">@item.FEE_NAME</option>
+                                            }
+                                        </select>
+                                    }
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="col-lg-6">
+
+                            <div class="form-group">
+                                @Html.Label("Student List", htmlAttributes: new { @class = "control-label col-md-3 input-sm" })
+                                <div class="col-md-7">
+                                    @if (Model.VerifiedList != null && Model.VerifiedList.Count > 0)
+                                    {
+                                        <select class="selectpicker form-control  input-sm  show-menu-arrow show-tick drop-down" id="studentList" data-live-search="true">
+                                            <option value="0">--Select--</option>
+                                            @foreach (var item in Model.VerifiedList)
+                                            {
+                                                <option value="@item.RECEIVE_ID">@string.Concat(item.FIRST_NAME)</option>
+                                            }
+                                        </select>
+                                    }
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class=" col-lg-12">
+                        <div class="col-lg-6">
+                            
+                        </div>
+                        <div class="col-lg-6">
+                            <a href="#" onclick="printDiv('bindDiv')" class=" pull-right btn btn-success">Print</a>
+                        </div>
+                        <div id="bindDiv" class="col-lg-12">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+}
+
+    <script src="~/Content/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script>
+        $('.selectpicker').selectpicker({
+            size: 4
+        });
+
+        $('#studentList').on('change', function () {
+            BindFeeCollectionByReceiveId();
+        });
+        $('#feeTypeList').on('change', function () {
+            if ($('#studentList').val() != '0') {
+                $('#studentList').selectpicker('val', '0');
+            }
+        });
+
+
+        BindFeeCollectionByReceiveId = function () {
+
+            if ($('#studentList').val() != "0" && $('#feeTypeList').val() != "0" )
+            {
+                $.ajax({
+                    url: "@Url.Action("BindFeeCollectionByReceivedId", "Admission")",
+                    method: "POST",
+                    data: { sReceiveId: $('#studentList').val(), sFrequencyId: $('#feeTypeList').val() },
+                    async: false,
+                    success: function (data) {
+                        var dvReceivedApplication = $('#bindDiv');
+                        dvReceivedApplication.empty();
+                        dvReceivedApplication.append(data);
+                    }, error: function (xhr, textStatus, error) {
+                        alert(error + "\n" + textStatus + error);
+                    }
+            });
+            } else {
+                alert('Please Choose Student !!');
+            }
+        }
+
+        PayInOffline = function () {
+
+            if ($('#studentList').val() != "0" && $('#feeTypeList').val() != "0" )
+            {
+                $.ajax({
+                    url: "@Url.Action("PayInOffline", "Admission")",
+                    method: "POST",
+                    data: { sReceiveId: $('#studentList').val(), sFrequencyId: $('#feeTypeList').val() },
+                    async: false,
+                    beforeSend: function () {
+                        $('#page-loader').removeClass('fade in hide');
+                        $('#page-loader').addClass('fade in ');
+                    },
+                    success: function (data) {
+                        var dvReceivedApplication = $('#bindDiv');
+                        dvReceivedApplication.empty();
+                        dvReceivedApplication.append(data);
+                    }, error: function (xhr, textStatus, error) {
+                        alert(error + "\n" + textStatus + error);
+                    }
+            });
+            } else {
+                alert('Please Choose Student !!');
+            }
+        }
+        function printDiv(divName) {
+            var printContents = document.getElementById(divName).innerHTML;           
+                myWindow = window.open('', '', 'width=200,height=100');
+                myWindow.document.write(printContents);
+                myWindow.document.close(); //missing code
+                myWindow.focus();
+                myWindow.print();
+           
+        }
+    </script>
+
+
+
+

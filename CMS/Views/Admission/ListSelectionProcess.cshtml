@@ -1,0 +1,153 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{
+    ViewBag.Title = "ListSelectionProcess";
+    //Layout = "~/Views/Shared/_AdminLayoutPage.cshtml";
+    Layout = null;
+}
+
+    <link href="~/Content/assets/plugins/DataTables/media/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/assets/plugins/DataTables/extensions/Responsive/css/responsive.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="~/Content/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <link href="~/Content/assets/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" />
+
+<div class="content" id="content">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">Home</a></li>
+            <li class="active">Verify Process List </li>
+        </ol>
+        <h2 class="page-header">Verify  Process List </h2>
+        <div class="panel">
+            <div class="panel-heading bg-primary">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                </div>
+                <h4 class="panel-title">Verify Process List </h4>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="col-md-12">
+                        <div class="form-group col-md-5">
+                            @Html.LabelFor(model => model.CycleList, "Selection Cycle", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <div class="col-md-7">
+                                @Html.DropDownListFor(model => model.CycleList, (Model.CycleList != null) ? Model.CycleList : Enumerable.Empty<SelectListItem>(), "--select--", new { @class = " selectpicker show-menu-arrow show-tick drop-down form-control  input-sm", @data_live_search = "true" })
+                                @Html.ValidationMessageFor(model => model.CycleList, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(model => model.ProgrammeList, "Programme", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <div class="col-md-7">
+                                @Html.DropDownListFor(model => model.ProgrammeList, (Model.ProgrammeList != null) ? Model.ProgrammeList : Enumerable.Empty<SelectListItem>(), "--select--", new { @class = " selectpicker show-menu-arrow show-tick drop-down form-control  input-sm", @data_live_search = "true" })
+                                @Html.ValidationMessageFor(model => model.ProgrammeList, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <a class="btn btn-primary" onclick="BindStudentFromSelectionProcess()" href="#" title="Click to list the students">Get</a>
+                    </div>
+                </div>
+                <div class="col-md-12 m-b-5">
+                    <div id="divSelectionProcess" class="table-responsive">
+                        <!--Need to use this field to bind Received Application-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+    <script src="~/Content/assets/plugins/DataTables/media/js/jquery.dataTables.js"></script>
+    <script src="~/Content/assets/plugins/DataTables/media/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/Content/assets/plugins/DataTables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Content/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/Content/assets/plugins/gritter/js/jquery.gritter.js"></script>
+    <script src="~/Content/assets/plugins/bootstrap-sweetalert/sweetalert.min.js"></script>
+    <script src="~/Content/assets/js/ui-modal-notification.demo.min.js"></script>
+
+    <script>
+        $('.selectpicker').selectpicker({
+            size: 4
+        });
+    </script>
+    <script>
+        (function () {
+            var CycleId = $("#CycleList").val();
+            var ProgrammeId = $("#ProgrammeList").val();
+            if (CycleId != "" && ProgrammeId != "") {
+                BindStudentFromSelectionProcess();
+            }
+        });
+
+        BindStudentFromSelectionProcess = function () {
+            var CycleId = $("#CycleList").val();
+            var ProgrammeId = $("#ProgrammeList").val();
+            if (CycleId != "" && ProgrammeId != "") {
+                $.ajax({
+                    url: "@Url.Action("BindSelectionProcessApplicantList", "Admission")",
+                    method: "POST",
+                    datatype: "html",
+                    data: { sCycleId: CycleId, sProgrammeId: ProgrammeId },
+                    success: function (option) {
+                        var dvSelectionProcess = $('#divSelectionProcess');
+                        dvSelectionProcess.empty();
+                        dvSelectionProcess.append(option);
+                        $("#SelectionProcessList").DataTable({ "bPaginate": false });
+                        //$("#SelectionProcessList_filter").addClass("dataTables_filter pull-right");
+                        //$(".pagination").addClass("pagination pull-right");
+                    }, error: function (error) {
+                        alert(error);
+                    }
+                });
+            }
+            else {
+                alert('Please select Selection Cycle and Programme...!!!');
+            }
+        }
+
+
+        SelectionCancel = function (e, f,g) {
+            var receiveid = e;
+            var programmeid = f;
+            var verified = g;
+            if (receiveid != "" && programmeid != "") {
+                if (true) {
+                    swal({
+                        title: "Are you sure want to Cancel this applicant ?",                    
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonClass: "btn-danger",
+                        confirmButtonText: "Yes, I agree!",
+                        closeOnConfirm: false
+                    }, function () {
+                        $.ajax({
+                            url: "@Url.Action("UpdateCancelinVerfication", "Admission")",
+                            method: 'POST',
+                            type: 'json',
+                            data: { sReceiveId: receiveid, sProgrammeId: programmeid,sVerified: verified },
+                            success: function (data) {
+                                if (data.ErrorCode != null && data.ErrorCode == "200") {
+                                    swal({ title: "Success..!!", text: "Saved Successfully!", showConfirmButton: false, timer: 1800, type: 'success', animation: true });
+                                    BindStudentFromSelectionProcess();
+                                } else {
+                                    swal({ title: "Error..!!", text: data.Message, showConfirmButton: false, timer: 1800, type: 'error', animation: true });
+                                    BindStudentFromSelectionProcess();
+                                }
+                            }, errorr: function (data) {
+                                swal({ title: "Error..!!", text: "Internal Server Error..!!", showConfirmButton: false, timer: 1800, type: 'error', animation: true });
+                                BindStudentFromSelectionProcess();
+                            }
+                        });
+                    });
+                }
+                else {
+                    swal({ title: "Error..!!", text: "Internal Server Error..!!", showConfirmButton: false, timer: 1800, type: 'error', animation: true });
+                }
+            }           
+        };
+    </script>
+

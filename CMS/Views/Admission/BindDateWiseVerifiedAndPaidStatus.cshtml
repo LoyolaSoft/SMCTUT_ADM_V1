@@ -1,0 +1,105 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{int count = 0;}
+@*@if (Model.liCollegeDetails != null)
+    {
+        foreach (var item in Model.liCollegeDetails)
+        {
+            <center>
+                <table>
+                    <tr>
+                        <td><center><strong>@item.COLLEGE_NAME</strong></center></td>
+                    </tr>
+                    <tr>
+                        <td><b> @item.GRADE</b></td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">
+                            @item.UNIVERSITY
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        }
+    }*@
+<table class="table table-hover" id="DayWiseStudentFeePaidStatusList">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Course</th>
+            <th>Date</th>
+            <th>Total Seats</th>
+            <th>Total Selected</th>
+            <th>Minority Selected</th>
+            <th>Others Selected</th>
+            <th>Verified</th>
+            <th>Total Paid</th>
+            <th>Minority Paid</th>
+            <th>Others Paid</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.liSelectionProccess != null && Model.liSelectionProccess.Count > 0)
+        {
+            foreach (var list in Model.liSelectionProccess)
+            {
+                <tr>
+                    <td>@{ count++;}@count</td>
+                    <td>@list.PROGRAMME_NAME</td>
+                    <td>@list.SELECTION_DATE</td>
+                    <td>@list.NO_OF_SEATS</td>
+                    <td>@list.TOTAL_SELECTION</td>
+                    <td>@list.MINORITY_SELECTED</td>
+                    <td>@list.OTHERS_SELECTED</td>
+                    <td>@list.VERIFIED</td>
+                    <td>@list.PAID</td>
+                    <td>@list.PAID_MINORITY</td>
+                    <td>@list.PAID_OTHERS</td>
+                </tr>
+                            }
+                        }
+    </tbody>
+</table>
+
+@*<tbody>
+    @if (Model.liStudentPersonalInfo != null && Model.liMonth != null)
+    {
+        foreach (var item in Model.liMonth)
+        {
+            foreach (var list in Model.liFeeTransaction)
+            {
+                var TempList = Model.liMonth.Where(s => s.MONTH == list.MONTH).ToList();
+                if (item.MONTH == list.MONTH)
+                {
+                    <tr>
+                        <td>@{ count++;}@count</td>
+                        <td>@list.MONTH</td>
+                        <td>@list.PAYMENT_DATE</td>
+                        <td>@list.FREQUENCY_NAME</td>
+                        <td>@list.COLLECTED</td>
+                        <td></td>
+                    </tr>
+                                }
+
+                            }
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>@item.COLLECTED</td>
+                            </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <th>No Records Availabe...!!!</th>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            }
+</tbody>*@

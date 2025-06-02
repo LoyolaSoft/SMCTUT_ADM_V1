@@ -1,0 +1,167 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@using CMS.Utility
+@{
+    Layout = null;
+    int Count = 0;
+}
+<div id="content" class="content">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">Home</a></li>
+            <li class="active">Tranfer Request</li>
+        </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+        <h1 class="page-header">Tranfer Request</h1>
+    <!-- begin row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <div class="panel-heading-btn">
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                                </div>
+                                <h3 class="panel-title"><i class="fa fa-inbox"></i>Tranfer Request</h3>
+                            </div>
+                            <div class="panel-body noPadding">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>APPLICATION NO</th>
+                                                <th>PROGRAMME NAME</th>
+                                                <th>APP.STATUS</th>
+                                                <th>TRANSFER STATUS</th>
+                                                <th>TRANFER REQUEST</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (Model.liIssuedApplictionsInfo != null)
+                                            {
+                                                Count = 0;
+                                                foreach (var o in Model.liIssuedApplictionsInfo)
+                                                {
+                                                    Count++;
+                                                    <tr>
+                                                        <td>@Count</td>
+                                                        <td>@o.APPLICATION_NO</td>
+                                                        <td>@o.PROGRAMME_NAME</td>
+                                                        <td><label class="label label-primary">@o.STATUS</label> </td>
+                                                        <td><label class="label label-primary">@o.STATUS</label> </td>
+                                                        <td><a href="#exampleModal" onclick="FetchProgrammesForTransferRequest(" "," ")" class="btn btn-primary btn-sm" data-toggle="modal">Transfer Request</a></td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <div class="alert alert-danger">Please Register Application !</div>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<<div class="modal" id="exampleModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Admission Tranfer Request</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>APPLICATION NO</th>
+                                            <th>PROGRAMME NAME</th>
+                                            <th>PROGRAMME TO</th>
+                                            <th>Request info</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th>APPLICATION NO</th>
+                                            <th>PROGRAMME NAME</th>
+                                            <th>PROGRAMME TO</th>
+                                            <th><textarea id="textarea" class="form-control" rows="4" cols="50"></textarea></th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:;" id="btnSubmit" class="btn btn-sm btn-primary" data-dismiss="modal">Submit</a>
+                <a href="javascript:;" class="btn btn-sm btn-danger" data-dismiss="modal">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function FetchProgrammesForTransferRequest()
+    {            
+        $.ajax({
+            url: "@Url.Action("FetchProgrammesForTransferRequest", "Admission")",
+            method: "POST",            
+            success: function (data)
+            {
+                $('#GENDER').empty();
+                $('#GENDER').append("<option value=''>--Select--</option>" + data);
+            }, error: function (error)
+            {
+                alert('Try Again!!');
+                return false;
+            }
+        });
+    };
+    $('#btnSubmit').on('click',function(){
+        var objtransferRequest = '{"ISSUED_ID":"' + $('#txtFatherName').val() + '","PROGRAMME_FROM":"' + $('#txtFatherName').val() + '","PROGRAMME_TO":"' + $('#txtFatherName').val() + '","REQUEST_CONTENT":"' + $('#txtFatherName').val() + '"}';
+        var object = JSON.parse(objtransferRequest);
+        $.ajax({
+            url: "@Url.Action("SaveTrasnsferRequest", "Admission")",
+            method: "POST",
+            datatype: "html",
+            data: object,
+            async: false,
+            success: function (ObjJsonData) {
+                if (true)
+                {
+    
+                }else
+                {
+
+                }
+            }, error: function (error) {
+                alert(error);
+            }
+        });
+
+    });
+</script>

@@ -1,0 +1,234 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+
+@{
+    Layout = null;
+    int count = 0;    
+}
+<div class="col-md-12 table-responsive">
+    <br /><br />
+    <table class="table table-bordered table-hover" id="tblOverAllAdmission">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Programme</th>                
+                <th>Not Submitted</th>
+                <th>Submitted</th>
+                <th>Selected</th>
+                <th>Verified</th>
+                <th>Admitted</th>
+                <th>Transfered</th>
+                <th>Pending</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                if (Model.liCourses != null && Model.liCourses.Count > 0)
+                {
+                    foreach (var item in Model.liCourses)
+                    {
+                        int counts = 0;                        
+                        <tr>
+                            <td>@{ count++; } @count</td>
+                            <td>@item.PROGRAMME_NAME</td>
+                           
+                            <td>
+                                @if (Model.liRegistered!=null && Model.liRegistered.Count>0)
+                                {
+                                    var liRegistered = Model.liRegistered.Where(s => s.PROGRAMME_GROUP_ID == item.PROGRAMME_GROUP_ID).ToList();
+                                    if (liRegistered != null && liRegistered.Count>0)
+                                    {
+                                        counts += Convert.ToInt16(liRegistered.FirstOrDefault().IS_SUBMITTED);
+                                        <span>@liRegistered.FirstOrDefault().IS_SUBMITTED</span>
+                                    }else
+	                                {
+	                                     <span>0</span>           
+                                    }
+                                }
+                                else
+                                {
+                                    <span>0</span>
+                                }
+                            </td>
+                            <td>
+                                @if (Model.liSubmitted != null && Model.liSubmitted.Count > 0)
+                                {
+                                    var liSubmitted = Model.liSubmitted.Where(s => s.PROGRAMME_GROUP_ID == item.PROGRAMME_GROUP_ID).ToList();
+                                    if (liSubmitted != null && liSubmitted.Count > 0)
+                                    {
+                                        counts += Convert.ToInt16(liSubmitted.FirstOrDefault().IS_SUBMITTED);
+                                        <span>@liSubmitted.FirstOrDefault().IS_SUBMITTED</span>
+                                    }
+                                    else
+                                    {
+                                        <span>0</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span>0</span>
+                                }
+                            </td>
+                            <td>
+                                @if (Model.liSelected != null && Model.liSelected.Count > 0)
+                                {
+                                    var liSelected = Model.liSelected.Where(s => s.PROGRAMME_GROUP_ID == item.PROGRAMME_GROUP_ID).ToList();
+                                    if (liSelected != null && liSelected.Count > 0)
+                                    {
+                                        counts += Convert.ToInt16(liSelected.FirstOrDefault().IS_SUBMITTED);
+                                        <span>@liSelected.FirstOrDefault().IS_SUBMITTED</span>
+                                    }
+                                    else
+                                    {
+                                        <span>0</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span>0</span>
+                                }
+                            </td>
+                            <td>
+                                @if (Model.liVerified != null && Model.liVerified.Count > 0)
+                                {
+                                    var liVerified = Model.liVerified.Where(s => s.PROGRAMME_GROUP_ID == item.PROGRAMME_GROUP_ID).ToList();
+                                    if (liVerified != null && liVerified.Count > 0)
+                                    {
+                                        counts += Convert.ToInt16(liVerified.FirstOrDefault().IS_SUBMITTED);
+                                        <span>@liVerified.FirstOrDefault().IS_SUBMITTED</span>
+                                    }
+                                    else
+                                    {
+                                        <span>0</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span>0</span>
+                                }
+                            </td>
+                            <td>
+                                @if (Model.liAdmitted != null && Model.liAdmitted.Count > 0)
+                                {
+                                    var liAdmitted = Model.liAdmitted.Where(s => s.PROGRAMME_GROUP_ID == item.PROGRAMME_GROUP_ID).ToList();
+                                    if (liAdmitted != null && liAdmitted.Count > 0)
+                                    {
+                                        counts += Convert.ToInt16(liAdmitted.FirstOrDefault().IS_SUBMITTED);
+                                        <span>@liAdmitted.FirstOrDefault().IS_SUBMITTED</span>
+                                    }
+                                    else
+                                    {
+                                        <span>0</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span>0</span>
+                                }
+                            </td>
+                            <td>
+                                @if (Model.liTransfered != null && Model.liTransfered.Count > 0)
+                                {
+                                    var liTransfer = Model.liTransfered.Where(s => s.PROGRAMME_GROUP_ID == item.PROGRAMME_GROUP_ID).ToList();
+                                    if (liTransfer != null && liTransfer.Count > 0)
+                                    {
+                                        counts += Convert.ToInt16(liTransfer.FirstOrDefault().IS_SUBMITTED);
+                                        <span>@liTransfer.FirstOrDefault().IS_SUBMITTED</span>
+                                    }
+                                    else
+                                    {
+                                        <span>0</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span>0</span>
+                                }
+                            </td>
+                            <td>
+                                @if (Model.liPending != null && Model.liPending.Count > 0)
+                                {
+                                    var liPending = Model.liPending.Where(s => s.PROGRAMME_GROUP_ID == item.PROGRAMME_GROUP_ID).ToList();
+                                    if (liPending != null && liPending.Count > 0)
+                                    {
+                                        counts += Convert.ToInt16(liPending.FirstOrDefault().IS_SUBMITTED);
+                                        <span>@liPending.FirstOrDefault().IS_SUBMITTED</span>
+                                    }
+                                    else
+                                    {
+                                        <span>0</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span>0</span>
+                                }
+                            </td>
+                            <td>@counts</td>
+                        </tr>
+                    }
+                      <tr>
+                                        <td>#</td>
+                          <td>Total</td>
+                                        @if (Model.liRegistered != null && Model.liRegistered.Count > 0)
+                                        {
+                                            <td>@Model.liRegistered.Sum(o => Convert.ToInt16(o.IS_SUBMITTED))</td>
+                                        }else
+                                        {
+                                            <td>0</td>
+                                        } 
+                                        @if (Model.liSubmitted != null && Model.liSubmitted.Count > 0)
+                                        {
+                                            <td>@Model.liSubmitted.Sum(o => Convert.ToInt16(o.IS_SUBMITTED))</td>
+                                        }
+                                        else
+                                        {
+                                            <td>0</td>
+                                        } 
+                                        @if (Model.liSelected != null && Model.liSelected.Count > 0)
+                                        {
+                                            <td>@Model.liSelected.Sum(o => Convert.ToInt16(o.IS_SUBMITTED))</td>
+                                        }
+                                        else
+                                        {
+                                            <td>0</td>                            
+                                        } 
+                                        @if (Model.liVerified != null && Model.liVerified.Count > 0)
+                                        {
+                                            <td>@Model.liVerified.Sum(o => Convert.ToInt16(o.IS_SUBMITTED))</td>
+                                        }
+                                        else
+                                        {
+                                            <td>0</td>
+                                        }
+                                        @if (Model.liAdmitted != null && Model.liAdmitted.Count > 0)
+                                        {
+                                            <td>@Model.liAdmitted.Sum(o => Convert.ToInt16(o.IS_SUBMITTED))</td>
+                                        }
+                                        else
+                                        {
+                                            <td>0</td>
+                                        }
+                                        @if (Model.liTransfered != null && Model.liTransfered.Count> 0)
+                                        {
+                                            <td>@Model.liTransfered.Sum(o => Convert.ToInt16(o.IS_SUBMITTED))</td>
+                                        }
+                                        else
+                                        {
+                                            <td>0</td>
+                                        }
+                                        @if (Model.liPending != null && Model.liPending.Count> 0)
+                                        {
+                                            <td>@Model.liPending.Sum(o => Convert.ToInt16(o.IS_SUBMITTED))</td>
+                                        }
+                                        else
+                                        {
+                                            <td>0</td>
+                                        } 
+                          <td></td>                                                                       
+                                    </tr>
+                }                
+            }
+        </tbody>
+    </table>
+</div>

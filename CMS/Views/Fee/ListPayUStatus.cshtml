@@ -1,0 +1,42 @@
+﻿@model CMS.ViewModel.ViewModel.FeePayUStatusViewModel
+
+@{ 
+    Layout = null;
+    int count = 0;
+}
+<div class="col-md-12 table-responsive">
+    <br /><br />
+    <table class="table table-bordered table-hover" id="tblPayUStatus">
+        <thead>
+            <tr>
+                <th> S.No </th>
+                <th> Name </th>
+                <th> Error Message </th>
+                <th> Un Mapped Status </th>
+                <th> Status </th>
+                <th> Application Type </th>
+                <th> Action </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                if (Model.liPayUStatus != null && Model.liPayUStatus.Count > 0)
+                {
+                    foreach (var item in Model.liPayUStatus)
+                    {
+                        { count++; }
+                        <tr>
+                            <td>@count</td>
+                            <td>@item.FIRSTNAME</td>
+                            <td>@item.ERROR_MESSAGE</td>
+                            <td>@item.UNMAPPEDSTATUS</td>
+                            <td>@item.STATUS</td>
+                            <td>@item.APPLICATION_TYPE</td>
+                            <td><a href="@Url.Action("PayUResponseByTranscationId", "Fee",new { sTransactionId = @item.TXNID, IssueId = @item.ISSUE_ID})" class="btn btn-primary">View</a></td>
+                        </tr>
+                    }
+                }               
+            }
+        </tbody>
+    </table>
+</div>

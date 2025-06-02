@@ -1,0 +1,59 @@
+﻿@model CMS.ViewModel.ViewModel.TimeTableViewModel
+@{string CourseCode = string.Empty;}
+<table class="table table-bordered" id="TimeTableClassWiseList">
+    <thead>
+        <tr>
+            <th></th>
+            @if (Model.lstHours != null)
+            {
+                foreach (var dataitem in Model.lstHours)
+                {
+                    <th><b> Hour- @dataitem.HOUR</b></th>
+                }
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.lstDayOrders != null)
+            {
+                foreach (var dataitem in Model.lstDayOrders)
+                {
+                <tr cms-timetableid="@dataitem.DAY_ORDER_ID">
+                    @if (Model.lstTimeTable != null)
+                    {
+                        var TimeTableList = Model.lstTimeTable.Where(s => s.Day_Order_Id == dataitem.DAY_ORDER_ID).ToList();
+                        <td><b> Day- @dataitem.DAY</b></td>
+                        foreach (var item in Model.lstHours)
+                        {
+                            var TimeTable = TimeTableList.Where(s => s.Hour_Id == item.HOUR_ID).ToList();
+                            if (TimeTable != null && TimeTable.Count > 0)
+                            {
+                                <td id="tdTimeTable" cms-semesterid="@TimeTable.FirstOrDefault().Semester_Id" cms-courseid="@TimeTable.FirstOrDefault().Course_Id" cms-dayid="@TimeTable.FirstOrDefault().Day_Order_Id" cms-hourtype="@TimeTable.FirstOrDefault().hour_type_id" cms-staffid="@TimeTable.FirstOrDefault().Staff_Id" class="editable" cms-hourid="@TimeTable.FirstOrDefault().Hour_Id" cms-timetalbeid="@TimeTable.FirstOrDefault().Time_Table_Id">
+                                    @TimeTable.FirstOrDefault().hourType
+                                    @{  CourseCode = "(" + @TimeTable.FirstOrDefault().COURSE_CODE + ")"; }
+                                    @if (TimeTable.Count == 1 && CourseCode!="()")
+                                {
+                                        @CourseCode
+
+                                    }
+                                </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="alert"></td>
+                                                }
+                                            }
+                                        }
+                </tr>
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td><p>No records available !!!</p></td>
+                                            </tr>
+                                        }
+
+    </tbody>
+</table>

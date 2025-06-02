@@ -1,0 +1,77 @@
+﻿@model CMS.ViewModel.ViewModel.FeedbackViewModel
+@{
+    Layout = null;
+}
+<div class="box-body">
+
+    <table class="table table-hover">
+    <thead>
+        <tr><th>Questions</th><th>Answers</th></tr>
+    </thead>
+
+    @{
+        if(Model.sValidateStaff == "0"){
+            if (Model.QuestionList != null)
+            {
+                string sQuestionType = string.Empty;
+                bool bFlag = true;
+                foreach (var QuestionItem in Model.QuestionList)
+                {
+                    if (bFlag)
+                    {
+                        sQuestionType = QuestionItem.QUESTION_TYPE;
+        <tr>
+            <td><b>@sQuestionType </b> @{ bFlag = false; } </td>
+        </tr>
+                                }
+                                else
+                                {
+                                    if (!sQuestionType.Equals(QuestionItem.QUESTION_TYPE))
+                                    {
+        <tr>
+            <td> @{ sQuestionType = QuestionItem.QUESTION_TYPE; } <b>@sQuestionType </b></td>
+        </tr>
+                                                    }
+                                                }
+
+        <tr>
+            <td width="">
+                <div class="">
+                    @if (!string.IsNullOrEmpty(QuestionItem.QUESTION))
+                                                            { @QuestionItem.QUESTION }
+                </div>
+            </td>
+            <td width="35%">
+                <div class="">
+                    @foreach (var ObjectiveItem in Model.ObjectiveList)
+                                                            {
+                        <div class=" radio  radio-inline">
+                             @Html.RadioButton(QuestionItem.QUESTION_ID, ObjectiveItem.OBJECTIVE_ID, new { }) @ObjectiveItem.OBJECTIVESHORTTERM
+
+                        </div>
+                                                            }
+                </div>
+            </td>
+
+        </tr>
+
+                                                    }
+                                                }
+                                                else
+                                                {
+        <tr><td><p class="text-yellow">No Records avilable</p> </td></tr>
+                                                }
+        }else{
+<tr>
+    <td>
+        <p class="text-yellow">You have given feedback to this staff</p>
+    </td>
+</tr>
+                }
+
+
+    }
+    </table>
+
+</div>
+ 

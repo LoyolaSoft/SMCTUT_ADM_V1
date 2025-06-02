@@ -1,0 +1,27 @@
+﻿@model CMS.ViewModel.ViewModel.FeeTransactionViewModel
+@{int count = 0;}
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Count</th>
+            <th>Programme</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.liFeeReport != null && Model.liFeeReport.Count > 0)
+        {
+            foreach (var item in Model.liFeeReport)
+            {
+                <tr>
+                    <td>@{count++;}@count</td>
+                    <td>@item.COUNT</td>
+                    <td>@item.PROGRAMME_NAME</td>
+                    <td>@item.COLLECTED</td>
+                </tr>
+                            }
+                        }
+    </tbody>
+</table>
+

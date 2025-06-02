@@ -1,0 +1,445 @@
+﻿@model CMS.ViewModel.ViewModel.DashboardViewModel
+@{
+    ViewBag.Title = "Principal";
+    //Layout = "~/Views/Shared/_AdminLayoutPage.cshtml";
+}
+
+
+<div id="content" class="content">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb pull-right">
+        <li><a href="javascript:;">Home</a></li>
+        <li class="active">Principal</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">Principal Dashboard</h1>
+
+    <div class="row">
+        <!-- begin col-3 -->
+        <div class="col-md-3 col-sm-6 col-lg-12">
+            <div class="widget widget-stats bg-gradient-blue">
+                <div class="stats-icon"><i class="fa fa-inbo"></i></div>
+                <div class="stats-info">
+                    <h3>Word Of The Day</h3>
+                    <p><div>"Education, leading to financial independence, has surely made women more empowered"- Sudha Murty</div></p>
+                </div>
+                <div class="stats-link">
+                    <a href="javascript:;">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- begin col-3 -->
+        <div class="col-md-3 col-sm-6">
+            <div class="widget widget-stats bg-white text-inverse">
+                <div class="stats-icon stats-icon-lg stats-icon-square bg-gradient-blue"><i class="ion-social-buffer"></i></div>
+                <div class="stats-title"><h4>Received Applications</h4></div>
+                <div class="stats-number">@ViewBag.ReceivedApplicationTotal</div>
+                <div class="stats-progress progress">
+                    <div class="progress-bar" style="width: 100%;"></div>
+                </div>
+                <div class="stats-desc">View details</div>
+            </div>
+        </div>
+        <!-- end col-3 -->
+        <!-- begin col-3 -->
+        <div class="col-md-3 col-sm-6">
+            <div class="widget widget-stats bg-white text-inverse">
+                <div class="stats-icon stats-icon-lg stats-icon-square bg-gradient-blue"><i class="ion-android-people"></i></div>
+                <div class="stats-title"><h4>Issued Applications</h4></div>
+                <div class="stats-number">@ViewBag.TotalIssuedApplication</div>
+                <div class="stats-progress progress">
+                    <div class="progress-bar" style="width: @ViewBag.TotalIssuedApplication%;"></div>
+                </div>
+                <div class="stats-desc">View details</div>
+            </div>
+        </div>
+        <!-- end col-3 -->
+        <!-- begin col-3 -->
+        <div class="col-md-3 col-sm-6">
+            <div class="widget widget-stats bg-white text-inverse">
+                <div class="stats-icon stats-icon-lg stats-icon-square bg-gradient-blue"><i class="ion-ios-paper"></i></div>
+
+                <div class="stats-title"><h4>Selected Applications</h4></div>
+                <div class="stats-number">@ViewBag.TotalSelectedApplication</div>
+                <div class="stats-progress progress">
+                    <div class="progress-bar" style="width: @ViewBag.TotalSelectedApplication%;"></div>
+                </div>
+                <div class="stats-desc">View details</div>
+            </div>
+        </div>
+        <!-- end col-3 -->
+        <!-- begin col-3 -->
+        <div class="col-md-3 col-sm-6">
+            <div class="widget widget-stats bg-white text-inverse">
+                <div class="stats-icon stats-icon-lg stats-icon-square bg-gradient-blue"><i class="ion-university"></i></div>
+                <div class="stats-title"><h4>Verified Applications</h4></div>
+                <div class="stats-number">@ViewBag.TotalVerifiedApplication</div>
+                <div class="stats-progress progress">
+                    <div class="progress-bar" style="width:@ViewBag.TotalVerifiedApplication%;"></div>
+                </div>
+                <div class="stats-desc">View details</div>
+            </div>
+        </div>
+        <!-- end col-3 -->
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div id="piechart"></div>
+
+        </div>
+    </div>
+    <!-- end row -->
+    <!-- begin row -->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="widget-chart with-sidebar bg-black">
+                <div class="widget-chart-content">
+                    <h4 class="chart-title">
+                        Fee collection
+                    </h4>
+                    <div id="visitors-line-chart" class="morris-inverse" style="height: 260px;"></div>
+                </div>
+                <div class="widget-chart-sidebar bg-black-darker">
+                    <div class="chart-number">
+                        5,234
+                        <small>Users</small>
+                    </div>
+                    <div id="visitors-donut-chart" style="height: 162px">
+
+                    </div>
+                    <ul class="chart-legend">
+                        <li><i class="fa fa-circle-o fa-fw text-info m-r-5"></i> 34.0% <span>New Users</span></li>
+                        <li><i class="fa fa-circle-o fa-fw text-primary m-r-5"></i> 56.0% <span>Return Users</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-inverse" data-sortable-id="index-1">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-inbox"></i> Notice Board</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="media media-sm">
+                        <a class="media-left" href="javascript:;">
+                            <img src="~/Content/assets/img/user-2.jpg" alt="" class="media-object">
+                        </a>
+                        <div class="media-body">
+                            <h4 class="media-heading">Vision</h4>
+                            <p>To make young women agents of an egalitarian society through liberative education.</p>
+
+                        </div>
+                    </div>
+                    <div class="media media-sm">
+                        <a class="media-left" href="javascript:;">
+                            <img src="~/Content/assets/img/user-1.jpg" alt="" class="media-object">
+                        </a>
+                        <div class="media-body">
+                            <h4 class="media-heading">Mission</h4>
+                            <p>To empower women through regular and non-formal courses to make them economically independent and socially aware so that they make better homes and contribute to family and social progress.</p>
+                        </div>
+                    </div>
+                    <div class="media media-sm">
+                        <a class="media-left" href="javascript:;">
+                            <img src="~/Content/assets/img/user-1.jpg" alt="" class="media-object">
+                        </a>
+                        <div class="media-body">
+                            <h4 class="media-heading">Motto</h4>
+                            <p>
+                                " FIDE VIVANT "( Live by Faith ),The emblem signifies the purpose of Catholic Education.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end row -->
+    <!-- Begin User Panel-->
+    <div class="row">
+        <!--Begin Event-->
+        <div class="col-sm-4">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="panel-heading-btn">
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                            </div>
+                            <h3 class="panel-title"><i class="fa fa-flag"></i> Events</h3>
+                        </div>
+                        <div class="panel-body noPadding">
+                            <div class="row myMargin" id="event">
+                                <div class="alert bg-pink alert-dismissible">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    No Data Found.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End Event-->
+        <!--Begin Holiday-->
+        <div class="col-sm-4">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel">
+                        <div class="panel-heading bg-gradient-blue">
+                            <div class="panel-heading-btn">
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                            </div>
+                            <h3 class="panel-title"><i class="fa fa-calendar-o"></i> Monthly Holidays</h3>
+                        </div>
+                        <div class="panel-body noPadding">
+                            <div class="row myMargin" id="event">
+                                <div class="alert bg-pink alert-dismissible">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    No Data Found.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End Holiday-->
+        <!--Begin TimeTable-->
+        <div class="col-sm-4">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel">
+                        <div class="panel-heading bg-purple">
+                            <div class="panel-heading-btn">
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                            </div>
+                            <h3 class="panel-title"><i class="fa fa-calendar-o"></i> Timetable</h3>
+                        </div>
+                        <div class="panel-body noPadding">
+                            <div class="row myMargin" id="event">
+                                <div class="alert bg-pink alert-dismissible">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    No Data Found.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End TimeTable-->
+    </div>
+    <div class="row">
+        <!--Begin Notice Board-->
+        <div class="col-sm-4">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-inverse">
+                        <div class="panel-heading">
+                            <div class="panel-heading-btn">
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                            </div>
+                            <h3 class="panel-title"><i class="fa fa-inbox"></i> Notice Board</h3>
+                        </div>
+                        <div class="panel-body noPadding">
+                            <div class="row myMargin" id="event4">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End Notice Board-->
+        <!--Begin Schedule-->
+        <div class="col-md-4">
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <div class="panel-heading-btn">
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                    </div>
+                    <h4 class="panel-title"><i class="ion-ios-clock-outline"></i>Today's Schedule</h4>
+                </div>
+                <div id="schedule-calendar" class="bootstrap-calendar"></div>
+                <div class="list-group">
+                    <a href="#" class="list-group-item text-ellipsis">
+                        <span class="badge badge-primary">@System.DateTime.Now.ToShortTimeString()</span> Sales Reporting
+                    </a>
+                    <a href="#" class="list-group-item text-ellipsis">
+                        <span class="badge badge-aqua">@System.DateTime.Now.ToShortTimeString()</span> Have a meeting with sales team
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!--End Shedule-->
+        <!--Begin Task-->
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="panel-heading-btn">
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                            </div>
+                            <h3 class="panel-title"><i class="fa fa-check-circle"></i> Tasks</h3>
+                        </div>
+                        <div class="panel-body noPadding">
+                            <div class="row myMargin" id="event">
+                                <div class="alert bg-pink alert-dismissible">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    No Data Found.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel">
+                        <div class="panel-heading bg-purple">
+                            <div class="panel-heading-btn">
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                            </div>
+                            <h3 class="panel-title"><i class="fa fa-birthday-cake"></i> Birthdays</h3>
+                        </div>
+                        <div class="panel-body noPadding">
+                            <div class="row myMargin" id="event">
+                                <div class="alert bg-pink alert-dismissible">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    No Data Found.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End Task-->
+    </div>
+    <!-- End User Panel-->
+</div>
+
+
+@section scripts{
+
+    <script src="~/Content/assets/plugins/morris/raphael.min.js"></script>
+    <script src="~/Content/assets/plugins/morris/morris.js"></script>
+    <script src="~/Content/assets/plugins/jquery-jvectormap/jquery-jvectormap.min.js"></script>
+    <script src="~/Content/assets/plugins/jquery-jvectormap/jquery-jvectormap-world-merc-en.js"></script>
+    <script src="~/Content/assets/plugins/bootstrap-calendar/js/bootstrap_calendar.min.js"></script>
+    <script src="~/Content/assets/js/dashboard-v2.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="http://www.ourmanna.com/verses/api/js/" type="text/javascript"></script>
+    <script>
+        $(document).ready(function () {
+            // DashboardV2.init();
+
+            Chart();
+
+        });
+        function Chart() {
+            var part = [];
+            var partname = [];
+            var percentdata = []
+            var JsonData = '[';
+            var marks = ['30', '40', '50'];
+            var semster = ['30', '40', '50'];
+            /**/
+            var parts =['30','40','50'];
+        /**/
+        if (marks != null && semster != null && parts != null) {
+            for (var p = 0; p < parts.length; p++) {
+                part.push(parts[p].PART_NAME);
+            }
+            for (var p = 0; p < parts.length; p++) {
+                partname.push("PART-" + parts[p].PART_NAME);
+            }
+            for (var i = 0; i < semster.length; i++) {
+                JsonData += '{"x":"SEM-' + semster[i].SEMESTER_NAME + '",';
+                for (var j = 0; j < parts.length; j++) {
+
+                    for (var k = 0; k < marks.length; k++) {
+                        if (marks[k].PART == parts[j].PART && marks[k].SEMESTER == semster[i].SEMESTER) {
+                            JsonData += '"' + parts[j].PART_NAME + '":"' + marks[k].TOTAL + '",';
+                            percentdata.push(marks[k].TOTAL);
+                        }
+                    }
+
+                }
+                JsonData = JsonData.slice(0, -1);
+                JsonData += '},';
+            }
+
+            JsonData = JsonData.slice(0, -1);
+            JsonData += ']';
+
+            var obj = JSON.parse(JsonData);
+
+            var arrColors = ['#007aff', '#ef0117', '#4caf50', '#a550dd', '#673ab7', '#ef0117'];
+            Morris.Line({
+                element: 'chartsdiv',
+                data: obj,
+                ymax: 100,
+                xkey: 'x',
+                // gridTextSize: 10,
+                ykeys: part,
+                parseTime: false,
+                //hideHover: true,
+                //lineWidth: '6px',
+                //stacked: true,
+                labels: partname,
+                lineColors: ['#007aff', '#ef0117', '#4caf50', '#a550dd', '#673ab7', '#673AB7'],
+                pointFillColors: ['#00ff00'],
+                hoverCallback: function (index, options, content, row) {
+
+
+                    if (percentdata.length != 0) {
+                        for (var i = 0; i < percentdata.length; i++) {
+
+                            content = content.replace(percentdata[i], percentdata[i] + "%");
+                        }
+                    }
+
+                    return content;
+
+
+                }
+
+
+            });
+        }
+    }
+
+    </script>
+
+
+}

@@ -1,0 +1,56 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{
+    ViewBag.Title = "BindStusWiseStudent";
+    Layout = null;
+}
+
+<table class="table table-bordered hidden" id="bindtable">
+    <thead>
+        <tr>
+
+            <th>#</th>
+            <th>Name</th>
+            <th>Programme</th>
+            <th>DOB</th>
+            <th>Mobile No</th>
+            <th>BG</th>
+            <th>Door No</th>
+            <th>Street</th>
+            <th>Area</th>
+            <th>City</th>
+            <th>District</th>
+            <th>Pincode</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.liIssueApplication != null && Model.liIssueApplication.Count > 0)
+        {
+            int count = 0;
+            foreach (var item in Model.liIssueApplication)
+            {
+                count++;
+                <tr>
+                    <td>@count</td>
+                    <td>@item.FIRST_NAME</td>
+                    <td>@item.PROGRAMME_NAME</td>
+                    <td>@item.DOB</td>
+                    <td>@item.SMS_MOBILE_NO</td>
+                    <td>@item.BLOOD_GROUP_NAME</td>
+                    <td>
+                        @item.CDOORDETAIL.ToLower()
+                    </td>  
+                    <td>@item.CSTREET.ToLower()</td>
+                    <td>@item.CVILLAGE_AREA.ToLower()</td>
+                  
+                    <td>@item.CTALUK_CITY.ToLower()</td>
+                  
+                    <td>@item.CDISTRICT.ToLower()</td>
+                   
+                    <td>@item.CPINCODE.ToLower()</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+

@@ -1,0 +1,37 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{int count = 0;}
+<table class="table table-hover" id="SelectedStudentList">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Application No</th>
+            <th>Name</th>
+            <th>Selected Date</th>
+            <th>Mobile</th>
+            <th>Village</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.liSelectionProcess != null)
+        {
+            foreach (var item in Model.liSelectionProcess)
+            {               
+                <tr>
+                    <td>
+                        @{ count++;}@count
+                    </td>
+                    <td>@item.APPLICATION_NO</td>
+                    <td>@item.FIRST_NAME</td>
+                    <td>@item.SELECTION_DATE</td>
+                    <td>@item.SMS_MOBILE_NO</td>                    
+                    <td>@item.CVILLAGE_AREA</td>
+                    <td>@item.STATUS_NAME</td>
+                </tr>
+
+                                }
+                            }
+
+    </tbody>
+</table>
+

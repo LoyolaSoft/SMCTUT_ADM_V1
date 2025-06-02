@@ -1,0 +1,36 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{
+    Layout = null;
+}
+<div class="col-md-12">
+    <table class="table table-bordered " id="tblstudentlist">
+        <thead>
+            <tr>
+                <th>Roll No</th>
+                <th>Name</th>
+                <th>Mobile</th>
+                <th>Account No</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.liIssueApplication != null && Model.liIssueApplication.Count>0)
+            {
+            foreach (var item in Model.liIssueApplication)
+            {
+                <tr>
+                    <td>@item.ROLL_NO</td>
+                    <td>@item.FIRST_NAME</td>
+                    <td>@item.SMS_MOBILE_NO</td>
+                    <td><input type="text" class="form-control" id="firstname" value="@item.ACCOUNT_NO" receiveid="@item.RECEIVE_ID" rollno="@item.ROLL_NO" ></td>
+                </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="4">No Records Found!</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

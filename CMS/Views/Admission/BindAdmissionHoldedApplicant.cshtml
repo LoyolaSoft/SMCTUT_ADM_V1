@@ -1,0 +1,54 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{
+
+    Layout = null;
+    int Ccount = 0;
+}
+<table class="table table-bordered table-hover" id="Admissionholdedapplicants">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>
+                <input type="checkbox" name="myTextEditBox" id="AllchkID" onchange="SelectOrUnselect()" />
+            </th>
+            <th>App.No</th>
+            <th>Name</th>
+            <th>Programme</th>
+            <th>Mobile No</th>
+            <th>Total</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.LiDateExpiredSelectedApplicant != null)
+        {
+            foreach (var item in Model.LiDateExpiredSelectedApplicant)
+            {
+
+                <tr>
+                    <td>
+                        @{ Ccount++;}@Ccount
+                    </td>
+                    <td>
+                        <input type="checkbox" name="myTextEditBox" id="chkID" cms-receiveid="@item.RECEIVE_ID" cms-applicationno="@item.APPLICATION_NO" cms-hstotal="@item.HSTOTAL" cms-issuedid="@item.ISSUED_ID" cms-programmeid="@item.PROGRAMME_GROUP_ID" />
+
+                    </td>
+                    <td>@item.APPLICATION_NO</td>
+                    <td>@item.FIRST_NAME</td>
+                    <td>@item.PROGRAMME_NAME</td>
+                    <td>@item.SMS_MOBILE_NO</td>
+                    <td>@item.HSTOTAL</td>
+
+                </tr>
+                                }
+                            }
+        
+
+    </tbody>
+</table>
+
+<br>
+
+
+
+

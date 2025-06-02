@@ -1,0 +1,61 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@using CMS.Utility
+<table class="table table-bordered table-responsive" id="PGMarkList">
+    <thead>
+        <tr>
+            <th>
+                Subject
+            </th>
+            <th>
+                Marks Secured
+            </th>
+            <th>
+                Maximum Marks
+            </th>
+            <th>
+                Month & Year of Passing
+            </th>
+            <th>
+                Register No
+            </th>
+            <th>
+                No.of.Attempts
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.liADMStudentMarks != null && Model.liADMStudentMarks.Count > 0)
+        {
+            foreach (var item in Model.liADMStudentMarks)
+            {
+                <tr cms-subjectid="@item.SUBJECT_ID">
+                    <td cms-markid="@item.MARK_ID">
+                        @item.HSS_SUBJECT
+                    </td>
+                    <td cms-mark="@item.MARK">
+                        <input type="number" name="MarksSecured" id="tdmarksecured" required value="@item.MARK" maxlength="5" placeholder="100" class="form-control" data-parsley-group="wizard-step-3" />
+                    </td>
+                    <td cms-mas-mark="@item.MAX_MARK">
+                        <input type="number" name="MaximumMarks" id="tdmark" required value="@item.MAX_MARK" maxlength="3" placeholder="100" class="form-control" data-parsley-group="wizard-step-3" />
+                    </td>
+                    <td cms-year="@item.M_PASS">
+                        <input type="text" name="MotntandYear" id="tdmpass" value="@item.M_PASS" placeholder="April & 2018" class="form-control" data-parsley-group="wizard-step-3" />
+                    </td>
+                    <td cms-hscno="@Session[Common.SESSION_VARIABLES.HSC_NO]">
+                        <input type="text" name="RegisterNo" id="tdregisterno" value="@Session[Common.SESSION_VARIABLES.HSC_NO]" placeholder="B14275" class="form-control" data-parsley-group="wizard-step-3" disabled />
+                    </td>
+                    <td cms-attempts="@item.NO_OF_ATTEMPTS">
+                        <input type="number" name="NoOfAttempts" id="tdnoofattempts" value="@item.NO_OF_ATTEMPTS" maxlength="1" placeholder="1" class="form-control" data-parsley-group="wizard-step-3" />
+                    </td>
+                </tr>
+            }
+        }
+        @*<tr>
+                <td>
+                    Total
+                </td>
+                <td colspan="5"></td>
+            </tr>*@
+    </tbody>
+</table>
+

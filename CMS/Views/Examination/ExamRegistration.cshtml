@@ -1,0 +1,399 @@
+﻿@model CMS.ViewModel.ViewModel.ExaminationViewModel
+@using CMS.Utility;
+@{
+    ViewBag.Title = "ExamRegistration";
+    Layout = "~/Views/Shared/_AdminLayoutPage.cshtml";
+}
+
+<div class="content" id="content">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+     <!-- begin breadcrumb -->
+        <ol class="breadcrumb pull-right">
+            <li><a href="@Url.Action("Student","DashBoard")">Home</a></li>
+            <li class="active">Exam Registration</li>
+        </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+        <h1 class="page-header">Exam Registration<small></small></h1>
+    <!-- end page-header -->
+
+        <div class="panel panel-primary" id="panel">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" id="btnReload" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                </div>
+                <h4 class="panel-title">Exam Registration</h4>
+            </div>
+            <div class="panel-body">
+                <div class="col-lg-12" style="z-index:1">
+                    <span class="pull-left ">
+                        <a href='@Url.Action("ExamRegistration","Examination")' id="idBack"  class="btn btn-sm btn-default m-b-10 "><i class="ion-ios-arrow-left m-r-5"></i> Back</a>
+                    </span>
+                     <span class="pull-right hidden-print">
+                        <a href="javascript:;" id="sPrint" onclick="printDiv('dvExamRegistrationPriview')" class="btn btn-sm btn-success m-b-10 disabled"><i class="fa fa-print m-r-5"></i> Print</a>
+                    </span>
+                </div>
+                <div id="dvRegister">
+                    <div class="form-horizontal">
+                        <div class="col-md-3">
+                            <lable>
+                                <b>College Roll No :</b> &nbsp;&nbsp;
+
+                                @Model.liExamRegistrationModel.FirstOrDefault().ROLL_NO
+
+                            </lable>
+                        </div>
+
+                        <div class="col-md-3 pull-right">
+                            <lable>
+                                <b>Exam.Reg.No :</b> &nbsp;&nbsp;
+                                @Model.liExamRegistrationModel.FirstOrDefault().REGISTER_NO
+
+                            </lable>
+                        </div>
+                        <div class="text-center">
+                            @*<img class="image" />*@
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="@Url.Content("~/Content/assets/img/hcc-img/hcclogo.jpg")" style="width:100px; height:100px" />
+                        </div>
+                        <div class="text-center">
+
+                            <h3>@Model.liCollegeDetails.FirstOrDefault().COLLEGE_NAME &nbsp;&nbsp; @Model.liCollegeDetails.FirstOrDefault().PLACE .</h3>
+                            <h4>@Model.liCollegeDetails.FirstOrDefault().UNIVERSITY.</h4>
+                            <h5>
+                                @Model.liCollegeDetails.FirstOrDefault().GRADE <br />
+                                EXAMINATION APPLICATION FORM<br />
+                                SEMESTER &nbsp;<b>@Model.liExamRegistrationList.FirstOrDefault().SEMESTER_ID</b> &nbsp;&nbsp; MONTH & YEAR &nbsp;&nbsp; <b>@Model.liExamRegistrationModel.FirstOrDefault().MONTH</b>
+                            </h5>
+
+
+                        </div>
+                    </div>
+                    <input type="hidden" id="hdStudentId" name="name" value="@Session[Common.SESSION_VARIABLES.USER_ID].ToString()" />
+
+                    <table style="font-family:'Times New Roman', Times, serif; font:bold; font-size:small">
+                        <tbody>
+                            <tr>
+                                <td><b>Name of the Candidate : </b></td>
+                                <td> &nbsp;&nbsp; @Model.liExamRegistrationModel.FirstOrDefault().NAME</td>
+                                <td> &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;<b>Major : </b> &nbsp;&nbsp; @Model.liExamRegistrationModel.FirstOrDefault().DEPARTMENT</td>
+
+                                <td> </td>
+                            </tr>
+
+                            <tr>
+                                <td><b>Permanent Address :</b></td>
+                                <td> @Model.liExamRegistrationModel.FirstOrDefault().ADDRESS1</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td> @Model.liExamRegistrationModel.FirstOrDefault().ADDRESS2</td>
+                                <td> &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;<b>Date of Birth : </b> &nbsp;&nbsp; @Model.liExamRegistrationModel.FirstOrDefault().DATE_OF_BIRTH</td>
+                            </tr>
+
+                            <tr>
+                                <td><b>Phone No:</b></td>
+                                <td>@Model.liExamRegistrationModel.FirstOrDefault().MOBILE_NO</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                    <br />
+                    <div id="Registration" class="table-responsive table-bordered">
+                        <div>
+                            @{int count = 0;}
+                            <label id="Title">PAPERS FOR WHICH APPEARING :</label>
+                            <table class="table" id="RegularList">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Semester</th>
+                                        <th>Course Code</th>
+                                        <th>Title of the Paper</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.liExamRegistrationList != null)
+                                    {
+                                        foreach (var item in Model.liExamRegistrationList)
+                                        {
+                                            <tr cms-acyear="@item.AC_YEAR" cms-course-code="@item.COURSE_CODE" cms-subject-type="@item.SUBJECT_TYPE_ID" cms-semester="@Session[Common.SESSION_VARIABLES.ACTIVE_SEMESTER_FOR_STUDENT].ToString()" cms-examid="@Model.liExamRegistrationModel.FirstOrDefault().EXAM_SETTING_ID">
+                                                <td>
+                                                    @{count++; } @count
+                                                </td>
+                                                <td>
+                                                    <div class="hidden">@Html.DisplayFor(modelItem => item.COURSE_ROOT_ID)</div>
+                                                    <span>@Html.DisplayFor(modelItem => item.SEMESTER_ID)</span>
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.COURSE_CODE)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.COURSE_TITLE)
+                                                </td>
+
+                                                <td>
+                                                    <b>@Html.DisplayFor(modelItem => item.RESULT)</b>
+                                                </td>
+                                            </tr>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <tr>
+                                                                <td>No Data Found ...!</td>
+                                                            </tr>
+                                                        }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div>
+                            @{int no = 0; }
+                            <label id="Tittle">ARREAR LIST:</label>
+
+                            <br /><br />
+                            <table class="table" id="ArrearList">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Select</th>
+                                        <th>Semester</th>
+                                        <th>Course Code</th>
+                                        <th>Title of the Paper</th>
+                                        <th>Result</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.liSemesterList != null)
+                                    {
+                                        foreach (var item in Model.liSemesterList)
+                                        {
+                                            <tr cms-acyear="@item.AC_YEAR" cms-course-code="@item.COURSE_CODE" cms-subject-type="@item.SUBJECT_TYPE_ID" cms-semester="@Session[Common.SESSION_VARIABLES.ACTIVE_SEMESTER_FOR_STUDENT].ToString()" cms-examid="@Model.liExamRegistrationModel.FirstOrDefault().EXAM_SETTING_ID">
+                                                <td>
+                                                    @{no++; } @no
+                                                </td>
+                                                <td><input type="checkbox" id="chkBox" /></td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.SEMESTER)
+                                                    <div class="hidden">@Html.DisplayFor(modelItem => item.COURSE_ROOT_ID)</div>
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.COURSE_CODE)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.COURSE_TITLE)
+                                                </td>
+                                                <td>
+                                                    <b>@Html.DisplayFor(modelItem => item.RESULT)</b>
+                                                </td>
+                                            </tr>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <tr>
+                                                                <td>No Data Found ...!</td>
+                                                            </tr>
+                                                        }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-horizontal">
+                    <div class="col-lg-12" id="dvExamRegistration"></div>
+                    <div class="col-lg-12" id="dvExamRegistrationPriview"></div>
+                </div>
+
+                <div class="form-group pull-right">
+                    <div class="col-md-12 pull-right">
+                        <a class="btn btn-primary" id="btnSubmit">Submit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+                                                        }
+</div>
+@section scripts{
+    <script>
+
+        $(document).ready(function () {
+            validate();
+        });
+        $("#btnClick").on("click", function () {
+            var BatchId = $("#ddlBatch").val();
+            var ProgramId = $("#Program").val();
+
+        });
+        function validate() {
+            $.ajax({
+                url: "@Url.Action("ValidateStudent", "Examination")",
+                method: "POST",
+                datatype: "json",
+                success: function (data) {
+                    if (data == "1") {
+                        // ExamRegistrationList();
+                        ExamRegistrationPriview();
+                    } else if (data=="404"){
+                        alert('Sorry Session Out Please Login again.!!!');
+                        $('#btnSubmit').addClass('hidden');
+                    }
+                }, error: function (error) {
+                    alert('Internal Server Error ...!')
+                }
+            });
+        }
+
+        function ExamRegistrationList() {
+            $.ajax({
+                url: "@Url.Action("ExamRegistrationList", "Examination")",
+                method: "POST",
+                datatype: "json",
+                success: function (data) {
+                    $("#dvExamRegistration").empty();
+                    $("#dvExamRegistration").append(data);
+                    //$('#btnSubmit').removeClass("disabled");
+                }, error: function (error) {
+                    alert('Internal Server Error ...!')
+                }
+            });
+        };
+        function ExamRegistrationPriview() {
+            $.ajax({
+                url: "@Url.Action("ExamRegistrationPriview", "Examination")",
+                method: "POST",
+                datatype: "json",
+                success: function (data) {
+                    $("#dvExamRegistrationPriview").empty();
+                    $("#dvExamRegistrationPriview").append(data);
+                    $('#dvExamRegistration').addClass('hidden');
+                    $('#dvRegister').addClass('hidden');
+                    $('#btnSubmit').addClass('hidden');
+                    $('#sPrint').removeClass("disabled");
+                }, error: function (error) {
+                    alert('Internal Server Error ...!')
+                }
+            });
+        };
+        $('#btnFeeSummary').click(function () {
+            alert();
+            
+        });
+        function loadFeeSummary(){
+            $.ajax({
+                url: "@Url.Action("FeeSummary", "Fee")",
+                method: "POST",
+            datatype: "json",
+            data: { sFrequencyId: $('#hdFrequencyId').val() },
+            success: function (data) {
+                $("#dvExamRegistrationPriview").empty();
+                $("#dvExamRegistrationPriview").append(data);
+                $('#dvExamRegistration').addClass('hidden');
+                $('#dvRegister').addClass('hidden');
+                $('#btnSubmit').addClass('hidden');
+                $('#sPrint').removeClass("disabled");
+            }, error: function (error) {
+                alert('Internal Server Error ...!')
+            }
+        });
+        }
+    </script>
+    <script>
+        // Get Regular Paper ...
+        $("#btnSubmit").on("click", function () {
+            if (confirm('Please verify your course code and title of the paper...!\n If something went wrong please meet exam registration committee..! \n No modification will be done after registration !')) {
+                if (!confirm('Are you sure to apply ?')) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+            var JsonData;
+            var Semester;
+            var CourseId;
+            var Status;
+            JsonData = '{"SubjectDetails":[';
+            $('#RegularList  tbody tr').each(function () {
+                var acYear = $(this).attr("cms-acyear");
+                var coursecode = $(this).attr("cms-course-code");
+                CourseId = $(this).find("div").text();
+                Status = "R";
+                JsonData += '{"EXAM_SETTING_ID":"' + $(this).attr('cms-examid') + '","SEMESTER":"' + $(this).attr("cms-semester") + '","SUBJECT_TYPE_ID":"' + $(this).attr("cms-subject-type") + '","STUDENT_ID":"' + $('#hdStudentId').val() + '","COURSE_ROOT_ID":"' + CourseId + '","STATUS":"' + Status + '","AC_YEAR":"' + acYear + '","COURSE_CODE":"' + coursecode + '"},';
+            });
+            $('#ArrearList  tbody tr').each(function () {
+                var chkBox = $(this).find('input[type="checkbox"]');
+                var coursecode = $(this).attr("cms-course-code");
+                var acYear = $(this).attr("cms-acyear");
+                if (chkBox.is(':checked')) {
+                    CourseId = $(this).find("div").text();
+                    Status = $(this).find("b").text();
+
+                    JsonData += '{"EXAM_SETTING_ID":"' + $(this).attr('cms-examid') + '","SEMESTER":"' + $(this).attr("cms-semester") + '","SUBJECT_TYPE_ID":"' + $(this).attr("cms-subject-type") + '","STUDENT_ID":"' + $('#hdStudentId').val() + '","COURSE_ROOT_ID":"' + CourseId + '","STATUS":"' + Status + '","AC_YEAR":"' + acYear + '","COURSE_CODE":"' + coursecode + '"},';
+                }
+            });
+            JsonData = JsonData.slice(0, -1);
+            JsonData += ']}';
+            $.ajax({
+                url: "@Url.Action("SaveExamSubjects", "Examination")",
+                method: "POST",
+                datatype: "jsondata",
+                data: { ExamDetails: JsonData },
+                success: function (data) {
+                    if (data.sErrorCode != '1') {
+                        alert(data.sResult);
+                        if (data.sErrorCode != "2") {
+                            ExamRegistrationPriview();
+                            $('#sPrint').removeClass("disabled");
+                        }
+
+                    }
+                    else {
+                        alert(' You have Registered Already ...!');
+                    }
+
+                    //ExamRegistrationList();
+                }, error: function (error) {
+                    alert('Internal Server Error ....!');
+                }
+            });
+        });
+    </script>
+    <script>
+        // Fetch Class Based on Program Id ...
+        $("#Program").on("change", function () {
+            var ProgramName = $("#Program").val();
+
+            $.ajax({
+                url: "@Url.Action("BindDDLBatch", "Examination")",
+                method: "POST",
+                datatype: "json",
+                data: { sProgramId: ProgramName },
+                success: function (data) {
+                    $('#ddlBatch').empty();
+                    $('#ddlBatch').append('<option value="0">-- select -- </option>' + data);
+                }, error: function (error) {
+                    alert('Internal Server Error ...!');
+                }
+            });
+        });
+
+        function printDiv(divName) {
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+            location.reload();
+        }
+    </script>
+}

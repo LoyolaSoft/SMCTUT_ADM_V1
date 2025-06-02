@@ -1,0 +1,118 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{
+    Layout = null;
+    string AppliedCourse = "";
+    string SelectedCourse = "";
+}
+<div class="table-responsive">
+    <input type="hidden" id="txtToProgrammeGroupid" value="@Model.liApplicant.FirstOrDefault().PROGRAMME_GROUP_ID" />
+    <input type="hidden" id="txtProgramme" value="@Model.liApplicant.FirstOrDefault().PROGRAMME_ID" />
+    <input type="hidden" id="txtReceiveId" value="@Model.liApplicant.FirstOrDefault().RECEIVE_ID" />
+    <input type="hidden" id="txtIssueId" value="@Model.liApplicant.FirstOrDefault().ISSUE_ID" />
+    <input type="hidden" id="txtApplicationNo" value="@Model.liApplicant.FirstOrDefault().APPLICATION_NO" />
+    <input type="hidden" id="txtShift" value="@Model.liApplicant.FirstOrDefault().SHIFT" />
+    <input type="hidden" id="txtProgrammeMode" value="@Model.liApplicant.FirstOrDefault().PROGRAMME_MODE_ID" />
+    <div class="col-md-8 col-md-offset-2">
+        <table class="table table-hover table-bordered">
+            <tr>
+                <td>Application No</td>
+                <td>@Model.liApplicant.FirstOrDefault().APPLICATION_NO</td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td>@Model.liApplicant.FirstOrDefault().FIRST_NAME</td>
+            </tr>
+            <tr>
+                <td>Programme From</td>
+                <td>
+                    <div class="form-group col-md-7">
+                        @Html.DropDownListFor(model => model.ProgrammeList, (Model.ProgrammeList != null) ? Model.ProgrammeList : Enumerable.Empty<SelectListItem>(), "--select--", new { @class = " selectpicker show-menu-arrow show-tick drop-down form-control  input-sm", @data_live_search = "true", id = "ddlProgrammeGroupId", disabled = true })
+                        @Html.ValidationMessageFor(model => model.ProgrammeList, "", new { @class = "text-danger" })
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Programme To</td>
+                <td>
+                    <div class="form-group col-md-7">
+                        @Html.DropDownListFor(model => model.ProgrammeList, (Model.ProgrammeList != null) ? Model.ProgrammeList : Enumerable.Empty<SelectListItem>(), "--select--", new { @class = " selectpicker show-menu-arrow show-tick drop-down form-control  input-sm", @data_live_search = "true", id = "ddlToProgrammeGroupId" })
+                        @Html.ValidationMessageFor(model => model.ProgrammeList, "", new { @class = "text-danger" })
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+                <td>Applied Course</td>
+                
+                    @if (Model.liCourses != null && Model.liCourses.Count > 0)
+                    {
+                        AppliedCourse = string.Join(",", Model.liCourses.Select(o => o.PROGRAMME_NAME).ToArray());
+                        <td>@AppliedCourse</td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                
+                
+            </tr>
+            <tr>
+                @if (Model.liSelectionProcess != null && Model.liSelectionProcess.Count > 0)
+                {
+                    <td>Selected Course</td>
+                    SelectedCourse = string.Join(",", Model.liCourses.Select(o => o.PROGRAMME_NAME).ToArray());
+                    <td>@SelectedCourse</td>
+
+                }
+                else
+                {
+                    <td colspan="2">
+                        &nbsp;&nbsp;
+                        <a onclick="SaveAdmProgrammeTransfer();" class="btn btn-primary">Transfer</a>
+                    </td>
+                }
+            </tr>
+        </table>
+        
+    </div>
+
+</div>
+<script>
+    $('.selectpicker').selectpicker({
+        size: 4
+    });
+    $(document).ready(function () {
+        $('#ddlProgrammeGroupId').val($('#txtToProgrammeGroupid').val());
+        $('.selectpicker').selectpicker('refresh');
+    });
+
+    SaveAdmProgrammeTransfer = function () {
+        var Json;
+        var ProgrammeTo = $("#ddlToProgrammeGroupId").val();
+        var ProgrammeFrom = $('#txtToProgrammeGroupid').val();
+        var ReceiveId = $('#txtReceiveId').val();
+        var IssueId = $('#txtIssueId').val();
+        var ApplicationNo = $('#txtApplicationNo').val();
+        if (ProgrammeTo != "") {
+            if (!confirm('Are you sure to Transfer?')) {
+                return false;
+            }
+            Json = '{"RECEIVE_ID":"' + ReceiveId + '","APPLICATION_NO":"' + ApplicationNo + '","PROGRAMME_FROM":"' + ProgrammeFrom + '","ISSUE_ID":"' + IssueId + '","PROGRAMME_TO":"' + ProgrammeTo + '"}';
+            $.ajax({
+                url: "@Url.Action("SaveAdmissionProgrammeTransfer", "Admission")",
+                method: "POST",
+                datatype: "html",
+                data: { sADMTransfer: Json },
+                success: function (option) {
+                    myAlert(option.Message, 'gritter-success', '');
+                }, error: function (error) {
+                    alert(error);
+                    alert('Erorr');
+                }
+            });
+        }
+        else {
+            alert('Please Choose Programme to Transfer...!!!');
+        }
+    }
+</script>

@@ -1,0 +1,276 @@
+﻿@model CMS.ViewModel.ViewModel.StudentViewModel
+
+@{
+    ViewBag.Title = "StuCourseInfo";
+    Layout = "~/Views/Shared/_AdminLayoutPage.cshtml";
+}
+
+@section styles{
+    <link href="~/Content/assets/plugins/multi-select/multiselect.css" rel="stylesheet" />
+    <link href="~/Content/assets/plugins/select2/dist/css/select2.min.css" rel="stylesheet" />
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="content" id="content">
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">Home</a></li>
+            <li><a href="@Url.Action("StuCourseInfoList","Student")">Student Course List </a></li>
+            <li class="active">Add Student Course</li>
+        </ol>
+        <h1 class="page-header">Student Course Info </h1>
+        <div class="panel">
+            <div class="panel-heading bg-primary">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                </div>
+                <h4 class="panel-title">Add Student Course</h4>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.ClassList, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.DropDownListFor(model => model.ClassList, Model.ClassList, "-- Select --", new { @class = "drop-down form-control input-sm" })
+                                        @Html.ValidationMessageFor(model => model.ClassList, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CourseList, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.DropDownListFor(model => model.CourseList, Model.CourseList, "-- Select --", new { @class = "drop-down form-control input-sm" })
+                                        @Html.ValidationMessageFor(model => model.CourseList, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-lg-5 m-b-5">
+                            <div id="divStudentList">
+                                <!--Need to use this fied to bind Student List-->
+                            </div>
+                        </div>
+                        <center><div class="col-md-2 hidden" id="divArrow"><h1><i class="fa fa-long-arrow-right" onclick="SendSelectedStudent()"></i></h1></div></center>
+                        <div class="col-lg-5 m-b-5">
+                            <div id="divSelectedStudentList">
+                                <!--Need to use this fied to bind Student List-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+@section scripts{
+    <script src="~/Content/assets/plugins/flot/jquery.flot.min.js"></script>
+    <script src="~/Content/assets/plugins/multi-select/multiselect-js.js"></script>
+    <script src="~/Content/assets/plugins/select2/dist/js/select2.min.js"></script>
+    <script>
+        $("#ClassList,#CourseList").select2();
+    </script>
+    <script>
+        $('#ClassList').on('change', function () {
+            var vClassId = $('#ClassList').val();
+            if (vClassId != 0) {
+                $.ajax({
+                    url: '@Url.Action("BindStudentsByClassId", "Student")',
+                    data: { sClassId: vClassId },
+                    success: function (option) {
+                        var divHtml = $('#divStudentList');
+                        divHtml.empty();
+                        divHtml.html(option);
+                        BindCourseByClassId();
+                    },
+                    error: function (xhr, textStatus, error) {
+                        alert(error + "\n");
+                    }
+                });
+
+            } else {
+                alert('Please Select Class !!!');
+            }
+        });
+    </script>
+    <script>
+        $('#CourseList').on('change', function () {
+            var vCourseId = $('#CourseList').val();
+            var vClassId = $('#ClassList').val();
+            if (vCourseId != 0 && vClassId != 0) {
+                $.ajax({
+                    url: '@Url.Action("BindSelectedStudentsByCourseId", "Student")',
+                    data: { sCourseId: vCourseId, sClassId: vClassId },
+                    success: function (option) {
+                        var divHtml = $('#divSelectedStudentList');
+                        divHtml.empty();
+                        divHtml.html(option);
+                        $('#divArrow').removeClass('hidden');
+                    },
+                    error: function (xhr, textStatus, error) {
+                        alert(error + "\n");
+                    }
+                });
+
+            } else {
+                alert('Please Select Class !!!');
+            }
+        });
+    </script>
+    <script>
+        SendSelectedStudent = function () {
+            var StudentId;
+            if (parseInt($('#ClassList').val()) != null) {
+                $('#StudentList tbody tr').each(function () {
+                    $(this).find('td').each(function () {
+                        var chkBox = $(this).find('input[type="checkbox"]');
+                        if (chkBox.is(':checked')) {
+                            StudentId = '"' + $(this).find('input[type="checkbox"]').attr("cms-studentid") + '"';
+                        }
+                    });
+                });
+                if (StudentId == null) {
+                    alert('Please select the student to move...!!!');
+                    return false;
+                }
+            }
+            var CommonRollno = '';
+            $('#StudentList tbody tr').each(function () {
+                $(this).find('td').each(function () {
+                    var chkBox = $(this).find('input[type="checkbox"]');
+                    //alert($(this).closest('tr').find('td:eq(2)').text());
+                    if (chkBox.is(':checked')) {
+                        var Rollno = ($(this).closest('tr').find('td:eq(2)').text());
+                        $('#SelectedStudentList tbody tr').each(function () {
+                            $(this).find('td:eq(1)').each(function () {
+                                var sRollno = ($(this).closest('tr').find('td:eq(0)').text());
+                                if (Rollno == sRollno) {                                     
+                                    CommonRollno += '"' + Rollno + '",';
+                                }
+                            });
+                        });
+                    }
+                });
+            });
+            CommonRollno = CommonRollno.slice(0, -1);
+            if (CommonRollno != '') {
+                alert(CommonRollno+" This Student(s) Exist Already");
+                $('#StudentList tbody tr').each(function () {
+                    $(this).find('input[type="checkbox"]').each(function () {
+                        $('input[type="checkbox"]').attr("checked", false);
+                    });
+                });
+                return false;
+            }
+            else {
+                $('#StudentList tbody tr').each(function () {
+                    var StudentId = $(this).attr("cms-studentid");
+                    $(this).find('td').each(function () {
+                        var chkBox = $(this).find('input[type="checkbox"]');
+                        var Rollno = ($(this).closest('tr').find('td:eq(2)').text());
+                        var Name = ($(this).closest('tr').find('td:eq(3)').text());
+                        if (chkBox.is(':checked')) {
+                            var table = document.getElementById("SelectedStudentList");
+                            var row = table.insertRow(1);
+                            row.setAttribute("cms-studentid", StudentId);
+                            row.setAttribute("cms-rollno", Rollno);
+                            var cell1 = row.insertCell(0);
+                            var cell2 = row.insertCell(1);
+                            var cell3 = row.insertCell(2);
+                            cell1.innerHTML = Rollno;
+                            cell2.innerHTML = Name;
+                            cell3.innerHTML = '<a class="remove"><i class="fa fa-trash text-danger" title="Delete"></i></a>';
+                        }
+                    });
+                });
+                $('#StudentList tbody tr').each(function () {
+                    $(this).find('input[type="checkbox"]').each(function () {
+                        $('input[type="checkbox"]').attr("checked", false);
+                    });
+                });
+            }
+        }
+        BindCourseByClassId = function () {
+            var vClassId = $('#ClassList').val();
+            $.ajax({
+                url: "@Url.Action("BindCourseByClassId", "Student")",
+                method: "POST",
+                data: { sClassId: vClassId },
+                datatype: "json",
+                success: function (data) {
+                    $('#CourseList').empty().append(data).select();
+                }, error: function (xhr, textStatus, error) {
+                    alert(error + "\n" + textStatus + error);
+                }
+            });
+        }
+    </script>
+    <script>
+        SelectOrUnselect = function () {
+            if (AllchkID.checked == true) {
+                $('#StudentList tbody tr').each(function () {
+                    $(this).find('input[type="checkbox"]').each(function () {
+                        $('input[type="checkbox"]').attr("checked", true);
+                    });
+                });
+            }
+            else {
+                $('#StudentList tbody tr').each(function () {
+                    $(this).find('input[type="checkbox"]').each(function () {
+                        $('input[type="checkbox"]').attr("checked", false);
+                    });
+                });
+            }
+        }
+    </script>
+    <script>
+        SelectedStudentUpdate = function () {
+            //$('#divSelectedStudentList').append('<div id="page-loader" class="fade in"><span class="spinner"></span></div>');
+            var ClassId = $('#ClassList').val();
+            var CourseId = $('#CourseList').val();
+            var sClassId;
+            var JsonData;
+            JsonData = '{"SelectedStudentList":[';
+            $('#SelectedStudentList tbody tr').each(function () {
+                sClassId = ClassId;
+                JsonData += '{"ROLL_NO":"' + $(this).attr("cms-rollno")+'","CLASS_ID":"' + sClassId + '","COURSE_ID":"' + CourseId + '",';
+                JsonData += '"' + "STUDENT_ID" + '":"' + $(this).attr("cms-studentid") + '"},';
+            });
+            JsonData = JsonData.slice(0, -1);
+            JsonData +=
+            ']}';
+            $.ajax({
+                url: "@Url.Action("UpdateStuCourseInfo", "Student")",
+                method: "POST",
+                data: { sStuCourseInfo: JsonData },
+                datatype: "json",
+                success: function (data) {
+                    alert(data);
+                    //$('#divSelectedStudentList').remove('<div id="page-loader" class="fade in"><span class="spinner"></span></div>');
+                }, error: function (xhr, textStatus, error) {
+                    alert(error + "\n" + textStatus + error);
+                }
+            });
+        }
+    </script>
+    <script>
+        $("table.table a.remove").live("click", function () {
+            $(this).parents("tr").remove();
+        });
+    </script>
+}
+

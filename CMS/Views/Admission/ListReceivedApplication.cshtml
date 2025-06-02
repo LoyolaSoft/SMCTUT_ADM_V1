@@ -1,0 +1,755 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@using CMS.Utility;
+@{
+    ViewBag.Title = "ListReceivedApplication";
+    //Layout = "~/Views/Shared/_AdminLayoutPage.cshtml";
+    Layout = null;
+    int count = 0;
+}
+
+<link href="~/Content/assets/plugins/DataTables/media/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/DataTables/extensions/Buttons/css/buttons.bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/DataTables/extensions/Responsive/css/responsive.bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/superbox/css/superbox.min.css" rel="stylesheet" id="theme" />
+@*<link href="~/Content/assets/plugins/zoomifyc/zoomifyc.css" rel="stylesheet" />*@
+
+<div class="content" id="content">
+    @using (Html.BeginForm())
+    {
+    @Html.AntiForgeryToken()
+    <ol class="breadcrumb pull-right">
+        <li><a href="javascript:;">Home</a></li>
+        <li class="active">Received Application List </li>
+    </ol>
+    <h2 class="page-header"> Received Application List </h2>
+    <div class="panel">
+        <div class="panel-heading bg-primary">
+            <div class="panel-heading-btn">
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+            </div>
+            <h4 class="panel-title">Received Application List </h4>
+        </div>
+        <div class="panel-body">
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="col-md-12">
+                    <div class="form-group col-md-5">
+                        @Html.LabelFor(model => model.CycleList, "Selection Cycle", htmlAttributes: new { @class = "control-label col-md-5" })
+                        <div class="col-md-7">
+                            @Html.DropDownListFor(model => model.CycleList, (Model.CycleList != null) ? Model.CycleList : Enumerable.Empty<SelectListItem>(), "--select--", new { @class = " selectpicker show-menu-arrow show-tick drop-down form-control  input-sm", @data_live_search = "true" })
+                            @Html.ValidationMessageFor(model => model.CycleList, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.ProgrammeList, "Programme", htmlAttributes: new { @class = "control-label col-md-5" })
+                        <div class="col-md-7">
+                            @Html.DropDownListFor(model => model.ProgrammeList, (Model.ProgrammeList != null) ? Model.ProgrammeList : Enumerable.Empty<SelectListItem>(), "--select--", new { @class = " selectpicker show-menu-arrow show-tick drop-down form-control  input-sm", @data_live_search = "true" })
+                            @Html.ValidationMessageFor(model => model.ProgrammeList, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <a href="#filtermodal" data-toggle="modal" title="Filter"><i class="glyphicon glyphicon-filter" style="font-size:20px;color:#0079fd" title="Filter"></i></a>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group col-md-5">
+                        <div class="col-md-5">
+                            @Html.LabelFor(model => model.ApplicantTypeList, "Selection Type", htmlAttributes: new { @class = "control-label " })
+
+                        </div>
+                        <div class="col-md-7">
+                            @Html.DropDownListFor(model => model.ApplicantTypeList, (Model.ApplicantTypeList != null) ? Model.ApplicantTypeList : Enumerable.Empty<SelectListItem>(), "--select--", new { @class = " selectpicker show-menu-arrow show-tick drop-down form-control  input-sm", @data_live_search = "true" })
+                            @*@Html.DropDownListFor(model => model.ApplicantTypeList, (Model.ApplicantTypeList != null) ? Model.ApplicantTypeList : Enumerable.Empty<SelectListItem>(), null, new { @class = " selectpicker show-menu-arrow show-tick drop-down form-control  input-sm", @data_live_search = "true", @data_actions_box = "true", multiple = "multiple" })*@
+                            @Html.ValidationMessageFor(model => model.ApplicantTypeList, "", new { @class = "text-danger" })
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.CasteList, "Caste", htmlAttributes: new { @class = "control-label col-md-5" })
+                        <div class="col-md-7">
+                            @Html.DropDownListFor(model => model.CasteList, (Model.CasteList != null) ? Model.CasteList : Enumerable.Empty<SelectListItem>(), null, new { @class = " selectpicker show-menu-arrow show-tick drop-down form-control  input-sm", @data_live_search = "true", @data_actions_box = "true", multiple = "multiple" })
+                            @Html.ValidationMessageFor(model => model.CasteList, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <a class="btn btn-primary" onclick="BindStudentForSelectionProcess()" href="#" title="Click to list the students">Get</a>
+                    <a class="btn btn-success " onclick="UpdateSelectedStudent()" href="#" title="Click to Select the students">Confirm</a>
+                </div>
+                <div class="form-group col-md-12">
+
+                    <div class="form-group col-md-6">
+                        <div class="col-lg-4">
+                            <label>Is Hostel Applied?</label>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="radio radio-css radio-primary radio-inline">
+                                <input type="radio" name="hostelradio" id="rbtnyes" value="1" />
+                                <label for="rbtnyes">Yes</label>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <div class="radio radio-css radio-primary radio-inline">
+                                <input type="radio" name="hostelradio" id="rbtnno" value="0" />
+                                <label for="rbtnno">No</label>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-1">
+                            <div class="radio radio-css radio-primary radio-inline">
+                                <input type="radio" name="hostelradio" id="rbtnboth" value="0,1,2" />
+                                <label for="rbtnboth">Both</label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group col-md-6">
+                        <div id="dSportsSwitch" class="hidden">
+                            <div class="col-md-4"><label class="control-label">Sports Quota</label> </div>
+                            <div class="col-md-2">
+                                <input type="checkbox" data-render="switchery" data-theme="blue" data-change="check-switchery-state-text" id="isSports" />
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-12">
+                    <div id="dMinoritySwitch" class="col-md-6 hidden">
+                        <div class="col-md-5"><label class="control-label">Is Minority Required? </label> </div>
+                        <div class="col-md-7">
+                            <input type="checkbox" data-render="switchery" data-theme="blue" data-change="check-switchery-state-text" id="isMinority" />
+                            @*<label class="" id="swicthtext">No</label>*@
+                            @*<a href="#" class="btn btn-xs btn-danger disabled m-l-5" data-id="switchery-state-text" id="swicthtext">NO</a>*@
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                    </div>
+
+                </div>
+
+
+            </div>
+            <div class="col-md-12 m-b-5" style="margin-top: 20px">
+                <div id="divReceivedApplication" class="table-responsive">
+                    <!--Need to use this field to bind Received Application-->
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-lg-12">
+        <div class="modal" id="modal-without-animation">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">Mark Details</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="divmark"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="modal" id="modal-upload">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title">Uploaded Files</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="UploadedFiles"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="javascript:;" class="btn btn-sm btn-white" id="btnimgmodalclose" data-dismiss="modal">Close</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+</div>
+
+
+
+<div class="col-lg-12">
+    <div class="modal" id="modal-uploaded-files">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Uploaded Files</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row m-l-10" id="dvUploadedFiles">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="dateexpiredapplicant">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Date Expired Selected Applicants</h4>
+            </div>
+            <div class="modal-body">
+                <label class="label label-success" id="lblcount1"></label>
+                <br>
+                <table class="table table-bordered" id="tblapplicant">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th><input type="checkbox" name="myTextEditBox" id="AllchkID" onchange="SelectOrUnselect1()" /></th>
+                            <th>Application No</th>
+                            <th>Name</th>
+                            <th>Selection Date</th>
+                            <th>Programme</th>
+                            <th>Cycle</th>
+                            <th>Status</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.LiDateExpiredSelectedApplicant != null && Model.LiDateExpiredSelectedApplicant.Count > 0)
+                        {
+                            foreach (var item in Model.LiDateExpiredSelectedApplicant)
+                            {
+                                count++;
+                        <tr>
+                            <td>@count</td>
+                            <td><input type="checkbox" name="myTextEditBox" onclick="CheckedCount1()" id="chkID" cms-receiveid="@item.RECEIVE_ID" cms-applicationno="@item.APPLICATION_NO" cms-issuedid="@item.ISSUED_ID" cms-selectionid="@item.SELECTION_ID" /></td>
+                            <td>@item.APPLICATION_NO</td>
+                            <td>@item.FIRST_NAME</td>
+                            <td>@item.SELECTION_DATE</td>
+                            <td>@item.PROGRAMME_NAME</td>
+                            <td>@item.SELECTION_CYCLE</td>
+                            <td>@item.STATUS_NAME</td>
+                        </tr>
+                            }
+                        }
+                        else
+                        {
+                        <tr>
+                            <td colspan="8">No Record Founds...!</td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-primary" id="btnSave" data-dismiss="modal">Submit</a>
+                <a href="javascript:;" class="btn btn-sm btn-white" data-dismiss="modal">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="filtermodal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group col-lg-12">
+                    <table class="table table-bordered" id="tblfilter">
+                        <thead>
+                            <tr>
+                                <th>Subjects</th>
+                                <th>Min Mark</th>
+                                <th>Max Mark</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    @Html.DropDownListFor(model => model.Subjects, (Model.Subjects != null) ? Model.Subjects : Enumerable.Empty<SelectListItem>(), "--select--", new { @class = " selectpicker show-menu-arrow show-tick drop-down form-control Subjects", @data_live_search = "true" })
+                                @Html.ValidationMessageFor(model => model.Subjects, "", new { @class = "text-danger" })
+                            </td>
+                            <td><input type="number" class="form-control minmark"></td>
+                            <td><input type="number" class="form-control maxmark"></td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.DropDownListFor(model => model.Subjects, (Model.Subjects != null) ? Model.Subjects : Enumerable.Empty<SelectListItem>(), "--select--", new { @class = " selectpicker show-menu-arrow show-tick drop-down form-control Subjects", @data_live_search = "true" })
+                                @Html.ValidationMessageFor(model => model.Subjects, "", new { @class = "text-danger" })
+                            </td>
+                            <td><input type="number" class="form-control minmark"></td>
+                            <td><input type="number" class="form-control maxmark"></td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.DropDownListFor(model => model.Subjects, (Model.Subjects != null) ? Model.Subjects : Enumerable.Empty<SelectListItem>(), "--select--", new { @class = " selectpicker show-menu-arrow show-tick drop-down form-control Subjects", @data_live_search = "true" })
+                                @Html.ValidationMessageFor(model => model.Subjects, "", new { @class = "text-danger" })
+                            </td>
+                            <td><input type="number" class="form-control minmark"></td>
+                            <td><input type="number" class="form-control maxmark"></td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.DropDownListFor(model => model.Subjects, (Model.Subjects != null) ? Model.Subjects : Enumerable.Empty<SelectListItem>(), "--select--", new { @class = " selectpicker show-menu-arrow show-tick drop-down form-control Subjects", @data_live_search = "true" })
+                                @Html.ValidationMessageFor(model => model.Subjects, "", new { @class = "text-danger" })
+                            </td>
+                            <td><input type="number" class="form-control minmark"></td>
+                            <td><input type="number" class="form-control maxmark"></td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                @Html.DropDownListFor(model => model.Subjects, (Model.Subjects != null) ? Model.Subjects : Enumerable.Empty<SelectListItem>(), "--select--", new { @class = " selectpicker show-menu-arrow show-tick drop-down form-control Subjects", @data_live_search = "true" })
+                                @Html.ValidationMessageFor(model => model.Subjects, "", new { @class = "text-danger" })
+                            </td>
+                            <td><input type="number" class="form-control minmark"></td>
+                            <td><input type="number" class="form-control maxmark"></td>
+
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn btn-primary" data-dismiss="modal">Apply</a>
+            <a href="javascript:;" class="btn btn-danger" id="btnclear">Clear</a>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="~/Content/assets/plugins/DataTables/media/js/jquery.dataTables.js"></script>
+<script src="~/Content/assets/plugins/DataTables/media/js/dataTables.bootstrap.min.js"></script>
+<script src="~/Content/assets/plugins/DataTables/extensions/Buttons/js/dataTables.buttons.min.js"></script>
+<script src="~/Content/assets/plugins/DataTables/extensions/Buttons/js/buttons.bootstrap.min.js"></script>
+<script src="~/Content/assets/plugins/DataTables/extensions/Buttons/js/buttons.flash.min.js"></script>
+<script src="~/Content/assets/plugins/DataTables/extensions/Buttons/js/jszip.min.js"></script>
+<script src="~/Content/assets/plugins/DataTables/extensions/Buttons/js/pdfmake.min.js"></script>
+<script src="~/Content/assets/plugins/DataTables/extensions/Buttons/js/vfs_fonts.min.js"></script>
+<script src="~/Content/assets/plugins/DataTables/extensions/Buttons/js/buttons.html5.min.js"></script>
+<script src="~/Content/assets/plugins/DataTables/extensions/Buttons/js/buttons.print.min.js"></script>
+<script src="~/Content/assets/plugins/DataTables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+<script src="~/Content/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+<script src="~/Content/assets/plugins/gritter/js/jquery.gritter.js"></script>
+<script src="~/Content/assets/plugins/bootstrap-sweetalert/sweetalert.min.js"></script>
+<script src="~/Content/assets/js/ui-modal-notification.demo.min.js"></script>
+<script src="~/Content/assets/plugins/superbox/js/superbox.min.js"></script>
+<script src="~/Content/assets/js/gallery-v2.demo.min.js"></script>
+@*<script src="~/Content/assets/plugins/zoomifyc/zoomifyc.js"></script>*@
+<script>
+    $(document).ready(function () {
+        var selectapplicant = @Html.Raw(Json.Encode(ViewBag.SelectedApplicant));
+
+        if (selectapplicant != null && selectapplicant.length>0)
+        {
+
+            $('#dateexpiredapplicant').modal('show');
+        }
+    });
+    $('.selectpicker').selectpicker({
+        size: 4
+    });
+
+    $("#btnimgmodalclose").click(function () {
+        var dvUploadedFiles = $('#UploadedFiles');
+        dvUploadedFiles.empty();
+    });
+    (function () {
+        FormSliderSwitcher.init();
+    })();
+    $('#btnclear').on('click',function()
+    {
+        $('#tblfilter tbody tr').each(function()
+        {
+            $(this).find('input[type="number"]').val("");
+        });
+    });
+</script>
+<script>
+    BindStudentForSelectionProcess = function ()
+    {
+        var Filter=null;
+        var CycleId = $("#CycleList").val();
+        var ProgrammeId = $("#ProgrammeList").val();
+        var ApplicantTypeId = $("#ApplicantTypeList").val();
+        //var ApplicantTypeId = String($("#ApplicantTypeList").val());
+        var CasteId = String($("#CasteList").val());
+        var OCcasteId='';
+        var OApplicationTypeId='';
+        var Programme;
+        var count = 0;
+        var str = "";
+        var hostel ='';
+        if ($("input[name='hostelradio']:checked").val())
+        {
+            hostel = $("input[name='hostelradio']:checked").val();
+        }
+        ////selection type
+        //$("#ApplicantTypeList option").each(function ()
+        //{
+        //    str += $(this).val() + ",";
+        //});
+        //str = str.slice(0, -1);
+        //var dataarray=str.split(",");
+        //var ApplicationArray=CasteId.split(",");
+        //for (var i = 0; i < ApplicationArray.length; i++) {
+        //    var Id=ApplicationArray[i];
+        //    if (OApplicationTypeId==Id) {
+        //        $("#ApplicantTypeList").val(dataarray).change();
+        //        ApplicantTypeId =String($("#ApplicantTypeList").val());
+        //    }
+        //}
+
+        $("#CasteList option").each(function ()
+        {
+            str += $(this).val() + ",";
+        });
+        str = str.slice(0, -1);
+        var dataarray=str.split(",");
+        var CasteArray=CasteId.split(",");
+        for (var i = 0; i < CasteArray.length; i++) {
+            var Id=CasteArray[i];
+            if (OCcasteId==Id) {
+                $("#CasteList").val(dataarray).change();
+                CasteId =String($("#CasteList").val());
+            }
+        }
+        if (hostel != '' && hostel!=null && CycleId != '' && ProgrammeId != '' && ApplicantTypeId != '' && CasteId != 'null')
+        {
+            Filter = '{"SAVE_ADM_SUB_STU_MARKS":[';
+            $('#tblfilter tbody tr').each(function()
+            {
+                if($(this).find('.Subjects').val()!='' && $(this).find('.Subjects').val()!='0' && $(this).find('.minmark').val()!='' && $(this).find('.maxmark').val()!='')
+                {
+                    Filter += '{"HSS_SUBJECT_ID":"' + $(this).find('.Subjects').val() + '","MIN_MARK":"' + $(this).find('.minmark').val() + '","MAX_MARK":"' + $(this).find('.maxmark').val() + '"},';
+                    count++;
+                }
+            });
+            Filter = Filter.slice(0, -1);
+            Filter += ']}';
+            if (count <= 0)
+            {
+                Filter = "";
+            }
+            var is_minority="0";
+            if ($('#isMinority').prop('checked'))
+            {
+                is_minority="1";
+            }
+            $('#lblcount').text('Count:0');
+            $.ajax({
+                url: "@Url.Action("BindReceivedApplicantList", "Admission")",
+                method: "POST",
+                datatype: "html",
+                data: { sCycleId: CycleId, sProgrammeId: ProgrammeId, sApplicantTypeId: ApplicantTypeId, sCasteId: CasteId,sIs_Minority:is_minority,sHostel:hostel,sFilterJson:Filter },
+                success: function (option)
+                {
+                    var dvReceivedApplication = $('#divReceivedApplication');
+                    dvReceivedApplication.empty();
+                    dvReceivedApplication.append(option);
+                    $("#ApplicationReceivedList").DataTable({
+                        dom: "lBfrtip", buttons: [{
+                            extend: "copy", className: "btn-sm"
+                        }
+                            , {
+                                extend: "excel", className: "btn-sm"
+                            }
+                            , {
+                                extend: "pdf", className: "btn-sm"
+                            }
+                        ], responsive: !0, "paging": false
+                    });
+                    $('#dSportsSwitch').removeClass('hidden');
+
+                }, error: function (error) {
+                    alert('Internal Server Error!');
+                }
+            });
+        }
+        else {
+            alert('Please Choose All The Values...!!!');
+        }
+    }
+
+    bindMarks = function (e, a) {
+        var dvReceivedApplication = $('#divmark');
+        dvReceivedApplication.empty();
+        $.ajax({
+            url: "@Url.Action("FetchSubejectMarksByReceiveId", "Admission")",
+            method: "POST",
+            datatype: "html",
+            data: { sReceiveId:e,sApplicationTypeId:a },
+            success: function (option) {
+                dvReceivedApplication.append(option);
+            }, error: function (error) {
+                alert(error);
+            }
+        });
+
+    }
+    SelectOrUnselect = function () {
+        if (AllchkID.checked == true) {
+            $('#ApplicationReceivedList tbody tr').each(function () {
+                $(this).find('input[type="checkbox"]').each(function () {
+                    $('input[type="checkbox"]').attr("checked", true);
+                });
+            });
+        }
+        else {
+            $('#ApplicationReceivedList tbody tr').each(function () {
+                $(this).find('input[type="checkbox"]').each(function () {
+                    $('input[type="checkbox"]').attr("checked", false);
+                });
+            });
+        }
+    }
+    UpdateSelectedStudent = function ()
+    {
+        var Issportsquota = "0";
+        if ($('#isSports').prop('checked'))
+        {
+            Issportsquota = "1";
+        }
+        var StudentId;
+        $('#ApplicationReceivedList tbody tr').each(function () {
+            $(this).find('td').each(function () {
+                var chkBox = $(this).find('input[type="checkbox"]');
+                if (chkBox.is(':checked')) {
+                    StudentId = '"' + $(this).find('input[type="checkbox"]').attr("cms-userid") + '"';
+                }
+            });
+        });
+        if (StudentId == null) {
+            alert('Please select the student to update...!!!');
+            return false;
+        }
+        if (!confirm('Are you sure to select this student ?')) {
+            return false;
+        }
+        var CycleList = $('#CycleList').val();
+        var Programme = $('#ProgrammeList').val();
+        var ApplicationType = $('#ApplicantTypeList').val();
+        var JsonData;
+        var Search = $('input[type="search"]').val();
+        if (Search == '') {
+            JsonData = '{"SAVE_SELECTION_PROCESS":[';
+            $('#ApplicationReceivedList tbody tr').each(function () {
+                $(this).find('td').each(function () {
+                    var chkBox = $(this).find('input[type="checkbox"]'); 
+                    if (chkBox.is(':checked'))
+                    {
+
+                        JsonData += '{"SELECTION_TYPE":"' + ApplicationType + '","PROGRAMME_ID":"' + Programme + '","IS_SPORTS_QUOTA":"' + Issportsquota + '","SELECTION_CYCLE":"' + CycleList + '",';
+                        JsonData += '"' + "RECEIVE_ID" + '":"' + $(this).find('input[type="checkbox"]').attr("cms-receiveid") + '", "' + "APPLICATION_NO" + '":"' + $(this).find('input[type="checkbox"]').attr("cms-applicationno") + '", "' + "PROGRAMME_MODE" + '":"' + $(this).find('input[type="checkbox"]').attr("cms-programmemode") + '","' + "TOTAL_CUT_OFF_MARK" + '":"' + $(this).find('input[type="checkbox"]').attr("cms-cutoff") + '", "' + "MAX_TOTAL" + '":"' + $(this).find('input[type="checkbox"]').attr("cms-maxmark") + '", "' + "TOTAL_SECURED" + '":"' + $(this).find('input[type="checkbox"]').attr("cms-hstotal") + '","ISSUE_ID":"' + $(this).find('input[type="checkbox"]').attr("cms-issuedid")+'","APPLICATION_TYPE_ID":"' + $(this).find('input[type="checkbox"]').attr("cms-apptypeid")+'"},';
+                    }
+                });
+            });
+            JsonData = JsonData.slice(0, -1);
+            JsonData +=
+            ']}';
+            $.ajax({
+                url: "@Url.Action("SaveOrUpdateSelectionWaitingProcess", "Admission")",
+                method: "POST",
+                data: { sSelectionProcess: JsonData },
+                datatype: "json",
+                async:false,
+                success: function (data)
+                {
+                    //alert(data.Message);
+                    myAlert(data.Message, 'gritter-success', '');
+                    BindStudentForSelectionProcess();
+                }, error: function (xhr, textStatus, error) {
+                    alert(error + "\n" + textStatus + error);
+                }
+            });
+        }
+        else {
+            alert('Please Clear the Search Box...!!!');
+        }
+    }
+    //$('#ApplicantTypeList').change(function (e) {
+    //    if ($('#ApplicantTypeList').val() == 2) {
+    //        $('#dMinoritySwitch').removeClass('hidden');
+
+    //        if ($('#isMinority').prop('checked'))
+    //        {
+    //            $('#isMinority').click();
+    //            $('#swicthtext').val('YES');
+
+    //        }
+    //        else
+    //        {
+    //            $('#swicthtext').val('NO');
+    //        }
+
+
+    //    } else {
+    //        $('#dMinoritySwitch').addClass('hidden');
+    //    }
+    //});
+
+    function CheckedCount()
+    {
+        var count=0;
+        $('#ApplicationReceivedList tbody tr').each(function () {
+            $(this).find('td').each(function () {
+                var chkBox = $(this).find('input[type="checkbox"]');
+                if (chkBox.is(':checked')) {
+                    count++;
+
+                }
+            });
+        });
+        $('#lblcount').text('Count:'+count);
+
+    }
+
+    SelectOrUnselect1 = function () {
+        if (AllchkID.checked == true) {
+            $('#tblapplicant tbody tr').each(function () {
+                $(this).find('input[type="checkbox"]').each(function () {
+                    $('input[type="checkbox"]').attr("checked", true);
+                });
+            });
+        }
+        else {
+            $('#tblapplicant tbody tr').each(function () {
+                $(this).find('input[type="checkbox"]').each(function () {
+                    $('input[type="checkbox"]').attr("checked", false);
+                });
+            });
+        }
+    }
+    function CheckedCount1() {
+        var count = 0;
+        $('#tblapplicant tbody tr').each(function () {
+            $(this).find('td').each(function () {
+                var chkBox = $(this).find('input[type="checkbox"]');
+                if (chkBox.is(':checked')) {
+                    count++;
+
+                }
+            });
+        });
+        $('#lblcount1').text('Count:' + count);
+    }
+    $('#btnSave').on('click', function ()
+    {
+        var StudentId;
+        $('#tblapplicant tbody tr').each(function () {
+            $(this).find('td').each(function () {
+                var chkBox = $(this).find('input[type="checkbox"]');
+                if (chkBox.is(':checked')) {
+                    StudentId = '"' + $(this).find('input[type="checkbox"]').attr("cms-receiveid") + '"';
+                }
+            });
+        });
+        if (StudentId == null) {
+            alert('Please select the student to update...!!!');
+            return false;
+        }
+        if (!confirm('Are you sure to admission cancel for this students ?')) {
+            return false;
+        }
+        var JsonData;
+
+        JsonData = '{"SAVE_SELECTION_PROCESS":[';
+        $('#tblapplicant tbody tr').each(function () {
+            $(this).find('td').each(function () {
+                var chkBox = $(this).find('input[type="checkbox"]');
+                if (chkBox.is(':checked'))
+                {
+                    JsonData += '{"SELECTION_ID":"' + $(this).find('input[type="checkbox"]').attr("cms-selectionid") + '","ISSUED_ID":"' + $(this).find('input[type="checkbox"]').attr("cms-issuedid") + '","RECEIVE_ID":"' + $(this).find('input[type="checkbox"]').attr("cms-receiveid") + '"},';
+
+                }
+            });
+        });
+        JsonData = JsonData.slice(0, -1);
+        JsonData +=
+        ']}';
+        $.ajax({
+            url: "@Url.Action("SaveDateExpiredSelectedApplicant", "Admission")",
+            method: "POST",
+            data: { sJsonData: JsonData },
+            datatype: "json",
+            async:false,
+            success: function (data)
+            {
+                alert(data.Message);
+
+            }, error: function (xhr, textStatus, error) {
+                alert(error + "\n" + textStatus + error);
+            }
+        });
+
+
+    });
+
+    @*bindFiles = function (e,a) {
+                $.ajax({
+                    url: "@Url.Action("FetchUploadedFilesByReceiveId", "Admission")",
+                    method: "POST",
+                    datatype: "html",
+                    async: false,
+                    data: { sReceiveId: e },
+                    success: function (option) {
+                        var dvUploadedFiles = $('#UploadedFiles');
+                        dvUploadedFiles.empty();
+                        dvUploadedFiles.append(option);
+                        zoomifyc.init($('#div-img img'));
+                    }, error: function (error) {
+                        console.log(error);
+                    }
+                });
+            }*@
+
+    FetchAppllicantUploadedFiles=function(id)
+    {
+        var ReceiveId = id;
+        $.ajax({
+            url: "@Url.Action("FetchUploadedFilesByReceiveId", "Admission")",
+            method: "POST",
+            datatype: "html",
+            async: false,
+            data: { sReceiveId: ReceiveId },
+            success: function (option) {
+                var dvUploadedFiles = $('#dvUploadedFiles');
+                dvUploadedFiles.empty();
+                dvUploadedFiles.append(option);
+                $(".superbox").SuperBox({
+                    background: "#242a30", border: "rgba(0,0,0,0.1)", xColor: "#a8acb1", xShadow: "embed"
+                });
+            }, error: function (error) {
+                alert(error);
+            }
+        });
+    }
+</script>

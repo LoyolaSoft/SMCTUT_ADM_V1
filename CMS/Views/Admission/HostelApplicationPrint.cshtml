@@ -1,0 +1,414 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@using CMS.Utility;
+@{
+    ViewBag.Title = "HostelApplication";
+    Layout = null;
+    string sGadjets = string.Empty;
+    string sSport = string.Empty;
+    string sEc = string.Empty;
+    string sCertificate = string.Empty;
+}
+<div id="content" class="content">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">Home</a></li>
+            <li class="active">Hostel Application Print</li>
+        </ol>
+        <h1 class="page-header">Hostel Application Print</h1>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="panel-heading-btn">
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+                        <h4 class="panel-title">Hostel Application Print</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-md-12 pull-right">
+                                <a id="btnPrint" value="Print" class="btn btn-success pull-right">Print</a>
+                            </div>
+                            @{
+                                if (Model.liApplicationForm != null && Model.liApplicationForm.Count > 0)
+                                {
+                                    if (Model.liApplicationForm.FirstOrDefault().HOSTEL_FACILITY.ToUpper() == "YES")
+                                    {
+                                        foreach (var item in Model.liApplicationForm)
+                                        {
+
+                                            <div class="table-bordered table-responsive" style="page-break-after:always !important;page-break-inside:avoid !important; font-size:14px;" id="dvApplicationForm">
+
+                                                <div class="col-md-12">
+                                                    <table border="0" width="100%">
+                                                        <tr>
+                                                            <td width="15%">
+                                                                <img src="~/Content/assets/hcc-img/hcclogo.JPG" style=" height: 130px;width:110px;" />
+                                                            </td>
+                                                            <td width="70%">
+                                                                <center>
+                                                                    <span><b style="font-size:18px;">ST. MARY'S COLLEGE HOSTEL</b></span><br />
+                                                                    <span><b>HOSTEL APPLICATION FORM FOR ADMISSION(@item.APPLICATION_TYPE)</b></span><br />
+                                                                    <span></span>Academic Year - 2024 - 2025<br />
+                                                                    <span><b>Application No : @item.APPLICATION_NO </b></span>
+                                                                </center>
+                                                            </td>
+                                                            <td width="15%">
+                                                                <img src="@item.PHOTO_PATH" alt="Please Affix Your Photo Here" class="pull-right" style="width:120px; height:120px; text-align:right" />
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <table align="center" style="width:100%; border:1px solid;">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="2" style="padding:5px 5px;border-bottom:1px solid; border-right:1px solid;" align="left"><b>Name of the Applicant</b></td>
+                                                                <td colspan="2" style="padding:5px 5px;border-bottom:1px solid; border-right:1px solid;" align="left">@item.FIRST_NAME</td>
+                                                            </tr>
+                                                            @*<tr>
+                                                                <td colspan="2" style="padding:5px 5px;border-bottom:1px solid; border-right:1px solid;" align="left"><b>Name of the Applicant (Tamil)</b></td>
+                                                                <td colspan="2" style="padding:5px 5px;border-bottom:1px solid; border-right:1px solid;" align="left">@item.NAME_IN_NATIVE</td>
+                                                            </tr>*@
+                                                            <tr>
+                                                                <td style="padding:5px 5px; border-bottom:1px solid; border-right:1px solid;" align="left"><b>Date of Birth</b></td>
+                                                                <td style="padding:5px 5px; border-bottom:1px solid; border-right:1px solid;" align="left">@item.DATE_OF_BIRTH</td>
+                                                                <td style="padding:5px 5px; border-bottom:1px solid; border-right:1px solid;" align="left"><b>Age</b></td>
+                                                                <td style="padding:5px 5px; border-bottom:1px solid; border-right:1px solid;" align="left">@item.AGE</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><b>Blood Group</b></td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.BLOOD_GROUP_NAME</td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><b>Gender</b></td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.GENDER_NAME</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><b>Religion</b></td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.RELIGION</td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><b>Roman Catholic</b></td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.IS_ROMAN_CATHOLIC</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><b>Community</b></td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.COMMUNITY</td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><b>Caste</b></td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.COMMUNITY_ID</td>
+                                                            </tr>
+                                                            <tr>
+                                                                @if (item.IS_NRI == "1")
+                                                                {
+                                                                    <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><b>Passport Number :</b></td>
+                                                                    <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.PASSPORT_NUMBER</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><b>Aadhar Number</b></td>
+                                                                    <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.AADHAR_NUMBER</td>
+                                                                }
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><b>District</b></td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.NATIVE_DISTRICT</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><b>Native Place</b></td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.PLACE_OF_BIRTH </td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><b>Pin code</b></td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.PPINCODE</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2" style="padding:5px 5px;border-bottom:1px solid; border-right:1px solid;" align="left"><b>Are you a Differently Abled person? </b></td>
+                                                                <td colspan="2" style="padding:5px 5px;border-bottom:1px solid; border-right:1px solid;" align="left">@item.SPECIALLYABLED</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2" style="padding:5px 5px;border-bottom:1px solid; border-right:1px solid;" align="left"><b>Ex-Serviceman of Tamil Nadu Origin? </b></td>
+                                                                <td colspan="2" style="padding:5px 5px;border-bottom:1px solid; border-right:1px solid;" align="left">@item.EXSERVICE_MAN</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+
+                                                    <div class="">
+                                                        Parents / Guardian Details :-
+                                                    </div>
+
+                                                    <table align="center" style="width:100%; border:1px solid;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><b></b></th>
+                                                                <th style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><center><b>Name</b></center></th>
+                                                                <th style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><center><b>Occupation </b></center></th>
+                                                                <th style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><center><b>Annual Income</b></center></th>
+                                                                <th style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><center><b>Mobile No.</b></center></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><b>Father / Guardian</b></td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.FATHER_NAME</td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.OCCUPATION</td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.ANNUAL_INCOME</td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.FATHER_MOBILE_NUMBER</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><b>Mother</b></td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.MOTHER_NAME</td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.MOTHER_OCCUPATION</td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.MOTHER_INCOME</td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.MOTHER_MOBILE_NUMBER</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><b>Brother/Sister</b></td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.BSNAME</td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.BSOCCUPATION</td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.BSINCOME</td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.BSMOBILE</td>
+                                                            </tr>
+                                                            @if (item.BSNAME1 != "1" || item.BSNAME1 =="")
+                                                            {
+                                                                <tr>
+                                                                    <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><b>Brother/Sister</b></td>
+                                                                    <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.BSNAME1</td>
+                                                                    <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.BSOCCUPATION1</td>
+                                                                    <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.BSINCOME1</td>
+                                                                    <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.BSMOBILE1</td>
+                                                                </tr>
+                                                            }
+                                                            else
+                                                            {
+
+                                                            }
+                                                            @if (item.BSNAME2 != "1" || item.BSNAME2 == "")
+                                                            {
+                                                                <tr>
+                                                                    <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><b>Brother/Sister</b></td>
+                                                                    <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.BSNAME2</td>
+                                                                    <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.BSOCCUPATION2</td>
+                                                                    <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.BSINCOME2</td>
+                                                                    <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.BSMOBILE2</td>
+                                                                </tr>
+                                                            }
+                                                            else
+                                                            {
+
+                                                            }
+                                                        </tbody>
+                                                    </table>
+
+                                                    <div class="">
+                                                        Mark Details:-
+                                                    </div>
+                                                    <table align="center" style="width:100%; border:1px solid;">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><center><b>Subjects</b></center></td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><center><b>Marks</b></center></td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><center><b>Max. Marks</b></center></td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><center><b>Month/Year of Passing</b></center></td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><center><b>No. of Attempts</b></center></td>
+                                                            </tr>
+                                                            @if (Model.liADMStudentMarks != null && Model.liADMStudentMarks.Count > 0)
+                                                            {
+                                                                var liTempList = Model.liADMStudentMarks.Where(x => x.RECEIVE_STUID == item.RECEIVE_ID).ToList();
+                                                                if (liTempList != null && liTempList.Count > 0)
+                                                                {
+                                                                    foreach (var Tempitem in liTempList)
+                                                                    {
+
+                                                                        <tr>
+                                                                            <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><b>@Tempitem.HSS_SUBJECT</b></td>
+                                                                            <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><center><b>@Tempitem.MARK</b></center></td>
+                                                                            <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><center><b>@Tempitem.MAX_MARK</b></center></td>
+                                                                            <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><center><b>@Tempitem.M_PASS</b></center></td>
+                                                                            <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><center><b>@Tempitem.NO_OF_ATTEMPTS</b></center></td>
+                                                                        </tr>
+                                                                    }
+                                                                }
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                    <div class="">
+                                                        Education Details ( Last Studied ):-
+                                                    </div>
+                                                    <table align="center" style="width:100%; border:1px solid;">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><b>Institute Name & Place</b></td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.LAST_STUDIED_SCHOOL, @item.LAST_STUDIED_PLACE</td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><b>Class</b></td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.LAST_STUDIED_CLASS</td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><b>Register No</b></td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.HSC_NO</td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><b>Mark</b></td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.HSTOTAL/@item.HS_MAX_MARK</td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><b>Percentage</b></td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.HSPERCENTAGE %</td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><b>Total Cut off</b></td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@item.TOTAL_CUT_OFF_MARK</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <div class="">
+                                                        Extra Information:-
+                                                    </div>
+                                                    <table align="center" style="width:100%; border:1px solid;">
+                                                        <tbody>
+                                                            @if (Model.LiHostelStudentGadget != null && Model.LiHostelStudentGadget.Count > 0)
+                                                            {
+
+                                                                sGadjets = string.Join(",", Model.LiHostelStudentGadget.Where(o => o.CHECKED == "CHECKED").Select(O => O.GADGETS_NAME)).ToString();
+                                                            }
+                                                            @if (Model.LiHostelStudentSport != null && Model.LiHostelStudentSport.Count > 0)
+                                                            {
+
+                                                                sSport = string.Join(",", Model.LiHostelStudentSport.Where(o => o.CHECKED == "CHECKED").Select(O => O.SPORTS_NAME)).ToString();
+                                                            }
+                                                            @if (Model.LiHostelStudentExtracurricular != null && Model.LiHostelStudentExtracurricular.Count > 0)
+                                                            {
+
+                                                                sEc = string.Join(",", Model.LiHostelStudentExtracurricular.Where(o => o.CHECKED == "CHECKED").Select(O => O.EXTRACURRICULAR_NAME)).ToString();
+                                                            }
+                                                            @if (Model.LiHostelStudentCertificate != null && Model.LiHostelStudentCertificate.Count > 0)
+                                                            {
+
+                                                                sCertificate = string.Join(",", Model.LiHostelStudentCertificate.Where(o => o.CHECKED == "CHECKED").Select(O => O.CERTIFICATE_NAME)).ToString();
+                                                            }
+                                                            <tr>
+
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left"><b>Electronic Gadgets</b></td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="left">@sGadjets</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding:5px 5px; border-bottom:1px solid; border-right:1px solid;" align="left"><b>Sports</b> </td>
+                                                                <td style="padding:5px 5px; border-bottom:1px solid; border-right:1px solid;" align="left">@sSport</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid; border-right:1px solid;" align="left"><b>Co-curricular</b></td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid; border-right:1px solid;" align="left">@sEc</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid; border-right:1px solid;" align="left"><b>Extra-curricular</b></td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid; border-right:1px solid;" align="left">@sCertificate</td>
+                                                            </tr>
+
+                                                        </tbody>
+                                                    </table>
+                                                    <br />
+                                                    <div class="">
+                                                        Address Details
+                                                    </div>
+                                                    <table align="center" style="width:100%; border:1px solid;">
+                                                        <tbody>
+                                                            <tr>
+
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="center"><b>Permanant Address</b></td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="center"><b>Contact Address</b></td>
+                                                                <td style="padding:5px 5px;border-bottom:1px solid;  border-right:1px solid;" align="center"><b>Local Gaurdian Address</b></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding:5px 5px; border-right:1px solid;" align="center"><b>@item.CDOORDETAIL,</b> </td>
+                                                                <td style="padding:5px 5px; border-right:1px solid;" align="center"><b>@item.PDOORDETAIL,</b></td>
+                                                                <td style="padding:5px 5px; border-right:1px solid;" align="center"><b>@item.LDOORDETAIL, @item.LSTREET, </b></td>
+                                                            </tr>
+                                                            @if (item.CVILLAGE_AREA == "1")
+                                                            {
+
+                                                            }
+                                                            else
+                                                            {
+                                                                <tr>
+                                                                    <td style="padding:5px 5px;border-right:1px solid;" align="center"><b>@item.CVILLAGE_AREA ,</b></td>
+                                                                    <td style="padding:5px 5px; border-right:1px solid;" align="center"><b>@item.PVILLAGE_AREA ,</b></td>
+                                                                    <td style="padding:5px 5px; border-right:1px solid;" align="center"><b></b></td>
+                                                                </tr>
+                                                            }
+
+                                                            <tr>
+                                                                <td style="padding:5px 5px;border-right:1px solid;" align="center"><b>@item.CDISTRICT- @item.CPINCODE ,</b></td>
+                                                                <td style="padding:5px 5px; border-right:1px solid;" align="center"><b>@item.PDISTRICT- @item.PPINCODE ,</b></td>
+                                                                <td style="padding:5px 5px; border-right:1px solid;" align="center"><b>@item.LCITY, @item.LDISTRICT- @item.LPINCODE ,</b></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td style="padding:5px 5px;border-right:1px solid;" align="center"><b>@item.SMS_MOBILE_NO- @item.PPHONENO</b></td>
+                                                                <td style="padding:5px 5px; border-right:1px solid;" align="center"><b>@item.SMS_MOBILE_NO- @item.PPHONENO</b></td>
+                                                                <td style="padding:5px 5px; border-right:1px solid;" align="center"><b>@item.LPHONENO</b></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <br />
+                                                    <div class="">
+                                                        I hereby declare that  the statements made by me in this application and the documents submitted in support of my application are True,Complete and Correct to the best of my knowledge and belief.If admitted to the hostel, I agree to abide by all the existing and future rules and regulations of the hostel.
+                                                    </div>
+
+                                                    <table border="0" width="100%">
+                                                        <tr>
+                                                            <td width="80%"> Date : <b>@System.DateTime.Today.ToShortDateString()</b></td>
+
+                                                            <td width="20%">
+                                                                <p> ____________________________</p>
+                                                                <p>Signature of the Applicant</p>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+
+                                                    @*<div class="">
+                                                            <p>
+                                                                I undertake to pay regularly all dues of my daughter before the 10th of every month and be resposible for her conduct, progress in studies and  attendance, till her stay in the hostel.
+                                                            </p>
+                                                        </div>
+
+                                                        <div class="">
+                                                            <table border="0">
+                                                                <tr>
+                                                                    <td width="80%"></td>
+                                                                    <td width="20%">
+                                                                        <p> ____________________________</p>
+                                                                        <p>Signature of Parent</p>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>*@
+                                                </div>
+
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div id="info" class="alert alert-danger">
+                                            <b>Note:</b><br>
+                                            <b>Hostel students Only...</b>
+                                        </div>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+<script>
+
+
+    (function () {
+
+    })();
+    $('#btnPrint').on('click', function () {
+        var printContents = document.getElementById('dvApplicationForm').innerHTML;
+        var originalContents = document.body.innerHTML;
+        document.body.innerHTML = printContents;
+        window.print();
+        document.body.innerHTML = originalContents;
+    });
+</script>
+

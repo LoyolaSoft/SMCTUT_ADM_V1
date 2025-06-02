@@ -1,0 +1,62 @@
+﻿
+@model CMS.ViewModel.Model.FEE_STUDENT_ACCOUNT
+
+<div class="form-horizontal ">
+    <h4 class="lead"><img src="~/Content/assets/img/hcc-img/hcclogo.jpg" width="70px" style="box-shadow:1px 1px #eee;" class="img-circle img" alt="HCC Logo" /> St. Mary's College,Thoothukudi-620002</h4>
+
+    <hr />
+    <style type="text/css" media="print">
+        /*@@page {
+            size: landscape;
+        }*/
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        
+    </style>
+    <div style="width:100% ; ">
+        @*<b>Student Copy</b>*@
+        <div style="width:100%">
+
+            <b>Name:</b>
+            @Model.StudentAccountList.FirstOrDefault().FIRST_NAME.ToUpper()
+            <br />
+            <b>
+                Application No:
+            </b>
+            @Model.StudentAccountList.FirstOrDefault().APPLICATION_NO
+            <br />
+            <b>Programme:</b>
+            @Model.StudentAccountList.FirstOrDefault().PROGRAMME_NAME
+            <br />
+           <b> Status :</b>
+            @Model.STATUS
+
+        </div>
+        <table class="table table-bordered" style="border:1px  solid #000;" width="100%">
+            @if (Model != null && Model.StudentAccountList != null && Model.StudentAccountList.Count > 0)
+            {
+                <tr><td>Receipt No </td><td>@Model.RECEIPT_NO.ToString()</td></tr>
+                <tr><td>Transaction Date </td><td>@DateTime.Today.ToString("dd-MM-yyyy")</td></tr>
+                foreach (var item in Model.StudentAccountList)
+                {
+                    <tr><td>@item.HEAD </td><td><i class="fa fa-rupee"></i> @item.BALANCE</td></tr>
+                }
+                <tr><td>Total </td><td><b><i class="fa fa-rupee"></i> @Model.StudentAccountList.Sum(o => Convert.ToDouble(o.BALANCE))</b></td></tr>
+            }
+            else
+            {
+                <tr><td>Erorr Message</td><td>Your Account is not available,Please meet software admin. </td></tr>
+            }
+        </table>
+    </div>
+</div>

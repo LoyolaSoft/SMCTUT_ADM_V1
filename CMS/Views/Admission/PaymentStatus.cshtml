@@ -1,0 +1,78 @@
+﻿@model List<CMS.ViewModel.Model.FEE_STUDENT_ACCOUNT>
+@{
+    ViewBag.Title = "Payment Status";
+    Layout = "~/Views/Shared/_AdminLayoutPage.cshtml";
+}
+<div class="content" id="content">
+    <ol class="breadcrumb pull-right">
+        <li><a href="javascript:;">Home</a></li>
+        <li class="active">Payment Details</li>
+    </ol>
+    <h2 class="page-header"> Payment Details</h2>
+    <div class="panel">
+        <div class="panel-heading bg-primary">
+            <div class="panel-heading-btn">
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+            </div>
+            <h4 class="panel-title">Payment Details</h4>
+        </div>
+        <div class="panel-body">
+            <div class="form-horizontal " id="divPrint">
+                <h4 class="lead"><img src="~/Content/assets/img/hcc-img/hcclogo.jpg" width="70px" style="box-shadow:1px 1px #eee;" class="img-circle img" alt="HCC Logo" /> St. Mary's College,Thoothukudi-620002</h4>
+
+                <hr />
+
+                <table class="table table-bordered table-hover" width="100%">
+                    @if (Model != null && Model.Count > 0)
+                    {
+                        <tr>
+                            <td>Name</td>
+                            <td>@Model.FirstOrDefault().FIRST_NAME.ToUpper()</td>
+                        </tr>
+                        <tr><td>Application No </td><td>@Model.FirstOrDefault().APPLICATION_NO</td></tr>
+                        <tr><td>Receipt No </td><td>@Model.FirstOrDefault().RECEIPT_NO</td></tr>
+                        <tr><td>Transaction Date </td><td>@DateTime.Now.ToString("dd/MM/yyyy")</td></tr>
+                        <tr><td>Status </td><td><b>@Model.FirstOrDefault().STATUS</b></td></tr>
+                        foreach (var item in Model)
+                        {
+                            <tr><td>@item.HEAD </td><td><i class="fa fa-rupee"></i> @item.BALANCE</td></tr>
+                        }
+                        <tr><td>Total </td><td><b><i class="fa fa-rupee"></i> @Model.Sum(o => Convert.ToDouble(o.BALANCE))</b></td></tr>
+                    }
+                    else
+                    {
+                        <tr><td>Erorr Message</td><td>Your Account is not available,Please meet software admin. </td></tr>
+                    }
+
+                </table>
+
+            </div>
+             <div class="form-group">
+                <div class=" col-md-6 p-l-0 p-t-5">
+                    <input type="button" id="submit" value="Print" class="btn btn-success " onclick="printDiv('divPrint')" />
+                   
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        function printDiv(divName) {
+            
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
+    </script>
+}
+
+
+
+

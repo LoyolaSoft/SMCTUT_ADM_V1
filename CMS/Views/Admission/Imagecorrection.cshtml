@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewBag.Title = "Imagecorrection";
+    Layout = "~/Views/Shared/_AdminLayoutPage.cshtml";
+}
+
+<div class="content" id="content">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">Home</a></li>
+            <li class="active">Image Correction</li>
+        </ol>
+        <h2 class="page-header">Image Correction</h2>
+        <div class="panel">
+            <div class="panel-heading bg-primary">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                </div>
+                <h4 class="panel-title">Image Correction</h4>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="col-md-12">
+                        <div class="form-group col-md-6">
+                            <label class="control-label col-md-3">Path</label>
+                            <div class="col-md-6">
+                              <input type="text" placeholder="Enter The Folder path" id="pathname" class="form-control">
+                            </div>
+                            <div class="col-md-2"><button id="btnupdate" class="btn btn-primary">Update</button></div>
+                        </div>
+                                              
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+@section Scripts
+{
+<script>
+
+    $('#btnupdate').on('click', function ()
+    {
+        var path = $('#pathname').val();
+        $.ajax({
+            url: '@Url.Action("SaveStudentImages", "Admission")',
+            method: 'POST',
+            type: 'json',
+            data: { sPath: path },
+            success: function (data)
+            {
+                alert(data.Message)
+                window.location.reload();
+
+            },
+            error: function (data) {
+                alert('Internal Server Error!');
+            }
+        });
+    });
+    
+</script>
+    }

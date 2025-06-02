@@ -1,0 +1,372 @@
+﻿
+@model CMS.ViewModel.ViewModel.SupportViewModel
+@using CMS.Utility;
+@{
+    ViewBag.Title = "SupSelectionCycleList";
+  //  Layout = "~/Views/Shared/_AdminLayoutPage.cshtml";
+    Layout = null;
+}
+
+<link href="~/Content/assets/plugins/DataTables/media/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/DataTables/extensions/Responsive/css/responsive.bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" />
+
+<link href="~/Content/assets/plugins/parsley/src/parsley.css" rel="stylesheet" />
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="content" id="content">
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">Home</a></li>
+            <li><a href="@Url.Action("SupSelectionCycleList","SupportData")">List Bank Account</a></li>
+            <li class="active">Selection Cycle List</li>
+        </ol>
+        <h1 class="page-header">Selection Cycle List</h1>
+        <div class="panel">
+            <div class="panel-heading bg-primary">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                </div>
+                <h4 class="panel-title">Selection Cycle List</h4>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <a class="btn bg-green pull-right" title="Add Sup Head" data-toggle="modal" style="cursor:pointer" href="#Selection-dialog"><i class="fa fa-plus"></i> Add</a>
+                </div><br /><br />
+
+                <div class="table-responsive">
+                    @{ int count = 0;}
+                    <table class="table table-hover table-bordered" id="tblLiSelectionCycleSetting">
+                        <thead>
+                            <tr>
+                                <th>S.No</th>
+                                <th>Selection Cycle</th>
+                                <th>Is Show Website</th>
+                                <th>Is Active</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.liSelectionCycle != null)
+                            {
+                                foreach (var item in Model.liSelectionCycle)
+                                {
+                                    <tr>
+                                        <td>@{count++;} @count</td>
+                                        <td>@Html.DisplayFor(modelItem => item.SELECTION_CYCLE)</td>
+
+                                        <td>
+                                            @if (item.IS_SHOW_WEBSITE == "1")
+                                            {
+                                                <a href="javascrip:;" onclick="SetIsShowWebsite(@item.SELECTION_CYCLE_ID,0)" class="text-success"><i class="fa fa-check"></i></a>             }
+                                            else
+                                            {
+                                                <a href="javascrip:;" onclick="SetIsShowWebsite(@item.SELECTION_CYCLE_ID,1)" class="text-danger"><i class="fa fa-times"></i></a>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (item.IS_ACTIVE == "1")
+                                            {
+                                                <a href="javascrip:;" onclick="SetActive(@item.SELECTION_CYCLE_ID,0)" class="text-success"><i class="fa fa-check"></i></a>             }
+                                            else
+                                            {
+                                                <a href="javascrip:;" onclick="SetActive(@item.SELECTION_CYCLE_ID,1)" class="text-danger"><i class="fa fa-times"></i></a>
+                                            }
+                                        </td>
+
+                                        <td>
+                                            <a href="#Selection-dialog" data-toggle="modal" onclick="FetchLiSelectionCycleById(@item.SELECTION_CYCLE_ID)" title="Click To Edit"><i class="fa fa-edit text-primary"></i></a>
+                                            <a href="javascript:;" onclick="GetConfirm(@item.SELECTION_CYCLE_ID)" title="CliCk To Delete"><i class="fa fa-trash text-danger"></i></a>
+                                        </td>
+                                    </tr>
+                                                }
+                                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="modal" id="Selection-dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Add/Edit Selection Cycle</h4>
+            </div>
+            <div class="modal-body" data-parsley-validate="true" id="pBody">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="form-horizontal">
+                                <div class="col-md-12 form-horizontal">
+
+                                    <div class="col-md-12 form-group">
+                                        <label class="col-md-4 control-label">Selection Cycle</label>
+
+                                        <div class="col-md-8">
+                                            <input type="text" id="txtSelectionCycle" class="form-control" placeholder="Selection Cycle" data-parsley-required="true">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 form-group">
+                                        <label class="col-md-4 control-label">Is show website</label>
+
+                                        <div class="col-md-8">
+                                            <div class="col-md-12">
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" id="chkIsShowWebsite" name="Address" /> Is show website
+                                                    </label>
+                                                </div>
+                                               
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:;" id="btnSubmit" class="btn btn-sm btn-primary" data-dismiss="modal">Submit</a>
+                <a href="javascript:;" class="btn btn-sm btn-danger" data-dismiss="modal">Cancel</a>
+            </div>
+        </div>
+        <input type="hidden" id="txtSelectionCycleId" value="" />
+    </div>
+</div>
+
+
+<script src="~/Content/assets/plugins/DataTables/media/js/jquery.dataTables.js"></script>
+<script src="~/Content/assets/plugins/DataTables/media/js/dataTables.bootstrap.min.js"></script>
+<script src="~/Content/assets/plugins/DataTables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+<script src="~/Content/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+<script src="~/Content/assets/plugins/gritter/js/jquery.gritter.js"></script>
+<script src="~/Content/assets/plugins/bootstrap-sweetalert/sweetalert.min.js"></script>
+<script src="~/Content/assets/js/ui-modal-notification.demo.min.js"></script>
+<script src="~/Content/assets/plugins/parsley/dist/parsley.js"></script>
+
+<script>
+       
+       var tbl = $('#tblLiSelectionCycleSetting').DataTable();
+
+        function FetchLiSelectionCycleById(SelectionCycleId)
+        {
+            $('#pBody').parsley().destroy();
+
+            if (SelectionCycleId != null)
+            {
+                $.ajax({
+                    url: "/SupportData/FetchSupSelectionCycleById",
+                    type:"post",
+                    data: { sSelectionCycleId: SelectionCycleId },
+                    success:function(data)
+                    {
+                        if(data.Message!=null)
+                        {
+                            alert(data.Message);
+                        }
+                        else
+                        {
+                            $('#txtSelectionCycle').attr('value', data[0].SELECTION_CYCLE);
+
+                            if (data[0].IS_SHOW_WEBSITE=="1")
+                            {
+                                $('#chkIsShowWebsite').attr('checked', true);
+                            }
+                            else
+                            {
+                                $('#chkIsShowWebsite').attr('checked', false);
+                            }
+                            $('#txtSelectionCycleId').attr('value', data[0].SELECTION_CYCLE_ID);
+                        }
+
+                    },
+                    error:function(ex)
+                    {
+                        alert(ex.Message);
+                    }
+                });
+            }
+        }
+
+
+        $('#btnSubmit').click(function () {
+
+            
+            var isValid = true;
+            if ($('#pBody').parsley().validate() !== true) isValid = false;
+            if (!isValid) {
+                //gritter-info,danger,success,warning,default
+                //   alert('Something went wrong ! Please check your inputs !', 'gritter-warning', '');
+                return false;
+            }
+
+            var SelectionCycleId = $('#txtSelectionCycleId').val();
+            var SelectionCycle = $('#txtSelectionCycle').val();
+            var isShowWebsite = 0;
+            if ($('#chkIsShowWebsite').is(':checked'))
+            {
+                isShowWebsite = 1;
+            }
+
+            
+
+            var jsonData = '{"SELECTION_CYCLE_ID":"' + SelectionCycleId + '","SELECTION_CYCLE":"' + SelectionCycle + '","IS_SHOW_WEBSITE":"' + isShowWebsite + '"}';
+
+
+              var req=  $.ajax({
+                  url: "/SupportData/SaveSupSelectionCycle",
+                    type: "post",
+                    data: { sJsonData: jsonData },
+                    success: function (data) {
+                        if (data.Message != null && data.Message != "")
+                        {
+                            if (data.ErrorCode == "200")
+                            {
+                                swal({ title: "Success !", text: data.Message, showConfirmButton: false, timer: 1800, type: 'success', animation: true });
+                                loadContent('/SupportData/SupSelectionCycleList');
+                            }
+                            if (data.ErrorCode == "417") {
+                                swal({ title: "Error", text: data.Message, showConfirmButton: false, timer: 1500, type: 'error', animation: true });
+                            }
+                            if (data.ErrorCode == "503") {
+                                swal({ title: "Info", text: data.Message, showConfirmButton: false, timer: 1500, type: 'info', animation: true });
+                            }
+
+
+                        }
+                    },
+                    error: function (ex) {
+                        swal({ title: "Internal Server Error!", text: "Sorry for the inconvenience", showConfirmButton: false, timer: 1500, type: 'error', animation: true });
+                    }
+
+              });
+        });
+
+
+        function SetActive(SelectionCycleId, Mode)
+    {
+        swal({
+            title: "Are you sure want to Activate/Deactivate?",
+            text: "",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes, I agree!",
+            closeOnConfirm: false
+        },
+        function () {
+            $.ajax({
+                url: "/SupportData/ActivateorDeactivateSupSelectionCycle",
+                type: "post",
+                data: { sSelectionCycleId: SelectionCycleId, sMode: Mode },
+                success: function (data) {
+                    if (data.Message != null && data.Message != "") {
+                        swal({ title: "Success !", text: data.Message, showConfirmButton: false, timer: 1800, type: 'success', animation: true });
+                        loadContent('/SupportData/SupSelectionCycleList');
+                    }
+                },
+                error: function (ex) {
+                    swal({ title: "Error !", text: ex.Message, showConfirmButton: false, timer: 1800, type: 'error', animation: true });
+
+                }
+
+            });
+        });
+
+        }
+
+
+        function SetIsShowWebsite(SelectionCycleId, Mode)
+        {
+            swal({
+                title: "Are you sure want to Activate/Deactivate?",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Yes, I agree!",
+                closeOnConfirm: false
+            },
+            function () {
+                $.ajax({
+                    url: "/SupportData/IsShowActivateAcitvateOrDeactivateSupSelectionCycle",
+                    type: "post",
+                    data: { sSelectionCycleId: SelectionCycleId, sMode: Mode },
+                    success: function (data) {
+                        if (data.Message != null && data.Message != "") {
+                            swal({ title: "Success !", text: data.Message, showConfirmButton: false, timer: 1800, type: 'success', animation: true });
+                            loadContent('/SupportData/SupSelectionCycleList');
+                        }
+                    },
+                    error: function (ex) {
+                        swal({ title: "Error !", text: ex.Message, showConfirmButton: false, timer: 1800, type: 'error', animation: true });
+
+                    }
+
+                });
+            });
+
+        }
+
+
+        GetConfirm = function (SelectionCycleId)
+        {
+        swal({
+            title: "Are you sure want to Delete?",
+            text: "",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes, I agree!",
+            closeOnConfirm: false
+        },
+
+
+function () {
+    $.ajax({
+        url: "/SupportData/DeleteSelectionCycleById",
+        type: "post",
+        data: { sSelectionCycleId: SelectionCycleId },
+        success: function (data) {
+            if (data.Message != null && data.Message != "") {
+                swal({ title: "Success !", text: data.Message, showConfirmButton: false, timer: 1800, type: 'success', animation: true });
+                loadContent('/SupportData/SupSelectionCycleList');
+            }
+        },
+        error: function (ex) {
+            swal({ title: "Error !", text: ex.Message, showConfirmButton: false, timer: 1800, type: 'error', animation: true });
+
+        }
+
+
+    });
+});
+
+        }
+
+        $('#Add').click(function () {
+
+            $('#pBody').parsley().destroy();
+            $('#txtSelectionCycle').attr('value', '');
+            $('#chkIsShowWebsite').prop('checked', false);
+            $('#txtSelectionCycleId').attr('value', '');
+        });
+
+        
+</script>
+
+
+
+

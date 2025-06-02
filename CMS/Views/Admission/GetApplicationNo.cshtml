@@ -1,0 +1,35 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+
+@{ int count = 0;
+    if (Model.liApplicant != null && Model.liApplicant.Count > 0)
+    {
+<div class="table-responsive">
+    <table class="table table-bordered table-hover ">
+
+        <tr>
+            <td colspan="3">Name:@Model.liApplicant.FirstOrDefault().FIRST_NAME</td>
+        </tr>
+        <tr>
+            <th>No</th>
+            <th>Application No</th>
+            <th>Course</th>
+        </tr>
+        @foreach (var item in Model.liApplicant)
+        {
+            count++;
+            <tr>
+                <td>@count</td>
+                <td>@item.APPLICATION_NO</td>
+                <td>@item.PROGRAMME_NAME</td>
+            </tr>
+        }
+    </table>
+</div>
+    }
+    else
+    {
+        <div class="alert alert-warning">No records found !!!</div>
+    }
+
+
+}

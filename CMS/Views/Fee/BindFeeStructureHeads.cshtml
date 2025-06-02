@@ -1,0 +1,52 @@
+﻿@model CMS.ViewModel.ViewModel.FeeStructureViewModel
+@using CMS.Utility
+<div class="table-responsive">
+    <table class="table table-hover table-bordered" id="tblFsHeads">
+        <thead>
+            <tr>
+                <td>S.No</td>
+                <td>Head</td>
+                <td>Fee Categeory</td>
+                <td>Amount</td>
+            </tr>
+        </thead>
+        <tbody>
+            @{ int count = 0; string selected = "selected"; }
+            @if (Model.lstFeeStructure != null)
+            {
+                foreach (var item in Model.lstFeeStructure)
+                {
+                    <tr cms-headid="@item.HEAD_ID" cms-academicyear="@Session[Common.SESSION_VARIABLES.ACADEMIC_YEAR]" cms-feeStructId="@item.FEE_STRUCTURE_ID">
+                        <td>@{count++;}@count</td>
+                        <td>@item.HEAD</td>
+                        <td>
+                            <select class="selectpicker form-control">
+                                <option value="0">--Select--</option>
+                                @foreach (var ifcat in Model.lstFeeCategory)
+                                {
+                                    <option value="@ifcat.FEE_CATEGORY_ID" @if (ifcat.FEE_CATEGORY_ID == item.FEE_CATEGORY) { @selected   }>@ifcat.FEE_CATEGORY</option>
+                                }
+                            </select>
+                        </td>
+                        <td><input type="text" class="text form-control" name="name" value="@item.AMOUNT" placeholder="Enter Amount" /></td>
+                    </tr>
+                                }
+                            }
+                            else
+                            {
+
+                                <tr>
+                                    <td colspan="4" class="text-center">No records Found...</td>
+                                </tr>
+                            }
+
+        </tbody>
+    </table>
+</div>
+<script>
+    $(".text").keypress(function (e) {
+        if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+            return false;
+        }
+    });
+</script>

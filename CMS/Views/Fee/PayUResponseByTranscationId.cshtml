@@ -1,0 +1,86 @@
+﻿@model CMS.ViewModel.ViewModel.FeePayUStatusViewModel
+
+@{
+    ViewBag.Title = "PayUResponseByTranscationId";
+    Layout = "~/Views/Shared/_AdminLayoutPage.cshtml";
+}
+
+@section styles{
+    
+    
+}
+
+<div class="content" id="content">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <ol class="breadcrumb pull-right">
+                <li><a href="javascript:;">Home</a></li>
+                <li><a href="@Url.Action("ListPayUStatus","Fee")">List PayUStatus</a></li>
+                <li class="active"> Transaction Status </li>
+            </ol>
+            <h2 class="page-header"> Transaction Status </h2>
+            <div class="panel">
+                <div class="panel-heading bg-primary">
+                    <div class="panel-heading-btn">
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                    </div>
+                    <h4 class="panel-title"> Transaction Status </h4>
+                </div>
+                <div class="panel-body">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-horizontal col-md-6 col-md-offset-3">
+                        <table class="table table-bordered table-hover" id="tblPayUStatus">
+                            <tbody>
+                                @{
+                                    if (Model.liPayUResponse != null && Model.liPayUResponse.Count > 0)
+                                    {
+                                        <tr><td colspan="2"><h4 class="text-center"> Transaction Status </h4></td></tr>
+                                        foreach (var item in Model.liPayUResponse)
+                                        {
+                                            <tr>
+                                                <td><b>Name</b></td>
+                                                <td>@item.firstname</td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>Application No</b></td>
+                                                <td>@Model.Application_No </td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>Transaction Id</b></td>
+                                                <td>@item.txnid</td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>Transaction Date</b></td>
+                                                <td>@item.addedon</td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>Amount</b></td>
+                                                <td>@item.amount</td>
+                                            </tr>
+                                            <tr>
+                                                <td><b>Status</b></td>
+                                                <td>@item.status</td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr><td colspan="7" class="text-center"> No Records Available !</td></tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+@section scripts{
+    
+
+}

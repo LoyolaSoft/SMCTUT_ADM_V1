@@ -1,0 +1,341 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@using CMS.Utility
+@{ int part = 1; int st;}
+
+
+
+    <div class="">
+        <b>Note:</b>
+        <ul class="alert alert-danger">
+            @if (Model.liEligibility != null && Model.liEligibility.Count > 0)
+            {
+                <li>
+                    <ul>
+                        <p><b>Eligibility</b></p>
+                        <li class="m-l-10">
+                            <p>@Model.liEligibility.FirstOrDefault().ELIGIBILITY</p>
+                        </li>
+                    </ul>
+                </li>
+
+            }
+            @if (Model.liApplicant != null && Model.liApplicant.Count > 0)
+            {
+                if (Model.liApplicant.FirstOrDefault().APPLICATION_TYPE_ID == Common.ApplicationType.PG || Model.liApplicant.FirstOrDefault().APPLICATION_TYPE_ID == Common.ApplicationType.MCA)
+                {
+                    <li class="m-l-10 " id="noteinfo">
+                        <p style="color:white">
+                            <b>Please enter actual mark secured.</b>
+                        </p>
+                    </li>
+                    <li class="m-l-10 " id="noteinfo">
+                        <p style="color:white">
+                            <b>
+                                Minimum 5 semester marks are required.
+                            </b>
+                        </p>
+                    </li>
+
+                }
+                else
+                {
+                    <li class="m-l-10 " id="noteinfo">
+                        <p style="color:white">
+                            <b> Please select the subjects as per the mark sheet and enter the marks.</b>
+
+                        </p>
+                    </li>
+                    <li class="m-l-10 " id="dvNoteForDiplomaAndCBSE">
+                        <p style="color:white">
+                            <b>Please use '0' or '-' in mandatory fields those who have five subjects in  CBSE.</b>
+                        </p>
+                    </li>
+                }
+            }
+
+        </ul>
+    </div>
+    @if (Model.liADMStudentMarks != null && Model.liADMStudentMarks.Count > 0)
+    {
+        <table class="table table-bordered table-responsive" id="UGMarkList" style="table-layout:fixed">
+            <thead>
+                <tr>
+                    <th>
+                        <center>Subject</center>
+                    </th>
+                    <th>
+                        <center>Marks Secured</center>
+                    </th>
+                    <th>
+                        <center>Maximum Marks</center>
+                    </th>
+                    <th>
+                        <center>Month & Year of Passing</center>
+                    </th>
+                    <th>
+                        <center>Register No.</center>
+                    </th>
+                    <th>
+                        <center>No. of Attempts</center>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.liADMStudentMarks)
+                {
+                    st = part;
+                    if (part < 3)
+                    {
+                        part = st;
+                    }
+                    else
+                    {
+                        part = 3;
+                    }
+                    var supbjects = Model.lisubjects.Where(s => s.PART == part.ToString()).ToList();
+                    var pgsubjects = Model.lisubjects.Where(s => s.PART == part.ToString() && (s.HSS_SUBJECT_ID == "79" || s.HSS_SUBJECT_ID == "80" || s.HSS_SUBJECT_ID == "81")).ToList();
+                    var mphilsubjects = Model.lisubjects.Where(s => s.PART == part.ToString() && (s.HSS_SUBJECT_ID == "83" || s.HSS_SUBJECT_ID == "84")).ToList();
+                    <tr cms-partid="@item.PART" cms-markid="@item.MARK_ID">
+                        <td id="tdmarkid">
+                            <select class="selectpicker form-control" data-live-search="true" onchange="Bind11thSubjects()" required data-parsley-group="wizard-step-3">
+                                <option value="0" cms-subjectid="" cms-markid="@item.MARK_ID" cms-partid="">--Select--</option>
+                                @if (Model.liApplicant.FirstOrDefault().APPLICATION_TYPE_ID == Common.ApplicationType.UG)
+                                {
+                                    foreach (var option in supbjects)
+                                    {
+                                        <option value="@option.HSS_SUBJECT_ID" cms-subjectid="@option.HSS_SUBJECT_ID" cms-markid="@item.MARK_ID" cms-partid="@option.PART" @(option.HSS_SUBJECT_ID == item.SUBJECT_ID ? "selected='selected'" : "")>@option.HSS_SUBJECT</option>
+
+                                    }
+                                }
+                                else if (Model.liApplicant.FirstOrDefault().APPLICATION_TYPE_ID == Common.ApplicationType.PG)
+                                {
+                                    foreach (var option in pgsubjects)
+                                    {
+                                        <option value="@option.HSS_SUBJECT_ID" cms-subjectid="@option.HSS_SUBJECT_ID" cms-markid="@item.MARK_ID" cms-partid="@option.PART" @(option.HSS_SUBJECT_ID == item.SUBJECT_ID ? "selected='selected'" : "")>@option.HSS_SUBJECT</option>
+
+                                    }
+                                }
+                                else
+                                {
+                                    foreach (var option in mphilsubjects)
+                                    {
+                                        <option value="@option.HSS_SUBJECT_ID" cms-subjectid="@option.HSS_SUBJECT_ID" cms-markid="@item.MARK_ID" cms-partid="@option.PART" @(option.HSS_SUBJECT_ID == item.SUBJECT_ID ? "selected='selected'" : "")>@option.HSS_SUBJECT</option>
+
+                                    }
+                                }
+                            </select>
+                        </td>
+                        <td cms-mark="@item.MARK">
+                            <input type="text" name="MarksSecured" onfocusout="Sum()" id="tdmarksecured" required value="@item.MARK" maxlength="7" placeholder="100" class="txtCal text-left form-control" data-parsley-pattern="^[0-9]{1,}\.?[0-9]{0,2}$" data-parsley-group="wizard-step-3" />
+                        </td>
+                        @if (Model.liApplicant.FirstOrDefault().APPLICATION_TYPE_ID == Common.ApplicationType.MPHIL)
+                        {
+                            <td cms-mas-mark="@item.MAX_MARK">
+
+                                <input type="text" name="MaximumMarks" id="tdmark" required value="100" maxlength="6" placeholder="100" class="text-left form-control" data-parsley-pattern="^[0-9]{1,}\.?[0-9]{0,2}$" data-parsley-group="wizard-step-3" readonly />
+                            </td>
+                        }
+                        else if (Model.liApplicant.FirstOrDefault().APPLICATION_TYPE_ID == Common.ApplicationType.UG)
+                        {
+                            <td cms-mas-mark="@item.MAX_MARK">
+                                <input type="text" name="MaximumMarks" onfocusout="MaxSum()" id="tdmark" required value="@item.MAX_MARK" maxlength="6" placeholder="100" class="editable text-left form-control" data-parsley-pattern="^[0-9]{1,}\.?[0-9]{0,2}$" data-parsley-group="wizard-step-3" />
+                            </td>
+                        }
+                        else
+                        {
+                            <td cms-mas-mark="@item.MAX_MARK">
+                                <input type="text" name="MaximumMarks" onfocusout="MaxSum()" id="tdmark" required value="@item.MAX_MARK" maxlength="6" placeholder="400" class="editable text-left form-control" data-parsley-pattern="^[0-9]{1,}\.?[0-9]{0,2}$" data-parsley-group="wizard-step-3" />
+                            </td>
+                        }
+
+
+                        <td cms-year="@item.M_PASS">
+                            <input type="text" name="MotntandYear" id="tdmpass" required value="@item.M_PASS" placeholder="May & 2024" class="form-control" data-parsley-group="wizard-step-3" />
+                        </td>
+                        <td cms-hscno="@item.REGISTER_NO">
+                            <input type="text" name="RegisterNo" id="tdregisterno" value="@item.REGISTER_NO" placeholder="635421" class="form-control" data-parsley-group="wizard-step-3" />
+                        </td>
+                        <td cms-attempts="@item.NO_OF_ATTEMPTS">
+                            <input type="number" name="NoOfAttempts" id="tdnoofattempts" required value="@item.NO_OF_ATTEMPTS" maxlength="1" placeholder="1" class="form-control" data-parsley-group="wizard-step-3" />
+                        </td>
+                    </tr>
+                    part++;
+                }
+                @if (Model.liApplicant.FirstOrDefault().APPLICATION_TYPE_ID == Common.ApplicationType.UG)
+                {
+                    <tr>
+                        <td>
+                            Total
+                        </td>
+                        @{decimal Total = 0;}
+                        @{ var Maximum = 0;}
+                        @if (Model.liApplicant != null && Model.liApplicant.Count > 0)
+                        {
+                            Total = Model.liADMStudentMarks.Sum(o => Convert.ToDecimal(o.MARK));
+                            Maximum = Model.liADMStudentMarks.Sum(o => Convert.ToInt16(!string.IsNullOrEmpty(o.MAX_MARK) ? o.MAX_MARK : "0"));
+                        }
+                        <td><input id="total_sum_value" value="@Total" maxlength="6" class="text-center" type="number" width="100%" disabled></td>
+                        <td><input id="total_max_value" value="@Maximum" class="text-center" type="number" width="100%" disabled></td>
+                    </tr>
+                }
+                else if (Model.liApplicant.FirstOrDefault().APPLICATION_TYPE_ID == Common.ApplicationType.PG)
+                {
+                    <tr style="display:none;">
+                        <td>
+                            Total
+                        </td>
+                        @{decimal Total = 0;}
+                        @*@{ var Maximum = 0;}*@
+                        @if (Model.liApplicant != null && Model.liApplicant.Count > 0)
+                        {
+                            Total = Model.liADMStudentMarks.Sum(o => Convert.ToDecimal(o.MARK));
+                            //  Maximum = Model.liADMStudentMarks.Sum(o => Convert.ToInt16(!string.IsNullOrEmpty(o.MAX_MARK) ? o.MAX_MARK : "0"));
+                        }
+                        <td><input id="total_sum_value" value="@Total" maxlength="6" class="text-center" type="number" width="100%" disabled></td>
+                        <td><input id="total_max_value" value="400" class="text-center" type="number" width="100%" disabled></td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td>
+                            Total
+                        </td>
+                        @{decimal Total = 0;}
+                        @{ var Maximum = 0;}
+                        @if (Model.liApplicant != null && Model.liApplicant.Count > 0)
+                        {
+                            Total = Model.liADMStudentMarks.Sum(o => Convert.ToDecimal(o.MARK));
+                            Maximum = Model.liADMStudentMarks.Sum(o => Convert.ToInt16(!string.IsNullOrEmpty(o.MAX_MARK) ? o.MAX_MARK : "0"));
+                        }
+                        <td><input id="total_sum_value" value="@Total" maxlength="6" class="text-center" type="number" disabled></td>
+                        <td><input id="total_max_value" value="@Maximum" class="text-center" type="number" disabled></td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    }
+
+    @*@if (Model.liApplicant != null && Model.liApplicant.Count > 0)
+    {
+        if (Model.liApplicant.FirstOrDefault().EDUCATION_BOARD_ID == "1" && Model.liApplicant.FirstOrDefault().APPLICATION_TYPE_ID == "1" || Model.liApplicant.FirstOrDefault().APPLICATION_TYPE_ID == "5")
+        {
+            if (Model.liADMStudentMarksFor11th != null && Model.liADMStudentMarksFor11th.Count > 0)
+            {
+                <div class="alert alert-info">
+                    Please enter +1 Marks.
+                </div>
+                <table class="table table-bordered table-responsive" id="MarkListFor11th">
+                    <thead>
+                        <tr>
+                            <th>
+                                <center>Subject</center>
+                            </th>
+                            <th>
+                                <center>Marks Secured</center>
+                            </th>
+                            <th>
+                                <center>Maximum Marks</center>
+                            </th>
+                            <th>
+                                <center>Month & Year of Passing</center>
+                            </th>
+                            <th>
+                                <center>Register No.</center>
+                            </th>
+                            <th>
+                                <center>No. of Attempts</center>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.liADMStudentMarksFor11th)
+                        {
+                            <tr cms-subjectid="@item.SUBJECT_ID" cms-markid="@item.MARK_ID" cms-partid="@item.PART">
+                                <td id="tdmarkid">
+                                    <select class="selectpicker form-control" data-live-search="true" onchange="Bind11thSubjects()" required data-parsley-group="wizard-step-3">
+                                        <option value="0" cms-subjectid="" cms-markid="@item.MARK_ID" cms-partid="">--Select--</option>
+                                        @foreach (var option in Model.lisubjects)
+                                        {
+                                            <option value="@option.HSS_SUBJECT_ID" cms-subjectid="@option.HSS_SUBJECT_ID" cms-markid="@item.MARK_ID" cms-partid="@option.PART" @(option.HSS_SUBJECT_ID == item.SUBJECT_ID ? "selected='selected'" : "")>@option.HSS_SUBJECT</option>
+
+                                        }
+                                    </select>
+                                </td>
+                                <td cms-mark="@item.MARK">
+                                    <input type="number" name="MarksSecured" onfocusout="Sum()" id="tdmarksecured" value="@item.MARK" maxlength="6" placeholder="100" class="txtCal text-left form-control" data-parsley-pattern="^[0-9]{1,}\.?[0-9]{0,2}$" data-parsley-group="wizard-step-3" />
+                                </td>
+                                <td cms-mas-mark="@item.MAX_MARK">
+                                    <input type="number" name="MaximumMarks" onfocusout="MaxSum()" id="tdmark" value="@item.MAX_MARK" maxlength="6" placeholder="100" class="editable text-left form-control" data-parsley-pattern="^[0-9]{1,}\.?[0-9]{0,2}$" data-parsley-group="wizard-step-3" />
+                                </td>
+                                <td cms-year="@item.M_PASS">
+                                    <input type="text" name="MotntandYear" id="tdmpass" value="@item.M_PASS" placeholder="May & 2020" class="form-control" data-parsley-group="wizard-step-3" />
+                                </td>
+                                <td cms-hscno="@item.REGISTER_NO">
+                                    <input type="text" name="RegisterNo" id="tdregisterno" value="@item.REGISTER_NO" placeholder="B140295" class="form-control" data-parsley-group="wizard-step-3" />
+                                </td>
+                                <td cms-attempts="@item.NO_OF_ATTEMPTS">
+                                    <input type="number" name="NoOfAttempts" id="tdnoofattempts" value="@item.NO_OF_ATTEMPTS" maxlength="1" placeholder="1" class="form-control" data-parsley-group="wizard-step-3" />
+                                </td>
+                            </tr>
+                        }
+                        <tr>
+                            <td>
+                                Total
+                            </td>
+                            @{decimal total = 0;}
+                            @{ var max = 0;}
+                            @if (Model.liADMStudentMarksFor11th != null && Model.liADMStudentMarksFor11th.Count > 0)
+                            {
+                                total = Model.liADMStudentMarksFor11th.Sum(o => Convert.ToDecimal(o.MARK));
+                                max = Model.liADMStudentMarksFor11th.Sum(o => Convert.ToInt32(!string.IsNullOrEmpty(o.MAX_MARK) ? o.MAX_MARK : "0"));
+                            }
+
+                            <td><input id="total_sum_valueFor11th" value="@total" maxlength="6" class="text-center" type="number" disabled></td>
+                            <td><input id="total_max_valueFor11th" value="@max" class="text-center" type="number" disabled></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <div id="dveleventh" class="col-md-4">
+                    <div class="">
+                        <label>Is +1 Passed?</label>
+                        <div class="form-inline">
+                            <div class="radio radio-css radio-pink radio-inline">
+                                <input type="radio" name="Eleventh_Radio" id="rbtnPassYes" value="1" data-parsley-group="wizard-step-3" required />
+                                <label for="rbtnPassYes">
+                                    Yes
+                                </label>
+                            </div>
+                            <div class="radio radio-css radio-danger radio-inline">
+                                <input type="radio" name="Eleventh_Radio" id="rbtnPassNo" value="0" />
+                                <label for="rbtnPassNo">
+                                    No
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    }*@
+<script>
+
+    function Bind11thSubjects() {
+        var nCount = 0;
+        $('#UGMarkList tbody tr').each(function () {
+            if ($(this).find('td').find('select option:Selected').val()) {
+                //alert('test');
+                $('#MarkListFor11th tbody tr:eq(' + nCount + ')').find('td').find('select').empty();
+                $('#MarkListFor11th tbody tr:eq(' + nCount + ')').find('td').find('select').append("<option value='" + $(this).find('td').find('select option:Selected').val() + "'>" + $(this).find('td').find('select option:Selected').text() + "</option>");
+
+                nCount++;
+            }
+            $('.selectpicker').selectpicker('refresh');
+        });
+
+    }
+
+</script>

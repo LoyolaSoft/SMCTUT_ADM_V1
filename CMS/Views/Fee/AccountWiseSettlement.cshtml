@@ -1,0 +1,163 @@
+﻿@model CMS.ViewModel.ViewModel.FeeTransactionViewModel
+
+@{
+    ViewBag.Title = "AccountWiseSettlement";
+    Layout = null;
+}
+<link href="~/Content/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css" rel="stylesheet" />
+<div class="content" id="content">
+    @using (Html.BeginForm())
+    { @Html.AntiForgeryToken()
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">Home</a></li>
+
+            <li class="active">Date Wise Settlement</li>
+        </ol>
+        <h2 class="page-header"> Date Wise Settlement</h2>
+        <div class="panel">
+            <div class="panel-heading bg-primary">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                </div>
+                <h4 class="panel-title">Date Wise Settlement</h4>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="col-md-12">
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.FeeTransaction.DATE_FROM, "From", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <div class="input-group date" id="datetimepicker1">
+                                    @Html.EditorFor(model => model.FeeTransaction.DATE_FROM, new { htmlAttributes = new { @class = "form-control", id = "Datefrom", placeholder = "Pick Starting Date" } })
+                                    @Html.ValidationMessageFor(model => model.FeeTransaction.DATE_FROM, "", new { @class = "text-danger" })
+                                    <span class="input-group-addon bg-purple"><i class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.FeeTransaction.DATE_TO, "To", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                <div class="input-group date" id="datetimepicker1">
+                                    @Html.EditorFor(model => model.FeeTransaction.DATE_TO, new { htmlAttributes = new { @class = "form-control", id = "Dateto", placeholder = "Pick Ending Date" } })
+                                    @Html.ValidationMessageFor(model => model.FeeTransaction.DATE_TO, "", new { @class = "text-danger" })
+                                    <span class="input-group-addon bg-purple"><i class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.liBankAccount, "Bank Account", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <div class="col-md-7">
+                                @Html.DropDownListFor(model => model.liBankAccount, (Model.liBankAccount != null) ? Model.liBankAccount : Enumerable.Empty<SelectListItem>(), "-- Select --", new { @class = " selectpicker show-menu-arrow show-tick drop-down form-control  input-sm", @data_live_search = "true" })
+                                @Html.ValidationMessageFor(model => model.liBankAccount, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-1">
+                            <a href="#" id="btnExport" class="btn btn-success m-b-20">Export</a>
+                        </div>
+                    </div>
+                    <div class="col-md-12 m-b-5">
+                        <div id="divSettlement">
+                            <!--Need to use this fied to bind Student List-->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    }
+</div>
+
+<script src="~/Content/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+<script src="~/Content/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script>
+    $('.selectpicker').selectpicker({
+        size: 4
+    });
+    function handleDatepicker() {
+        "use strict";
+        $("#Datefrom,#Dateto").datepicker({
+            todayHighlight: true,
+            autoclose: true,
+            endDate: new Date(),
+            format: "dd/mm/yyyy",
+            orientation: "down bottom",
+            zIndexOffset: '15',
+            defaultDate: new Date()
+        })
+    }
+    (function() {        
+        handleDatepicker();
+    }());
+    function LoadGroupDateSettlement() {
+        var From = $('#Datefrom').val();
+        var To = $('#Dateto').val();
+        var BankAccount = $('#liBankAccount').val();
+        if (To != 0 && From != 0 && BankAccount != 0) {
+            $.ajax({
+                url: '@Url.Action("BindAccountWiseSettlement", "Fee")',
+                data: { sFrom: From, sTo: To, sBankAccount: BankAccount },
+                success: function (option) {
+                    var dvClassWiseStudentPaidStatus = $('#divSettlement');
+                    dvClassWiseStudentPaidStatus.empty();
+                    dvClassWiseStudentPaidStatus.append(option);
+
+                },
+                error: function (xhr, textStatus, error) {
+                    alert(error + "\n");
+                }
+            });
+        }
+        else {
+            $('.selectpicker').selectpicker('refresh');
+            return false;
+        }
+    }
+    //BankAccountChangeEvent
+    $('#liBankAccount').on("change", function () {
+        LoadGroupDateSettlement();
+    });
+    $('#Dateto').on("change", function () {
+        LoadGroupDateSettlement();
+    });
+    $('#Datefrom').on("change", function () {
+        LoadGroupDateSettlement();
+    });
+    function BindFeeDetails(ID) {
+        var SettlementID = ID;
+        var BankAccount = $('#liBankAccount').val();
+        if (Date != 0 && BankAccount != 0) {
+            $.ajax({
+                url: '@Url.Action("BindAccountWiseSettlementByDate", "Fee")',
+                data: { sSettlementID: SettlementID, sBankAccount: BankAccount },
+                success: function (option) {
+                    var dvClassWiseStudentPaidStatus = $('#divSettlement');
+                    dvClassWiseStudentPaidStatus.empty();
+                    dvClassWiseStudentPaidStatus.append(option);
+
+                },
+                error: function (xhr, textStatus, error) {
+                    alert(error + "\n");
+                }
+            });
+        }
+        else {
+            $('.selectpicker').selectpicker('refresh');
+            return false;
+        }
+    }
+    $("#btnExport").click(function (e) {
+        let file = new Blob([$('#divSettlement').html()], { type: "application/vnd.ms-excel" });
+        let url = URL.createObjectURL(file);
+        let a = $("<a />", {
+            href: url,
+            download: "AccountWiseReport.xls"
+        }).appendTo("body").get(0).click();
+        e.preventDefault();
+    });
+</script>

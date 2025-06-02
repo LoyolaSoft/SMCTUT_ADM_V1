@@ -1,0 +1,114 @@
+﻿@model CMS.ViewModel.Model.ADM_ISSUE_APPLICATION_2018
+@{
+    Layout = null;
+}
+<style>
+    /*#studentdetails tbody tr td
+    {
+        border-bottom: 0;
+    }
+
+    #studentdetails tbody tr td
+    {
+        border-top: 0;
+        border-left:0;
+        border-right:0;
+    }*/
+</style>
+@Html.Hidden("photopath", @Model.IMAGE_PATH)
+<hr style="height:4px" /> 
+<div class="col-md-12" id="cardprint">
+    <div id="devForm" data-parsley-validate="true">
+        @if (Model != null)
+        {
+            @Html.Hidden("bg", Model.BLOOD_GROUP);
+            <table class="table table-bordered" id="studentdetails">
+                <tbody>
+                    <tr>
+
+                        <td colspan="2" align="center" style="padding:12px">
+                            <h4>
+                                St. Mary's College,Thoothukudi<br>
+                                Theppakulam-620002
+                            </h4>
+                        </td>
+                        <td align="center"><img src="@Model.IMAGE_PATH" alt="Student Image" style="width: 140px; height: 185px;"></td>
+                    </tr>
+                    <tr>
+                        <td><b>Name</b></td>
+                        <td>@Html.EditorFor(o => o.FIRST_NAME, new { htmlAttributes = new { @class = "form-control", @id = "name", @data_parsley_required = "true" } })</td>
+                        <td align="center" style="padding:12px;"><b>Address</b></td>
+                    </tr>
+                    <tr>
+                        <td><b>DOB</b></td>
+                        <td>
+                            <div class="input-group date" id="datetimepicker1">
+                                @Html.EditorFor(model => model.DOB, new { htmlAttributes = new { @class = "form-control", id = "date", placeholder = "Pick Submission Date", @data_parsley_required = "true" } })
+                                @Html.ValidationMessageFor(model => model.DATE_OF_BIRTH, "", new { @class = "text-danger" })
+                                <span class="input-group-addon bg-purple"><i class="fa fa-calendar"></i></span>
+                            </div>
+                        </td>
+                        <td rowspan="5" align="center">
+
+                            <span>Door No</span>@Html.EditorFor(o => o.CDOORDETAIL, new { htmlAttributes = new { @class = "form-control", @id = "dno", @data_parsley_required = "true" } })<br>
+                            <span>Street</span>@Html.EditorFor(o => o.CSTREET, new { htmlAttributes = new { @class = "form-control", @id = "street", @data_parsley_required = "true" } })<br>
+                            <span>Place</span>@Html.EditorFor(o => o.CVILLAGE_AREA, new { htmlAttributes = new { @class = "form-control", @id = "area", @data_parsley_required = "true" } })<br>
+                            <span>City</span>@Html.EditorFor(o => o.CTALUK_CITY, new { htmlAttributes = new { @class = "form-control", @id = "city", @data_parsley_required = "true" } })<br>
+                            <span>District</span>@Html.EditorFor(o => o.CDISTRICT, new { htmlAttributes = new { @class = "form-control", @id = "dis", @data_parsley_required = "true" } })<br>
+                            <span>Pincode</span>@Html.EditorFor(o => o.CPINCODE, new { htmlAttributes = new { @class = "form-control", @id = "pincode", @data_parsley_required = "true", } })<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><b>Programme</b></td>
+                        <td><b>@Model.PROGRAMME_NAME</b></td>
+
+                    </tr>
+                    <tr>
+                        <td><b>Mobile No</b></td>
+                        <td><b>@Html.EditorFor(o=>o.SMS_MOBILE_NO, new { htmlAttributes = new { @class = "form-control", @id = "mno", @data_parsley_required = "true" } })</b></td>
+
+                    </tr>
+                    <tr>
+                        <td><b>Blood Group</b></td>
+                        <td>
+                            <b>
+                                <select id="bloodgroup" class="selectpicker"></select>
+                            </b>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td><b>Aadhar Number</b></td>
+                        <td><b>@Html.EditorFor(o => o.AADHAR_NUMBER, new { htmlAttributes = new { @class = "form-control", @id = "adno", @data_parsley_required = "true" } })</b></td>
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+
+        }
+        else
+        {
+            <div class="alert alert-danger col-md-12">No Records Found..!</div>
+        }
+        </div>
+    </div>
+<div class="col-md-12">
+  <div class="col-md-offset-11"><a href="#" class="btn btn-success" id="btnverify" onclick="Verify()">Verify</a></div>
+</div>
+
+<script>
+
+    $(function ()
+    {
+        var option = $('#bg').val();
+        $('#bloodgroup').empty();
+        $('#bloodgroup').append(option);
+    });
+
+    $('.selectpicker').selectpicker({
+        size: 4
+    });
+
+</script>

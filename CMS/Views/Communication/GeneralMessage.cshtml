@@ -1,0 +1,533 @@
+﻿@model CMS.ViewModel.ViewModel.CommunicationViewModel
+@using CMS.Utility;
+@{
+    ViewBag.Title = "GeneralMessage";
+    //Layout = "~/Views/Shared/_AdminLayoutPage.cshtml";\
+    Layout = null;
+}
+    <link href="~/Content/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+    <style>
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            margin: 0;
+        }
+    </style>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div id="content" class="content">
+        <div class="form-horizontal">
+            <!-- BEGIN breadcrumb -->
+            <ul class="breadcrumb pull-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">General Messages</li>
+            </ul>
+            <!-- END breadcrumb -->
+            <h1 class="page-header">
+                General Messages
+            </h1>
+            <div class="panel panel-primary">
+                <div class="panel-heading bg-primary">
+                    <div class="panel-heading-btn">
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                    </div>
+                    <h4 class="panel-title">General Messages</h4>
+                </div>
+                <div class="form-horizontal">
+                    <div class="panel-body">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="col-lg-12 form-group row">
+                            <div class="form-group col-lg-6">
+                                <label class="col-lg-3 control-label pull-left">SMS for</label>
+                                <div class="form-group col-lg-9">
+                                    <div class="radio radio-css radio-success radio-inline">
+                                        <input type="radio" name="inline_radio" id="rbtnStudent" value="1" />
+                                        <label for="rbtnStudent">
+                                            Student
+                                        </label>
+                                    </div>
+                                    <div class="radio radio-css radio-warning radio-inline">
+                                        <input type="radio" name="inline_radio" id="rbtnStaff" value="2" />
+                                        <label for="rbtnStaff">
+                                            Staff
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-3 hidden" id="radiobtn">
+                                <div class="col-md-12">
+                                    @Html.DropDownListFor(model => model.Status, (Model.Status != null) ? Model.Status : Enumerable.Empty<SelectListItem>(), "-- Select --", new { @class = " selectpicker show-menu-arrow show-tick form-control  input-sm" })
+                                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-3 pull-right">
+                                <label class="control-label">Record Count</label>                               
+                                <label class="label label-danger" id="lblCount">0</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 form-group" id="dvBorder">
+                            <!-- Begin Submitted & Paid Status -->
+                            @*<div class="col-md-4 hidden" id="radiobtn">
+                                    <div class="col-lg-4">
+                                        <div class="radio radio-css radio-primary radio-inline">
+                                            <input type="radio" name="radio" id="rbtnSubmitted" value="1" />
+                                            <label for="rbtnSubmitted">Submitted</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="radio radio-css radio-primary radio-inline">
+                                            <input type="radio" name="radio" id="rbtnNotSubmitted" value="2" />
+                                            <label for="rbtnNotSubmitted">Not Submitted</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-2">
+                                        <div class="radio radio-css radio-primary radio-inline">
+                                            <input type="radio" name="radio" id="rbtnPaid" value="3" />
+                                            <label for="rbtnPaid">Paid</label>
+                                        </div>
+                                    </div>
+                                </div>*@
+                            <!-- End Submitted & Paid Status -->
+                            <!-- select Staff By Category -->
+                            <div class="col-lg-6 hidden" id="divStaffCategory" clientidmode="static">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.StaffCategoryList, "Staff Category", htmlAttributes: new { @class = "control-label col-md-4" })
+                                    <div class="col-md-6">
+                                        @Html.DropDownListFor(model => model.StaffCategoryList, (Model.StaffCategoryList != null) ? Model.StaffCategoryList : Enumerable.Empty<SelectListItem>(), "-- Select --", new { @class = " selectpicker show-menu-arrow show-tick  form-control  input-sm", @multiple = "multiple" })
+                                        @Html.ValidationMessageFor(model => model.StaffCategoryList, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <a class="btn btn-primary" id="btnStaffCategory">Get</a>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- select Staff By Category -->
+                        </div>
+                        <!-- Begin Shift & Application Type DDL-->
+                        <div class="form-group col-md-12 hidden" id="TypeDDL">
+                            <!-- Shift DDL-->
+                            <div class="form-group col-md-12">
+                                <div class="form-group col-md-6">
+                                    @Html.LabelFor(model => model.Application_Type, "App.Type", htmlAttributes: new { @class = "control-label col-md-5" })
+                                    <div class="col-md-7">
+                                        @Html.DropDownListFor(model => model.Application_Type, (Model.Application_Type != null) ? Model.Application_Type : Enumerable.Empty<SelectListItem>(), null, new { @class = " selectpicker show-menu-arrow show-tick form-control  input-sm", multiple = "multiple", data_selected_text_format = "count" })
+                                        @Html.ValidationMessageFor(model => model.Application_Type, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    @Html.LabelFor(model => model.ProgrammeMode, "Pro.Mode", htmlAttributes: new { @class = "control-label col-md-5" })
+                                    <div class="col-md-7">
+                                        @Html.DropDownListFor(model => model.ProgrammeMode, (Model.ProgrammeMode != null) ? Model.ProgrammeMode : Enumerable.Empty<SelectListItem>(), null, new { @class = " selectpicker show-menu-arrow show-tick form-control  input-sm", multiple = "multiple", data_selected_text_format = "count" })
+                                        @Html.ValidationMessageFor(model => model.ProgrammeMode, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <div class="form-group col-md-6">
+                                    @Html.LabelFor(model => model.Shift, "Shift", htmlAttributes: new { @class = "control-label col-md-5" })
+                                    <div class="col-md-7">
+                                        @Html.DropDownListFor(model => model.Shift, (Model.Shift != null) ? Model.Shift : Enumerable.Empty<SelectListItem>(), null, new { @class = " selectpicker show-menu-arrow show-tick form-control  input-sm", multiple = "multiple", data_selected_text_format = "count" })
+                                        @Html.ValidationMessageFor(model => model.Shift, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    @Html.LabelFor(model => model.Program, "Programme", htmlAttributes: new { @class = "control-label col-md-5" })
+                                    <div class="col-md-7">
+                                        @Html.DropDownListFor(model => model.Program, (Model.Program != null) ? Model.Program : Enumerable.Empty<SelectListItem>(), null, new { @class = " selectpicker form-control  input-sm", @data_actions_box = "true", multiple = "multiple", data_live_search = true, data_selected_text_format = "count" })
+                                        @Html.ValidationMessageFor(model => model.Program, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-1">
+                                    <a class="btn btn-primary" id="btnGetStudent"> Get </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Shift & Application Type DDL-->
+
+                        <div class="hidden" id="BindInformation">
+
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="col-lg-12 form-group">
+                                <label class="control-label">
+                                    Message
+                                    @*<asp:RequiredFieldValidator CssClass="has-error" ValidationGroup="SendGroup" ErrorMessage="*" ControlToValidate="txtMessage" ClientValidationFunction="validate" ForeColor="Red" Font-Size="Smaller" runat="server" />*@
+                                </label>
+                                <textarea id="txtMessageContent" rows="5" cols="10" class="form-control" maxlength="612"></textarea>
+                            </div>
+                            <div class="col-lg-12 form-group">
+                                <div class="col-lg-6">
+                                    <div class="col-lg-3">
+                                        <div class="checkbox hidden">
+                                            <input type="checkbox" id="chkAddCC" />
+                                            <label for="chkAddCC">
+                                                Add CC
+                                            </label>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-6" id="divOuter">
+                                    <p class="col-sm-4 col-md-offset-6 control-label">Total Credits</p>
+                                    <div class="col-lg-2">
+                                        <input type="text" id="txtCredits" class="form-control input-sm" value="1" disabled style="width:75px !important;" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 form-group">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="col-sm-8">
+                                        <input type="text" name="mobile" value="" class="form-control m-b-5 input-sm" id="txtMobile" placeholder="eg:9876543210" pattern="[789][0-9]{9}" title="Enter Mobile Number" />
+                                    </div>
+                                    <div class="col-sm-2">
+                                        @*<button Text="Test" ID="btnTestSMS"  class="btn btn-warning w-md waves-effect waves-light m-b-5"/>*@
+                                        <button type="button" id="btnTestSMS" class="btn btn-warning w-md waves-effect waves-light m-b-5">Test</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 ">
+                                <button type="reset" id="btnClear" Style="margin-left: 5px;" class="pull-right btn btn-danger m-b-5">Clear</button>
+                                <button type="button" id="btnSendSMS" class="pad pull-right btn btn-success">Send</button>
+                                @*<button Text="Clear"  Style="margin-left: 5px;" ID="btnClear"  class="pull-right btn btn-danger w-md waves-effect waves-light m-b-5" />*@
+                                @*<button Text="Send"  ID="btnSendSMS"  class="pad pull-right btn btn-success  w-md waves-effect waves-light m-b-5" />*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+    <script src="~/Content/assets/plugins/flot/jquery.flot.min.js"></script>
+    <script src="~/Content/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script>
+        $('.selectpicker').selectpicker({
+            size: 5
+        });
+    </script>
+    @* Get Record To Send SMS *@
+    <script>
+        // Get Student Records Count....
+
+        $('#btnGetStudent').on('click', function () {
+            var sStatus = $('#Status').val();     
+            if ((sStatus == null || sStatus == "null" || sStatus == "0" || sStatus == '')) {
+                alert('Please Choose Any Type .!');
+                return false;
+           }         
+           var Program = String($('#Program').val());         
+           if ((Program == null || Program == "null" || Program == "0" || Program == '')) {
+                alert('Please Choose All The Options .!');
+                return false;
+            }         
+           var JsonData = '{"PROGRAMME_GROUP_ID":"' + Program + '","STATUS":"' + sStatus + '"}';
+            $.ajax({
+                url: '@Url.Action("FetchStudentInfoCountForRecordCount", "Communication")',
+                method: "POST",
+                datatype: "json",
+                data: { sJsonSubmissionList: JsonData },
+                success: function (data) {
+                    if (data.Message != null && data.Message != '') {
+                        alert(data.Message);
+                    } else {
+                        $("#lblCount").text(data.sResult);
+                    }
+                }, error: function (error) {
+                    alert('Internal Server Error !');
+                }
+            });
+        });
+        $('#Shift').on('change', function () {
+            LoadProgrammes();
+        })
+        $('#Application_Type').on('change', function () {
+            LoadProgrammes();
+        })
+        $('#ProgrammeMode').on('change', function () {
+            LoadProgrammes();
+        })
+        function LoadProgrammes() {
+            var Shift = String($('#Shift').val());
+            var App_Type = String($('#Application_Type').val());
+            var ProgrammeMode = String($('#ProgrammeMode').val());
+            if ((Shift != null || Shift != "0" || Shift != '' || App_Type != null || App_Type != "0" || App_Type != '' || ProgrammeMode != null || ProgrammeMode != "0" || ProgrammeMode != '')) {
+                $.ajax({
+                    url: '@Url.Action("FetchAdmissionProgramme", "Admission")',
+                    method: "POST",
+                    datatype: "json",
+                    data: { sApplicationType: App_Type, sProgrammeMode: ProgrammeMode, sShift: Shift },
+                    success: function (data) {
+                        $('#Program').empty();
+                        if (data.Message != null && data.Message != '') {
+                            alert(data.Message);
+                        } else {
+                            $('#Program').append(data);
+                            $('.selectpicker').selectpicker('refresh');
+                        }
+                    }, error: function (error) {
+                        alert('Internal Server Error !');
+                    }
+                });
+            }
+        }
+        // Get Progam By ShiftId ..
+    </script>
+
+    @* Script For Send Bulk Message *@
+    <script>
+        $('#btnSendSMS').on("click", function () {
+            if (!$("#rbtnStudent").is(":checked") && !$("#rbtnStaff").is(":checked")) {
+                alert('Please Choose Any SMS Option ...!');
+                return false;
+            }
+            //var chnSubmitted = 0; var chnPaid = 0;
+            var IsStaff = 0;
+            var JsonData = null; var SmsMode = "1";
+            //if ($('#rbtnSubmitted').is(':checked'))
+            //    chnSubmitted = 1;
+            //else if ($('#rbtnPaid').is(':checked')) {
+            //    chnPaid = 1; chnSubmitted = 1;
+            //}
+           // var Progam = '';
+            Progam = String($('#Program').val());
+            var Shift = $('#Shift').val();
+            var App_Type = $('#Application_Type').val();
+
+
+            if (!$("#rbtnStudent").is(":checked")) {
+                //if (!$('#rbtnSubmitted').is(':checked') && !$('#rbtnNotSubmitted').is(':checked') && !$('#rbtnPaid').is(':checked')) {
+                //    alert('Please Choose Any Type .!');
+                //    return false;
+                //}
+                if ((Progam != "null" && Progam != "0")) {
+                    alert('Please Choose All The Options .!');
+                    return false;
+                }
+            }           
+            //Check the testMobile
+            var TestMobileNo = $('#txtMobile').val();
+            if (TestMobileNo != '') {
+                alert('Not valid to SendSMS Clear the TestMobile');
+                return false;
+            } else {
+                var JsonData = '{"PROGRAMME_GROUP_ID":"' + Progam + '","STATUS":"' + $('#Status').val() + '"}';
+                if ($("#rbtnStaff").is(":checked")) {
+                    IsStaff = "1";
+                }
+                var sMessageContent = $('#txtMessageContent').val();
+                if (sMessageContent != null && sMessageContent != '') {
+                    $.ajax({
+                        url: '@Url.Action("SendBulkMessageForSMS", "Communication")',
+                        method: "POST",
+                        datatype: "json",
+                        data: { JsonMessage: JsonData, sSMSMode: SmsMode, sContent: sMessageContent, ChStaff: IsStaff, sCredit: sCreditCount, sStfCategoryId: String($('#StaffCategoryList').val()) },
+                        success: function (data) {
+                            alert(data.Message);
+                        }, error: function (error) {
+                            alert('Internal Server Error !');
+                        }
+                    });
+                } else {
+                    alert("No Message Content");
+                }
+            }
+
+            @*//btn Both Clicked
+            if ($("#rbtnBoth").is(":checked") ) {
+                $.ajax({
+                    url: '@Url.Action("SendBulkMessage", "Communication")',
+                    method: "POST",
+                    datatype: "json",
+                    data: { sSMSMode: "3", sContent: sMessageContent, sCredit: sCreditCount },
+                    success: function (data) {
+                        if (data.Message != null) {
+                            alert(data.Message)
+                            return false;
+                        }
+                    }, error: function (error) {
+                        alert('Error');
+                    }
+                });
+            }*@
+        });
+    </script>
+
+    @* Credit Count & Radio Click  *@
+    <script>
+        var sCreditCount = null;
+        $(document).ready(function () {
+            $(document).on("wheel", "input[type=number]", function (e) {
+                $(this).blur();
+            });
+
+            //function for txtmessage
+            var text_max = 612;
+            $('#divCharCount').html(text_max + 'Total characters');
+            $('#txtMessageContent').keyup(function () {
+                var text_length = $('#txtMessageContent').val().length;
+                var text_remaining = text_max - text_length;
+                var CreditCount = (text_length - 1) / 153;
+                $('#divCharCount').html(text_length + ' Total characters');
+                if (Math.trunc(CreditCount) >= 1) {
+                    //al $('#divOuter').removeClass('hidden');
+                    document.getElementById('txtCredits').value = (Math.trunc(CreditCount) + 1);
+                    $('#divCreditCount').html((Math.trunc(CreditCount) + 1));
+                } else {
+                    // $('#divOuter').addClass('hidden');
+                }
+                sCreditCount = (Math.trunc(CreditCount) + 1);
+            });
+
+            //$('#ClassList').selectpicker('refresh');
+            $("#rbtnStudent").on('click', function () {
+                $("#lblCount").text('0');
+                if ($("#rbtnStudent").attr("checked", "checked")) {
+                    // $("#divClass").removeClass("hidden");
+                    // $('#BindInformation').addClass("hidden");
+                    $("#divStaffCategory").addClass("hidden");
+                    $("#radiobtn").removeClass("hidden");
+                    $("#TypeDDL").removeClass("hidden");
+                }
+            });
+            $("#rbtnStaff").on('click', function () {
+                $("#lblCount").text('0');
+                $('#BindInformation').addClass("hidden");
+                $("#divClass").addClass("hidden");
+                $("#divStaffCategory").removeClass("hidden");
+                $("#radiobtn").addClass("hidden");
+                $("#TypeDDL").addClass("hidden");
+            });
+            //$("#rbtnBoth").on('click', function ()
+            //{
+            //    BothRecordCount();
+            //    $("#divClass").addClass("hidden");
+            //    $("#divStaffCategory").addClass("hidden");
+            //    $("#radiobtn").addClass("hidden");
+            //    $("#TypeDDL").addClass("hidden");
+            //});
+
+        });
+    </script>
+
+    @* Send Test Message *@
+    <script>
+        //  Validate For Only Numbers ...
+        $("#txtMobile").keypress(function (e) {
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                if (e.which != 44) {
+                    return false;
+                }
+            }
+        });
+
+        // Sending Test Message ...
+        $('#btnTestSMS').click(function () {
+            if ($("#txtMessageContent").val() && $("#txtMobile").val()) {
+                var Mobile = $("#txtMobile").val().split(',');
+                var JsonData = '{"sms":[';
+                $.each(Mobile, function (i, n) {
+                    JsonData += '{"to":"' + n + '"},';
+                });
+                JsonData = JsonData.slice(0, -1);
+                JsonData += ']}';
+                $.ajax({
+                    url: "@Url.Action("TestMessage", "Communication")",
+                    method: "POST",
+                    datatype: "json",
+                    data: { JsonTestMessage: JsonData, sContent: $("#txtMessageContent").val(), CreditCount: sCreditCount },
+                    success: function (data) {
+                        alert(data.Message);
+                    }, error: function (error) {
+                        alert("Internal Server Error ...!!!");
+                    }
+                });
+            } else {
+                alert('Invalid Mobile Number Or Message Content !');
+            }
+        });
+    </script>
+
+    @* Get Staff Count By Staff Category *@
+    <script>
+
+        $('#btnStaffCategory').on("click", function () {
+            var vStaffCategoryList = String($('#StaffCategoryList').val());
+            if (vStaffCategoryList.length != 0 && vStaffCategoryList != "null") {
+                $.ajax({
+                    url: '@Url.Action("FetchStaffRecordsCount", "Communication")',
+                    method: "POST",
+                    datatype: "json",
+                    data: { sStaffCategoryId: vStaffCategoryList },
+                    success: function (data) {
+                        if (data.Message != null) {
+                            alert(data.Message);
+                        }
+                        if (data.sResult != null) {
+                            $('#lblCount').text(data.sResult);
+                        }
+                    },
+                    error: function (xhr, textStatus, error) {
+                        alert(error + "\n");
+                    }
+                });
+            } else {
+                alert("Please Select The Staff Category...!!!");
+            }
+        });
+
+
+    </script>
+
+    @* Get record Count For Staff And Both *@
+    <script>
+        function StaffRecordCount() {
+            $.ajax({
+                url: "@Url.Action("FetchStaffRecordsCount", "Communication")",
+                method: "POST",
+                datatype: "json",
+                success: function (data) {
+                    if (data.Message != null) {
+                        alert(data.Message);
+                    }
+                    if (data.sResult != null) {
+                        $('#lblCount').text(data.sResult);
+                    }
+                },
+                error: function (xhr, textStatus, error) {
+                    alert(error + "\n");
+                }
+            })
+        }
+        function BothRecordCount() {
+            $.ajax({
+                url: "@Url.Action("FetchStaffAndStudentRecordsCount", "Communication")",
+                method: "POST",
+                datatype: "json",
+                success: function (data) {
+                    if (data.Message != null) {
+                        alert(data.Message);
+                    }
+                    if (data.sResult != null) {
+                        $('#lblCount').text(data.sResult);
+                    }
+                },
+                error: function (xhr, textStatus, error) {
+                    alert(error + "\n");
+                }
+            })
+        }
+    </script>
+

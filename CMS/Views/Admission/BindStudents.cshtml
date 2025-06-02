@@ -1,0 +1,44 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{
+    Layout = null;
+}
+<table class="table table-hover table-bordered" id="tblstudentlist">
+    <thead>
+        <tr>
+           
+            <th>
+            <input type="checkbox" name="myTextEditBox" id="AllchkID" onchange="SelectOrUnselect()" />
+             <label id="count" class="label label-success">0</label>
+            </th>
+            <th>App.No</th>
+            <th>Name</th>
+            <th>D.O.B</th>
+            <th>Class Name</th>
+            <th>Roll No</th>
+            <th>Status</th>
+            
+        </thead>
+    <tbody>
+    
+        @if (Model.liApplicant != null)
+        {
+            foreach (var item in Model.liApplicant)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" onclick="CheckedCount()" name="myTextEditBox" id="chkID"  cms-receiveid="@item.RECEIVE_ID" cms-applicationno="@item.APPLICATION_NO" cms-classid="@item.CLASS"  />
+                       
+                    </td>
+
+                    <td>@item.APPLICATION_NO </td>
+                    <td>@item.FIRST_NAME</td>
+
+                    <td>@item.DATE_OF_BIRTH </td>
+                    <td>@item.CLASS_NAME</td>
+                    <td>@item.ROLL_NO</td>
+                    <td>@item.STATUS_NAME</td>
+                </tr>
+            }
+        }
+        </tbody>
+</table>

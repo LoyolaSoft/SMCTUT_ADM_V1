@@ -1,0 +1,52 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+
+@{Layout = null; int count = 0; }
+<div class="table-responsive">
+    <table class="table table-bordered table-hover" id="tblUnPaidlist">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th><input type="checkbox" id="chAll" onclick="SelectAndUnSelect()"/></th>
+                <th>Student Name</th>
+                <th>Application No</th>
+                <th>Programme</th>
+                <th>Mobile No</th>
+                @*<th>Email Id</th>
+                <th>Shift</th>*@
+                <th>Religion</th>
+                <th>Caste</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.liSelectionProccess!=null && Model.liSelectionProccess.Count>0)
+            {
+                foreach (var item in Model.liSelectionProccess)
+                {
+                    <tr cms-receiveId="@item.RECEIVE_ID">
+                        <td>@{count++;} @count</td>
+                        <td><input type="checkbox" id="chrow" /></td>
+                        <td>@item.FIRST_NAME @item.LAST_NAME</td>
+                        <td>@item.APPLICATION_NO</td>
+                        <td>@item.PROGRAMME_NAME</td>
+                        <td>@item.MOBILE_NO</td>
+                        @*<td>@item.EMAIL_ID</td>
+                        <td>@item.SHIFT</td>*@
+                        <td>@item.RELIGION</td>
+                        <td>@item.CASTE_ID</td>
+                        
+                    </tr>
+                 }
+             }else
+             {
+                 <tr><td colspan="8" class="text-center">No Records Found !</td></tr>
+             }
+        </tbody>
+    </table>
+
+    <div class="col-md-12 pull-right">
+        <a class="btn btn-primary" onclick="GetReceiveId()">Submit</a>
+    </div>
+</div>
+
+<input type="hidden" id="hdCount" value="@count" />

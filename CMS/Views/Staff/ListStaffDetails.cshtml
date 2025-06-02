@@ -1,0 +1,78 @@
+﻿@model IEnumerable<CMS.ViewModel.Model.StaffInfo>
+
+@{
+    ViewBag.Title = "ListStaffDetails";
+    Layout = "~/Views/Shared/_AdminLayoutPage.cshtml";
+}
+
+@section styles{
+    <link href="~/Content/assets/plugins/DataTables/media/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/assets/plugins/DataTables/extensions/Responsive/css/responsive.bootstrap.min.css" rel="stylesheet" />
+}
+    <div class="content" id="content">
+        <!-- begin breadcrumb -->
+        <ol class="breadcrumb pull-right">
+            <li><a href="@Url.Action("ADMIN","DashBoard")">Home</a></li>
+            <li class="active">List Staff Details</li>
+        </ol>
+        <!-- end breadcrumb -->
+        <!-- begin page-header -->
+        <h1 class="page-header">Staff List</h1>
+        <!-- end page-header -->
+        <div id="dvStaffList"></div>
+    </div>
+@section scripts{
+    <script src="~/Content/assets/plugins/DataTables/media/js/jquery.dataTables.js"></script>
+    <script src="~/Content/assets/plugins/DataTables/media/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/Content/assets/plugins/DataTables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+    <script>
+        $(document).ready(function ()
+        {
+            GetStaffList();
+            // $("#StaffInfo").DataTable();
+        });
+        // Get staff List ...
+        GetStaffList=function()
+        {
+            $.ajax({
+                url:"@Url.Action("StaffList", "Staff")",
+                type: "json",
+                success:function(data)
+                {
+                    $("#dvStaffList").empty();
+                    $("#dvStaffList").append(data);
+                    $("#StaffInfo").DataTable();
+                },error:function(error)
+                {
+                    alert('Internal Server Error');
+                }
+            });
+        }
+
+
+        // Delete Staff ...
+        function GetConfirm(STAFFID, STAFFCODE)
+        {
+            if (!confirm('Are you sure to delete ?'))
+            {
+                return false;
+            } else
+            {
+                $.ajax({
+                    url:"@Url.Action("DeleteStaff", "Staff")",
+                    method: "POST",
+                    datatype:"json",
+                    data: { sStaffId: STAFFID, UserName: STAFFCODE },
+                    success:function(data)
+                    {
+                        alert(data);
+                        GetStaffList();
+                    },error:function(error)
+                    {
+                        alert(error);
+                    }
+                });
+            }
+        }
+    </script>
+}

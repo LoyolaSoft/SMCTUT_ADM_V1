@@ -1,0 +1,129 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{
+    ViewBag.Title = "ListSelectedStudents";
+    Layout = "~/Views/Shared/_HCCAdmissionLayoutPage.cshtml";
+    int psCount = 0;
+    // int csCount = 0;
+    //int pstCount = 0;
+}
+<div id="colorlib-about">
+    <div class="container">
+
+        <ol class="breadcrumb " style="box-shadow: 0 2px 4px 0 rgba(0,0,0,0.10);">
+            <li><a href="@Url.Action("hccindex","admission")">Home</a></li>
+
+            <li class="active">Selected Students</li>
+        </ol>
+        @if (Model.liSelectionProcess != null && Model.liSelectionProcess.Count > 0)
+        {
+            // group by programme mode
+            var aSelectioncyclesByProgrammeMode = Model.liSelectionProcess.Where(o => o.PROGRAMME_MODE_ID == "2").ToList();
+            if (aSelectioncyclesByProgrammeMode != null && aSelectioncyclesByProgrammeMode.Count > 0)
+            {
+                <div class="row">
+                    <div class="about-desc animate-box">
+                        <div class="fancy-collapse-panel">
+                            @{
+                                // group by application type
+                                var GSelectioncyclesByAppType = aSelectioncyclesByProgrammeMode.GroupBy(o => o.APPLICATION_TYPE_ID);
+
+                                foreach (var gitem in GSelectioncyclesByAppType)
+                                {
+
+                                    <div class="panel-group" id="aaccordion_@gitem.FirstOrDefault().APPLICATION_TYPE_ID" role="tablist" aria-multiselectable="true">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading" role="tab" id="aheading_@gitem.FirstOrDefault().APPLICATION_TYPE_ID" style="box-shadow: 0 2px 4px 0 rgba(0,0,0,0.10);">
+                                                <center>
+                                                    <h3 class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="#aaccordion_@gitem.FirstOrDefault().APPLICATION_TYPE_ID" href="#a_@gitem.FirstOrDefault().APPLICATION_TYPE_ID" aria-expanded="false" aria-controls="a_@gitem.FirstOrDefault().APPLICATION_TYPE_ID" class="text-white" style="font-size:16px;">
+                                                            @gitem.FirstOrDefault().APPLICATION_TYPE
+                                                        </a>
+                                                    </h3>
+                                                </center>
+                                            </div>
+                                            <div id="a_@gitem.FirstOrDefault().APPLICATION_TYPE_ID" class="panel-collapse collapse" role="tabpanel" aria-labelledby="aheading_@gitem.FirstOrDefault().APPLICATION_TYPE_ID">
+                                                <div class="panel-body">
+
+
+                                                    @{var liProgramme = aSelectioncyclesByProgrammeMode.Where(o => o.APPLICATION_TYPE_ID == gitem.FirstOrDefault().APPLICATION_TYPE_ID).GroupBy(o => o.PROGRAMME_ID).ToList();
+
+
+                                                        foreach (var item1 in liProgramme)
+                                                        {
+                                                            psCount++;
+                                                            <div class="panel-group" id="paccordion_@psCount" role="tablist" aria-multiselectable="true">
+                                                                <div class="panel panel-default">
+                                                                    <div class="panel-heading" role="tab" id="pheading_@psCount" style="box-shadow: 0 2px 4px 0 rgba(0,0,0,0.10);">
+                                                                        <center>
+                                                                            <h3 class="panel-title">
+                                                                                <a data-toggle="collapse" data-parent="#paccordion_@psCount" href="#p_@psCount" aria-expanded="false" aria-controls="p_@psCount" class="text-white" style="font-size:16px;">
+                                                                                    @item1.FirstOrDefault().PROGRAMME_NAME
+                                                                                </a>
+                                                                            </h3>
+                                                                        </center>
+                                                                    </div>
+                                                                    <div id="p_@psCount" class="panel-collapse collapse" role="tabpanel" aria-labelledby="pheading_@psCount">
+                                                                        <div class="panel-body">
+
+                                                                            <div class="row">
+                                                                                @{
+
+                                                                                    var SelectionListBySelectionCycleByProgramme = aSelectioncyclesByProgrammeMode.Where(s => s.PROGRAMME_ID == item1.FirstOrDefault().PROGRAMME_ID && s.SELECTION_TYPE == item1.FirstOrDefault().SELECTION_TYPE).ToList();
+                                                                                    int count = 0;
+                                                                                    <div class="table table-responsive">
+                                                                                        <table class="table table-hover table-bordered" style="color: #000;">
+                                                                                            <caption><b>The following candidates are provisionally selected for admission to @item1.FirstOrDefault().PROGRAMME_NAME for the Academic year 2024-2025.</b></caption>
+                                                                                            <thead>
+                                                                                                <tr>
+                                                                                                    <th>#</th>
+                                                                                                    <th>Application No</th>
+                                                                                                    <th>Name</th>
+                                                                                                    <th>Total Cut Off Mark</th>
+                                                                                                </tr>
+                                                                                            </thead>
+                                                                                            <tbody>
+
+                                                                                                @foreach (var selectcycle in SelectionListBySelectionCycleByProgramme)
+                                                                                                {
+                                                                                                    count++;
+                                                                                                    <tr>
+                                                                                                        <td>@count</td>
+                                                                                                        <td>@selectcycle.APPLICATION_NO</td>
+                                                                                                        <td>@selectcycle.FIRST_NAME</td>
+                                                                                                        <td>@selectcycle.TOTAL_CUT_OFF_MARK</td>
+
+                                                                                                    </tr>
+                                                                                                }
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                }
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+
+
+
+
+
+
+

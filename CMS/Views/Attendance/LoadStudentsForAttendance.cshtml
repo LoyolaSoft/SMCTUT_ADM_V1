@@ -1,0 +1,88 @@
+﻿@model CMS.ViewModel.ViewModel.AttendanceViewModel
+@using CMS.Utility;
+@{ string sSelected = "selected";
+    int count = 0;
+    if (Model.attendanceEntry != null && Model.attendanceEntry.Count > 0)
+    {<div class="row">
+            <input type="hidden" id="hdCourseId" value="@Model.attendanceEntry.FirstOrDefault().COURSE_ID" />
+            <input type="hidden" id="hdClassId" value="@Model.attendanceEntry.FirstOrDefault().CLASS_ID" />
+            <div class="form-horizontal">
+                <div class="col-md-12">
+                    <div class="col-md-6">
+                        <strong for="CourseCode" class="control-label">Course Code : </strong>
+                        <label id="CourseCode">@Model.attendanceEntry.FirstOrDefault().COURSE_CODE</label><br />
+                        <strong for="CourseTitle" class="control-label">Course Title : </strong>
+                        <label id="CourseTitle">@Model.attendanceEntry.FirstOrDefault().COURSE_TITLE</label>
+
+                    </div>
+                    <div class="col-lg-6 row m-b-5">
+                        @Html.Label("Search:", htmlAttributes: new { @class = "col-md-4 control-label " })
+                        <div class="col-md-8">
+                            <input type="text" name="name" id="search" class="form-control" value="" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-bordered table-responsive table-hover" id="tblAttendance">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Roll No</th>
+                            <th>First Name</th>
+                            <th>Attendance Type</th>
+                            <th>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var student in Model.attendanceEntry)
+                        {
+                            <tr cms-attendance-id="@student.ATTENDANCE_ID" cms-student-id="@student.STUDENT_ID" cms-s-class-id="@student.S_CLASS_ID" cms-date="@DateTime.Now.ToString("yyyy-MM-dd")" cms-staff-id="@Session[Common.SESSION_VARIABLES.USER_ID].ToString()">
+                                <td>@{count++;}@count</td>
+                                <td>@student.ROLL_NO</td>
+                                <td>@student.FIRST_NAME</td>
+                                <td>
+                                    <select class="form-control" id="attendanceType">
+                                        @foreach (var attendanceType in Model.attendanceTypes)
+                                        {
+                                            <option value="@attendanceType.ATTENDANCE_TYPE_ID" @if (attendanceType.ATTENDANCE_TYPE_ID == student.ATTENDANCE_TYPE_ID) { @sSelected }>
+                                                @attendanceType.ATTENDANCE_TYPE
+                                        </option>
+                                    }
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control" id="reason">
+                                        <option value="0">--Select--</option>
+                                        @foreach (var reason in Model.reasons)
+                                        {
+                                            <option value="@reason.REASON_ID" @if (reason.REASON_ID == student.REASON_ID) { @sSelected }>
+                                                @reason.REASON
+                                        </option>
+                                    }
+
+                                    </select>
+                                </td>
+
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+
+    }
+    else
+    {
+        <div class="col-md-12">
+            <p>No Records Found..!!</p>
+
+        </div>
+    }
+
+}

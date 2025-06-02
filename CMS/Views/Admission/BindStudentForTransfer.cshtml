@@ -1,0 +1,81 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@using CMS.Utility;
+@{
+    Layout = null;
+}
+
+@if (Model.liTransfer != null && Model.liTransfer.Count > 0)
+{
+
+    <input type="text" class="hidden" id="appno" value="@Model.liTransfer.FirstOrDefault().APPLICATION_NO">
+    <input type="text" class="hidden" id="receiveid" value="@Model.liTransfer.FirstOrDefault().RECEIVE_ID">
+    <input type="text" class="hidden" id="status" value="@Model.liTransfer.FirstOrDefault().STATUS_ID">
+    <div class="col-lg-offset-2 col-lg-8 table-bordered">
+        <div class="form-horizontal">
+            <table class="table table-bordered" id="TransferList" width="100%">
+                <thead>
+                    <tr>
+                        <td colspan="2" align="center">Programme Transfer Details</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.liTransfer != null)
+                    {
+
+                        <tr>
+                            <td> APPLICATION NO</td>
+                            <td>@Model.liTransfer.FirstOrDefault().APPLICATION_NO</td>
+                        </tr>
+                        <tr>
+
+                            <td>NAME</td>
+                            <td>@Model.liTransfer.FirstOrDefault().FIRST_NAME </td>
+                        </tr>
+                        <tr>
+                            <td>PROGRAMME FROM</td>
+                            <td>@Model.liTransfer.FirstOrDefault().PROGRAMME_FROM</td>
+                        </tr>
+                        //if (Model.liTransfer.FirstOrDefault().STATUS_ID != Common.STATUS.Admitted)
+                        //{
+                        <tr>
+
+                            <td>PROGRAMME TO</td>
+                            <td id="pto">
+                                @Html.DropDownListFor(model => model.ProgrammeList, (Model.ProgrammeList != null) ? Model.ProgrammeList : Enumerable.Empty<SelectListItem>(), "--Select--", new { @class = "selectpicker  form-control", @data_live_search = "true",@id= "programmeto" })
+                                @Html.ValidationMessageFor(model => model.ProgrammeList, "", new { @class = "text-danger" })
+                            </td>
+                        </tr>
+                        //}
+                        <tr>
+                            <td>APPROVER</td>
+                            <td>@Session[Common.SESSION_VARIABLES.USERNAME]</td>
+                        </tr>
+                        <tr>
+
+
+                            <td>STATUS</td>                  
+
+                                <td>@Model.liTransfer.FirstOrDefault().STATUS</td>
+                            
+                        </tr>
+
+                    }
+
+                </tbody>
+            </table>
+            </div>
+        </div>
+            }
+            else
+            {
+            <div class="alert alert-danger text-center "><b> No Data Found...!</b></div>
+            }
+
+<script>
+
+          $('.selectpicker').selectpicker({
+              size: 4
+          });
+
+
+</script>

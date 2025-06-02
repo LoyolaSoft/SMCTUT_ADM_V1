@@ -1,0 +1,363 @@
+﻿@using CMS.Utility;
+@using System.Data;
+
+@{
+    if (Session["USER_ID"] == null)
+    {
+        Response.Redirect("/Account/Index");
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <title>SMC Admin |@ViewBag.Title </title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+
+    @*@Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")*@
+    @Styles.Render("~/bundles/basecss")
+
+    @Scripts.Render("~/bundles/headerbasejs")
+    <link href="~/Content/assets/plugins/switchery/switchery.min.css" rel="stylesheet" />
+    <link href="~/Content/assets/plugins/loader/loader.css" rel="stylesheet" />
+ 
+    @RenderSection("styles", required: false)
+</head>
+
+<body class="f-s-15">
+    <!-- begin #page-loader -->
+    <div id="page-loader" class="fade in"><span class="spinner"></span></div>
+    <!-- end #page-loader -->
+    <!-- begin #page-container -->
+    <div id="page-container" class="fade page-sidebar-fixed page-header-fixed page-with-light-sidebar ">
+        <!-- begin #header -->
+        <div id="header" class="header navbar navbar-default navbar-fixed-top">
+            <!-- begin container-fluid -->
+            <div class="container-fluid">
+                <!-- begin mobile sidebar expand / collapse button -->
+                <div class="navbar-header">
+                    <a href="#" class="navbar-brand"><span class="navbar-logo"><i class="ion-ios-cloud"></i></span> <b>SMCERP</b> Admin</a>
+                    <button type="button" class="navbar-toggle" data-click="sidebar-toggled">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+
+                <ul class="nav navbar-nav navbar-right">
+                    @*<li>
+                            <form class="navbar-form full-width">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Enter keyword" />
+                                    <button type="submit" class="btn btn-search"><i class="ion-ios-search-strong"></i></button>
+                                </div>
+                            </form>
+                        </li>*@
+                    <li class="dropdown">
+                        <a href="javascript:;" data-toggle="dropdown" class="dropdown-toggle icon">
+                            <i class="ion-ios-bell"></i>
+                            <span class="label"></span>
+                        </a>
+
+                    </li>
+                    <li class="dropdown navbar-user">
+                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                            <span class="user-image online">
+                                @{
+                                    if (Session[Common.SESSION_VARIABLES.PHOTO] != null && !string.IsNullOrEmpty(Session[Common.SESSION_VARIABLES.PHOTO].ToString()))
+                                    {
+                                        <img src="@Session[Common.SESSION_VARIABLES.PHOTO].ToString()" alt="" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/Content/assets/img/user-13.jpg" alt="" />
+                                    }
+                                }
+
+                            </span>
+                            <span class="hidden-xs"> @Session[Common.SESSION_VARIABLES.USERNAME]</span> <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu animated fadeInLeft">
+                            @*<li class="arrow"></li>*@
+
+                            @*<li><a href="#">View Profile</a></li>*@
+
+
+                            @*<li><a href="javascript:;"><span class="badge badge-danger pull-right"></span> Inbox</a></li>
+                                <li><a href="javascript:;">Calendar</a></li>*@
+                            <li><a href="@Url.Action("ChangePassword","Account")">Change Password</a></li>
+                            <li class="divider"></li>
+                            <li>@Html.ActionLink("Log Out", "SignOut", "Account")</li>
+                        </ul>
+                    </li>
+                </ul>
+                <!-- end header navigation right -->
+            </div>
+            <!-- end container-fluid -->
+        </div>
+        <!-- end #header -->
+        <!-- begin #sidebar -->
+        <div id="sidebar" class="sidebar">
+            <!-- begin sidebar scrollbar -->
+            <div data-scrollbar="true" data-height="100%">
+                <!-- begin sidebar user -->
+                <ul class="nav">
+                    <li class="nav-profile">
+                        <div class="image">
+                            <a href="javascript:;">
+                                @{
+                                    if (Session[Common.SESSION_VARIABLES.PHOTO] != null && !string.IsNullOrEmpty(Session[Common.SESSION_VARIABLES.PHOTO].ToString()))
+                                    {
+                                        <img src="@Session[Common.SESSION_VARIABLES.PHOTO].ToString()" alt="" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/Content/assets/img/user-13.jpg" alt="" />
+                                    }
+                                }
+                            </a>
+                        </div>
+                        <div class="info">
+                            Welcome  <small>@Session[Common.SESSION_VARIABLES.USERNAME]</small>
+                        </div>
+                    </li>
+                </ul>
+                <!-- end sidebar user -->
+                <!-- begin sidebar nav -->
+                <ul class="nav">
+                    <li class="nav-header">Navigation</li>
+                    @{
+                        if (Session[Common.SESSION_VARIABLES.MENU_ITEMS] != null)
+                        {
+                            DataTable dtMenu = new DataTable();
+                            string sParent = string.Empty;
+                            dtMenu = (DataTable)Session[Common.SESSION_VARIABLES.MENU_ITEMS];
+                            if (dtMenu != null && dtMenu.Rows.Count > 0)
+                            {
+                                DataColumn dCol = new DataColumn();
+                                dCol = dtMenu.Columns[Common.MODULES.MODULE_NAME];
+                                DataTable dtParent = new DataTable();
+                                dtParent = dtMenu.DefaultView.ToTable(true, Common.MODULES.MODULE_NAME, Common.MODULES.STYLE, Common.MODULES.HAS_SUB);
+                                foreach (DataRow item in dtParent.Rows)
+                                {
+                                    <li class="has-sub">
+                                        <a href="javascript:;">
+                                            <b class="caret pull-right"></b>
+                                            <i class="@item[Common.MODULES.STYLE]"></i>
+                                            <span>@item[Common.MODULES.MODULE_NAME]</span>
+                                        </a>
+                                        @if (item[Common.MODULES.HAS_SUB].ToString() == "1")
+                                        {
+                                            DataTable dtSub = new DataTable();
+                                            DataRow[] drSub = dtMenu.Select(Common.MODULES.MODULE_NAME + "='" + item[Common.MODULES.MODULE_NAME].ToString() + "'");
+                                            //   DataRow[] drSub = dtMenu.Select("MODULE_NAME='DASHBOARD'");
+                                            <ul class="sub-menu">
+                                                @foreach (DataRow subItem in drSub)
+                                                {
+                                                    <li><a href="#" onclick="loadContent('@Url.Action(subItem[Common.MENU_ITEMS.ACTION].ToString(),subItem[Common.MENU_ITEMS.CONTROLLER].ToString())')"> @subItem[Common.MENU_ITEMS.MENU_NAME].ToString()</a> </li>}
+                                            </ul>
+                                        }
+                                    </li>
+
+
+                                }
+                            }
+                        }
+                    }
+
+                    <!-- begin sidebar minify button -->
+                    <li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="ion-ios-arrow-left"></i> <span>Collapse</span></a></li>
+                    <!-- end sidebar minify button -->
+                </ul>
+                <!-- end sidebar nav -->
+            </div>
+            <!-- end sidebar scrollbar -->
+        </div>
+        <div class="sidebar-bg"></div>
+        <!-- end #sidebar -->
+        <div id="loadContent">
+            @RenderBody()
+        </div>
+        <!-- begin #footer -->
+        <div id="footer" class="footer">
+            &copy; @DateTime.Today.Year   All Rights Reserved by SMC
+            @if (Session[Common.SESSION_VARIABLES.USER_ROLE_NAME].ToString().ToLower().Equals("super admin"))
+            {
+                <label class="label label-success"> @HttpContext.Current.Application["Totaluser"].ToString()</label>
+            }
+
+        </div>
+
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-primary btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+        <!-- end scroll to top btn -->
+    </div>
+
+
+    @Scripts.Render("~/bundles/footerbasejs")
+    <script src="~/Content/assets/plugins/loader/loader.js"></script>
+    @*@Scripts.Render("~/bundles/angularJS")*@
+
+    @RenderSection("scripts", required: false)
+    @Scripts.Render("~/bundle/pagebeginjs")
+    <script src="~/Content/assets/plugins/switchery/switchery.min.js"></script>
+    <script src="~/Content/assets/js/form-slider-switcher.demo.min.js"></script>
+   
+    @*@Scripts.Render("~/bundles/jquery")*@
+    @*@Scripts.Render("~/bundles/bootstrap")*@
+    @RenderSection("scriptsafterbase", required: false)
+    <script>
+        var currentUrl;
+        var WelcomeMgs = '@Session[Common.SESSION_VARIABLES.USERNAME].ToString()';
+        var time = new Date().getHours();var  greeting = 'Good ' + (time < 12 ? 'Morning' :time < 16 ? 'Afternoon' : 'Evening');
+        function addLoadingPanel() {
+            //$("#wait").css("display", "block");
+            var a = $('#panel').closest(".panel");
+            if (!$(a).hasClass("panel-loading")) {
+                var t = $(a).find(".panel-body");
+                $(a).addClass("panel-loading"), $(t).prepend('<div class="panel-loader"><span class="spinner-small"></span></div>')
+            }
+        }
+
+        function removeload() {
+            //$("#wait").css("display", "none");
+            var a = $('#panel').closest(".panel");
+            if ($(a).hasClass("panel-loading")) {
+                var t = $(a).find(".panel-body");
+                $(a).removeClass("panel-loading"), $(a).find(".panel-loader").remove()
+            }
+        }
+        function loadContent(link)
+        {
+            currentUrl = link;
+            $('#page-loader').removeClass('fade in hide');
+            $('#page-loader').addClass('fade in ');
+            $("#loadContent").empty();
+            $("#loadContent").load(link, function (responseTxt, statusTxt, jqXHR) {
+                if (statusTxt == "success")
+                {
+                    $('#page-loader').removeClass('fade in ');
+                    $('#page-loader').addClass('fade in hide');
+                   // ContentLoad();
+                   // myAlert('sucess', 'bg-green-lighter');
+                } else {
+                    alert(responseTxt);
+                    $('#page-loader').removeClass('fade in');
+                    $('#page-loader').addClass('fade in hide');
+                }
+                if (statusTxt == "error") {
+                    alert("Error: " + jqXHR.status + " " + jqXHR.statusText);
+                    $('#page-loader').removeClass('fade in ');
+                    $('#page-loader').addClass('fade in hide');
+                }
+            });
+
+        }
+
+        jQuery(document).ajaxStart(function () {
+
+            $('#page-loader').removeClass('fade in hide');
+            $('#page-loader').addClass('fade in ');
+
+        });
+
+        $(document).bind("ajaxSend", function () {
+
+            $('#page-loader').removeClass('fade in hide');
+            $('#page-loader').addClass('fade in ');
+        }).bind("ajaxComplete", function () {
+
+            $('#page-loader').removeClass('fade in ');
+            $('#page-loader').addClass('fade in hide');
+
+        });
+        jQuery(document).ajaxStop(function () {
+
+            $('#page-loader').removeClass('fade in ');
+            $('#page-loader').addClass('fade in hide');
+
+
+        });
+
+        jQuery(document).ajaxError(function () {
+            $('#page-loader').removeClass('fade in ');
+            $('#page-loader').addClass('fade in hide');
+        });
+
+
+
+        $(document).ready(function () {
+            App.init();
+            @*var voiceFlag='@Session["Voice"]';
+
+            if (voiceFlag=='')
+                speak('Hello ' + WelcomeMgs + ', Have a ' + greeting + '. I am your ERP assistant.');*@
+
+
+
+        });
+        function myAlert(message, class_name,image) {
+            if (message != '') {
+                var icon;
+                if (class_name=='gritter-success') {
+                    icon = 'ion-happy';
+                } else if (class_name =='gritter-danger') {
+                    icon = 'ion-ios-close';
+                } else if (class_name == 'gritter-info') {
+                    icon = 'ion-ios-information-outline';
+                } else if (class_name == 'gritter-warning') {
+                    icon = 'ion-sad';
+                } else {
+                    icon = 'ion-ios-information-outline';
+                }
+                if (image != '') {
+                    $.gritter.add({
+                        title: "Message",
+                        text: message,
+                        time: 4000, class_name: class_name, image: image
+                    });
+                } else {
+                    $.gritter.add({
+                        title: "Message",
+                        text: message,
+                        time: 4000, class_name: class_name, icon: icon
+                    });
+                }
+
+            }
+
+        }
+        function speak(text, callback) {
+            var u = new SpeechSynthesisUtterance();
+            var voices = speechSynthesis.getVoices();
+            u.text = text;
+            u.lang = 'en-US';
+            u.onend = function () {
+                if (callback) {
+                    callback();
+                }
+            };
+
+            u.onerror = function (e) {
+                if (callback) {
+                    callback(e);
+                }
+            };
+            @{Session["Voice"] = "0";
+            }
+            window.speechSynthesis.speak(u);
+        }
+    </script>
+
+    <script>
+
+
+    </script>
+
+
+</body>
+</html>

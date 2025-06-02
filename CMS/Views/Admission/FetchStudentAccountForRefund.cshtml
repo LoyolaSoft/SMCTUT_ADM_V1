@@ -1,0 +1,31 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+<div class="table-responsive">
+    <table class="table table-hover table-bordered" id="tblRefundStudentAccount">
+        <thead>
+            <tr>
+               <td>MainHead</td>
+               <td>Head</td>
+               <td>Amount</td>
+               <td>Account No</td>
+               <td>Fee Category</td>
+               <td>Paid Date</td>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.LiRefundStudentAccount != null && Model.LiRefundStudentAccount.Count>0)
+            {               
+                foreach (var o in Model.LiRefundStudentAccount)
+                {                 
+                    <tr cmsstudentid="@o.STUDENT_ID" cmsissuedid="5605" cmsfrequencyid="20" cmstrasnactionid="@o.TRANSACTION_ID" cmsfeestructureid="@o.FEE_STRUCTURE_ID" cmsheadid="@o.HEAD_ID" cmsfeemainheadid="@o.FEE_MAIN_HEAD_ID" cmsfeerootid="@o.FEE_ROOT_ID">
+                        <td>@o.MAIN_HEAD</td>
+                        <td>@o.HEAD</td>                        
+                        <td><input type="number" style="width:75px !important;" step=".01" value="@o.AMOUNT" /></td>
+                        <td>@o.PASSBOOK_NO</td>
+                        <td>@o.FEE_CATEGORY</td>
+                        <td>@o.PAYMENT_DATE</td>
+                    </tr>
+                }
+            }            
+        </tbody>
+    </table>
+</div>

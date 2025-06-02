@@ -1,0 +1,245 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{
+    ViewBag.Title = "TransferApproveByPrincipal";
+    Layout = null;
+}
+
+    <link href="~/Content/assets/plugins/DataTables/media/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/assets/plugins/DataTables/extensions/Responsive/css/responsive.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="~/Content/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <link href="~/Content/assets/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" />
+
+<div class="content" id="content">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">Home</a></li>
+            <li class="active">Transfer Request List </li>
+        </ol>
+        <h2 class="page-header">Transfer Request List </h2>
+        <div class="panel">
+            <div class="panel-heading bg-primary">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                </div>
+                <h4 class="panel-title">Transfer Request List </h4>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="col-md-12">
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(model => model.ProgrammeList, "Programme", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <div class="col-md-7">
+                                @Html.DropDownListFor(model => model.ProgrammeList, (Model.ProgrammeList != null) ? Model.ProgrammeList : Enumerable.Empty<SelectListItem>(), "--Select--", new { @class = " selectpicker show-menu-arrow show-tick drop-down form-control  input-sm", @data_live_search = "true"})
+                                @Html.ValidationMessageFor(model => model.ProgrammeList, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            @Html.Label("Select Student", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <div class="col-md-7">
+                               <select id="receiveid" class="selectpicker"  data-live-search="true">
+                                   <option value="0">Select</option>
+                                </select>
+                            </div>
+                        </div>
+                        <a class="btn btn-primary" onclick="BindStudentForTransfer()" href="#" title="Click to list the students">Get</a>
+                      
+                    </div>
+                    @*<div class="col-md-12 hidden" id="toprogramme">
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(model => model.ProgrammeList, "Programme To", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <div class="col-md-7">
+                               <select class="selectpicker form-control" id="programmeto"  data-live-search="true"> 
+                               <option value="0">
+                                  Select
+                               </option>
+                               </select>
+                            </div>
+                        </div>
+                    </div>*@
+                    <div class="col-md-12 m-b-5" style="margin-top:20px">
+                        <div id="divTransferList">
+                            <!--Need to use this field to bind Received Application-->
+
+                        </div>
+                    </div>
+                    <div class="col-md-10 hidden" id="subdiv">
+                        <div class="col-md-12 col-md-offset-11">
+                            <a href="#" class="btn btn-primary" id="btnsubmit">Submit</a>
+                        </div>
+                    </div>
+                    <div class="col-md-10 hidden" id="printdiv">
+                        <div class="col-md-12 col-md-offset-11">
+                            <a href="#" class="btn btn-success btnprint" id="btnprint">Print</a>
+                        </div>
+                    </div>
+                    
+                </div>                
+            </div>
+        </div>
+    }
+</div>
+
+    <script src="~/Content/assets/plugins/DataTables/media/js/jquery.dataTables.js"></script>
+    <script src="~/Content/assets/plugins/DataTables/media/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/Content/assets/plugins/DataTables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Content/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/Content/assets/plugins/gritter/js/jquery.gritter.js"></script>
+    <script src="~/Content/assets/plugins/bootstrap-sweetalert/sweetalert.min.js"></script>
+    <script src="~/Content/assets/js/ui-modal-notification.demo.min.js"></script>
+
+
+
+   <script>
+   
+          $('.selectpicker').selectpicker({
+              size: 4
+          });
+         
+     
+    </script>
+    <script>
+
+        BindStudentForTransfer = function ()
+        {
+            var ProgrammeId = String($("#ProgrammeList").val());
+            var ReceiveId = $('#receiveid').val();
+
+            if (ProgrammeId != "null" && ReceiveId!="null")
+            {
+                    $.ajax({
+                        url: "@Url.Action("BindStudentForTransfer", "Admission")",
+                        method: "POST",
+                        datatype: "html",
+                        data: { sProgrammeId: ProgrammeId, sReceiveId: ReceiveId },
+                        success: function (option)
+                        {                           
+                            var dvTransferList = $('#divTransferList');
+                            dvTransferList.empty();
+                            dvTransferList.append(option);
+                            $('#toprogramme').removeClass('hidden');
+                            $('#subdiv').removeClass('hidden');
+                            $('#printdiv').addClass('hidden');                        
+                            var status = $('#status').val();
+
+                            //if (status == "5")
+                            //{
+
+                            //    $('#subdiv').addClass('hidden');
+                              
+                            //    //$('#programmeto').attr('disabled', true);
+                            //}
+                        }, error: function (error) {
+                            alert('Interal Server Error')
+                        }
+                    });
+                }
+            else
+                {
+                    alert('Please select Programme and Student...!!!');
+                }
+         }
+
+
+        $('#ProgrammeList').on('change', function ()
+        {
+            var programmeid = $(this).val();
+            $.ajax({
+                url: "@Url.Action("FetchStudentByProgrammeId", "Admission")",
+                method: "POST",
+                datatype: "html",
+                data: { sProgrammeId: programmeid },
+                success: function (JsonData)
+                {
+                    var data = JSON.parse(JsonData);
+                    $('#receiveid').empty();
+                    $('#receiveid').append("<option value='0'>--Select--</option>" + data.RECEIVE_ID);
+                    //$('#programmeto').empty();
+                    //$('#programmeto').append("<option value='0'>--Select--</option>" + data.PROGRAMME_ID);
+                    $('.selectpicker').selectpicker('refresh');
+                }, error: function (error) {
+                    alert('Interal Server Error')
+                }
+            });
+        });
+        //$('#programmeto').on('change', function ()
+        //{
+        //    if ($(this).val != "0")
+        //    {
+        //        $('#pto').css('border-color', '#ddd;');
+        //        $('#pto').text($(this).find('option:selected').text());
+        //    }
+
+        //});
+        
+        $('#btnsubmit').on('click', function ()
+        {
+            var appno=$('#appno').val();
+            var receiveid = $('#receiveid').val();
+            var statusid = $('#status').val();
+            var programmefrom = $('#ProgrammeList').val();
+            var programmeto = String($('#programmeto').val());
+            
+            if (programmeto !='')
+            {
+                if (programmefrom != programmeto)
+                {
+                    if (!confirm('Are you sure to transfer this student?')) {
+                        return false;
+                    }
+
+                    var JsonData = '{"APPLICATION_NO":"' + appno + '","RECEIVE_ID":"' + receiveid + '","STATUS":"' + statusid + '","PROGRAMME_FROM":"' + programmefrom + '","PROGRAMME_TO":"' + programmeto + '"}';
+                    $.ajax({
+                        url: "@Url.Action("SaveTransferList", "Admission")",
+                        method: "POST",
+                        datatype: "json",
+                        data: { sTransfer: JsonData },
+                        success: function (data) {
+                            var dvTransferList = $('#divTransferList');
+                            dvTransferList.empty();
+                            dvTransferList.append(data);
+                            $('#subdiv').addClass('hidden');
+                            $('#programmeto').attr('disabled', true);
+                            $('#printdiv').removeClass('hidden');
+
+                        }, error: function (error) {
+                            alert('Internal Server Error!');
+                        }
+                    });
+                }
+                else
+                {
+                    alert('You have choosen same programme...!');
+                }
+
+            }
+            else
+            {
+                //$('#pto').css('border-color', 'red');
+                alert('Please Select the Programme To...!');
+            }
+        });
+      
+        $('#btnprint').on('click', function ()
+        {
+            $('#btnprint').addClass('hidden');
+            var printContents = document.getElementById('divTransferList').innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+            loadContent('/Admission/TransferApproveByPrincipal');
+        });
+  </script> 
+ 
+
+
+
+
+

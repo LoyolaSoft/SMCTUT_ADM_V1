@@ -1,0 +1,225 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+
+@{
+    int Ccount = 0;string yes = "YES"; string No = "NO";}
+@{
+    ViewBag.Title = "BindSelectedApplicantList";
+    Layout =null;
+}
+<table class="table table-hover" id="ApplicationReceivedList">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>
+                @*<input type="checkbox" name="myTextEditBox" id="AllchkID" onchange="SelectOrUnselect()" />*@
+                Action
+            </th>
+            <th>App.No</th>
+            <th>Name</th>
+            <th>Total</th>
+            <th>Cut Off</th>
+            <th>Caste</th>
+            <th>Occupation</th>
+            <th>Annual Income</th>
+            <th>Diff. Abled</th>
+            <th>Ex-Service Man Daughter</th>
+            <th>First Generation</th>
+            <th>Village</th>
+            <th>Last Studied </th>
+
+            @if (Model.liProgrammeEligibility != null)
+            {
+                foreach (var item in Model.liProgrammeEligibility)
+                {
+                    <th>
+                        @item.CODE
+                    </th>
+                }
+            }
+
+            <th>Applied Courses</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.liSelectionProccess != null)
+        {
+            foreach (var item in Model.liSelectionProccess)
+            {
+                if (@item.LAST_STUDIED_SCHOOL.ToLower().Contains("jayendra matriculation") || @item.LAST_STUDIED_SCHOOL.ToLower().Contains("savitri vidyasala"))
+                {
+
+                    <tr style="background-color:yellow;">
+                        <td>
+                            @{ Ccount++;}@Ccount
+                        </td>
+                        <td>
+                            <input type="checkbox" name="myTextEditBox" id="chkID" cms-receiveid="@item.RECEIVE_ID" cms-applicationno="@item.APPLICATION_NO" cms-hstotal="@item.HSTOTAL" cms-cutoff="@item.TOTAL_CUT_OFF_MARK" cms-maxmark="@item.HS_MAX_MARK" cms-issuedid="@item.ISSUE_ID" />
+                            <a href="#modal-without-animation" class="" data-toggle="modal" title="View Marks" onclick="bindMarks('@item.RECEIVE_ID')"><i class="fa  fa-eye"></i></a>
+                        </td>
+
+                        <td>@item.APPLICATION_NO </td>
+                        <td>@item.FIRST_NAME</td>
+                        <td>@item.HSTOTAL</td>
+                        <td>@item.TOTAL_CUT_OFF_MARK</td>
+                        <td>@item.COMMUNITY</td>
+                        <td>@item.OCCUPATION</td>
+                        <td>@item.ANNUAL_INCOME</td>
+                        <td>
+                            @if (item.SPECIALLYABLED_ID == "1")
+                        { @yes}
+                        else
+                        { @No}
+                        </td>
+                        <td>
+                            @if (item.EXSERVICE_MAN == "1")
+                        { @yes}
+                        else
+                        { @No}
+                        </td>
+                        <td>
+                            @if (item.IS_FIRSTGENERATION == "1")
+                        { @yes}
+                        else
+                        { @No}
+                        </td>
+                        <td>@item.CVILLAGE_AREA</td>
+                        @if (@item.LAST_STUDIED_SCHOOL != "")
+                        {
+                            <td>@item.LAST_STUDIED_SCHOOL</td>
+                        }
+                        else
+                        {
+                            <td>
+                                @if (item.UNIVERSITY != "")
+                                {@item.UNIVERSITY}
+                            </td>
+
+                        }
+                        @if (Model.liProgrammeEligibility != null)
+                        {
+                            foreach (var list in Model.liProgrammeEligibility)
+                            {
+                                if (Model.liADMStudentMarks != null)
+                                {
+                                    var TempList = Model.liADMStudentMarks.Where(s => s.RECEIVE_STUID == item.RECEIVE_ID && s.SUBJECT_ID == list.SUBJECT_ID).ToList();
+                                    <td>
+                                        @if (TempList != null && TempList.Count > 0)
+                                        {
+                                            @TempList.FirstOrDefault().MARK
+                                        }
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+                            }
+                        }
+
+                        @if (Model.liCourses != null)
+                        {
+                            var CourseList = Model.liCourses.Where(s => s.RECEIVE_ID == item.RECEIVE_ID).ToList();
+                            <td>
+                                @if (CourseList != null && CourseList.Count > 0)
+                                {
+                                    @CourseList.FirstOrDefault().PROGRAMME_ID
+                                }
+                            </td>
+                        }
+                    </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td>
+                                            @{ Ccount++;}@Ccount
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" name="myTextEditBox" id="chkID" cms-receiveid="@item.RECEIVE_ID" cms-applicationno="@item.APPLICATION_NO" cms-hstotal="@item.HSTOTAL" cms-cutoff="@item.TOTAL_CUT_OFF_MARK" cms-maxmark="@item.HS_MAX_MARK" cms-issuedid="@item.ISSUE_ID" />
+                                            <a href="#modal-without-animation" class="" data-toggle="modal" title="View Marks" onclick="bindMarks('@item.RECEIVE_ID')"><i class="fa  fa-eye"></i></a>
+
+                                        </td>
+                                        <td>@item.APPLICATION_NO</td>
+                                        <td>@item.FIRST_NAME</td>
+                                        <td>@item.HSTOTAL</td>
+                                        <td>@item.TOTAL_CUT_OFF_MARK</td>
+                                        <td>@item.COMMUNITY</td>
+                                        <td>@item.OCCUPATION</td>
+                                        <td>@item.ANNUAL_INCOME</td>
+                                        <td>
+                                            @if (item.SPECIALLYABLED_ID == "1")
+                        { @yes}
+                        else
+                        { @No}
+                                        </td>
+                                        <td>
+                                            @if (item.EXSERVICE_MAN == "1")
+                        { @yes}
+                        else
+                        { @No}
+                                        </td>
+                                        <td>
+                                            @if (item.IS_FIRSTGENERATION == "1")
+                        { @yes}
+                        else
+                        { @No}
+                                        </td>
+                                        <td>@item.CVILLAGE_AREA</td>
+                                        @if (@item.LAST_STUDIED_SCHOOL != "")
+                                        {
+                                            <td>@item.LAST_STUDIED_SCHOOL</td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                @if (item.UNIVERSITY != "")
+                                                {@item.UNIVERSITY}
+                                            </td>
+                                        }
+                                        @if (Model.liProgrammeEligibility != null)
+                                        {
+                                            foreach (var list in Model.liProgrammeEligibility)
+                                            {
+                                                if (Model.liADMStudentMarks != null)
+                                                {
+                                                    var TempList = Model.liADMStudentMarks.Where(s => s.RECEIVE_STUID == item.RECEIVE_ID && s.SUBJECT_ID == list.SUBJECT_ID).ToList();
+                                                    <td>
+                                                        @if (TempList != null && TempList.Count > 0)
+                                                        {
+                                                            @TempList.FirstOrDefault().MARK
+                                                        }
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
+                                            }
+                                        }
+
+                                        @if (Model.liCourses != null)
+                                        {
+                                            var CourseList = Model.liCourses.Where(s => s.RECEIVE_ID == item.RECEIVE_ID).ToList();
+                                            <td>
+                                                @if (CourseList != null && CourseList.Count > 0)
+                                                {
+                                                    @CourseList.FirstOrDefault().PROGRAMME_ID
+                                                }
+                                            </td>
+
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+                                        }
+
+                                    </tr>
+                                                        }
+                                                    }
+                                                }
+
+    </tbody>
+</table>
+
+
+

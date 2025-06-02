@@ -1,0 +1,68 @@
+﻿@using System;
+@using System.Collections.Generic;
+@using System.Reflection;
+@using CMS.ViewModel.Model;
+@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{
+    Layout = null;
+}
+<table class="table table-bordered" id="studentlist">
+    <thead>
+    @if(Model.LiColumns != null && Model.LiColumns.Count>0)
+    {
+        <tr>
+        @foreach(var item in Model.LiColumns)
+        {
+         <th>@item.PROPERTY_NAME</th>   
+        }
+        </tr>
+    }
+    </thead>
+    <tbody>
+    @if (Model.LiStudentInfo != null && Model.LiStudentInfo.Count > 0)
+    {
+
+
+
+        foreach (var item in Model.LiStudentInfo)
+        {
+            
+            Type type = item.GetType();
+           
+            <tr>
+               
+                @foreach (var field in Model.LiFields)
+                {
+                    if (field.PROPERTY_NAME == "IS_FIRSTGENERATION" || field.PROPERTY_NAME== "SPECIALLYABLED_ID" || field.PROPERTY_NAME == "EXSERVICE_MAN" || field.PROPERTY_NAME == "IS_SINGLE_GIRL_CHILD" || field.PROPERTY_NAME == "IS_ROMAN_CATHOLIC" || field.PROPERTY_NAME == "IS_DALIT" || field.PROPERTY_NAME == "IS_NRI")
+                    {
+                        PropertyInfo props = type.GetProperty(field.PROPERTY_NAME.ToString());
+                        var d = props.GetValue(item, null);
+
+
+                        if (d.ToString()=="0")
+                        {
+                                <td>
+                                    No                              
+                                </td>
+                        }
+                        else
+                        {
+                            <td>
+                                YES
+                            </td>
+                        }
+                    }
+                    else
+                    {
+                        PropertyInfo props = type.GetProperty(field.PROPERTY_NAME.ToString());
+                        var d = props.GetValue(item, null);
+                      <td>@d</td>
+                    }
+                }
+
+
+            </tr>
+        }
+    }
+    </tbody>
+</table>

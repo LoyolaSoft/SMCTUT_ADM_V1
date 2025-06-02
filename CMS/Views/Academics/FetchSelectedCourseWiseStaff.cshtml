@@ -1,0 +1,54 @@
+﻿@model IEnumerable<CMS.ViewModel.Model.CourseWiseStaffInfo>
+
+@{ int count = 0;}
+<table class="table table-hover table-responsive" id="SelectedCourseWiseStaff">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CLASS_ID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.COURSE_CODE)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.COURSE_TITLE)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.STAFF_ID)
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @{ count++;}
+                    @count
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CLASS_NAME)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.COURSE_CODE)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.COURSE_TITLE)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.STAFF_ID)
+                </td>
+                <td>
+                    <a href="#EditSelectedCourseStaff-dialog" onclick="EditSelectedCourseWiseStaff(@item.CLSCRSSTF_ID)" data-toggle="modal"><i class="fa fa-edit text-primary" title="Edit"></i></a>
+                    <a href="@Url.Action("DeleteCourseWiseStaffInfo","Academics",new { id=@item.CLSCRSSTF_ID})" onclick="return confirm('Are you sure want to delete ?');"><i class="fa fa-trash text-danger" title="Delete"></i></a>
+                </td>
+            </tr>
+                        }
+    </tbody>
+</table>

@@ -1,0 +1,78 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{ int count = 0;}
+<br><br>
+<div class="col-md-12 table-responsive">
+
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>Hostel</th>
+                <th>Total</th>
+                <th>Selected</th>
+                <th>Admitted</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.liHostel != null && Model.liHostel.Count > 0)
+            {
+                <tr>
+                    <td>@Model.liHostel.FirstOrDefault().HOSTEL_NAME</td>
+                    <td>@Model.liHostel.FirstOrDefault().TOTAL_STRENGTH</td>
+                    <td><label class="label label-success">@Model.liHostel.FirstOrDefault().SELECTED</label></td>
+                    <td><label class="label label-success">@Model.liHostel.FirstOrDefault().ADMITTED</label></td>
+                    
+                   
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br><br><br>
+    <table class="table table-hover table-bordered" id="tblHostelRegisteredList">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th><input type="checkbox" name="myTextEditBox" id="AllchkID" onchange="SelectOrUnselect()" /></th>
+                <th>Application No</th>
+                <th>Name</th>
+                <th>Programme</th>
+                <th>Religion</th>
+                <th>Caste</th>
+                @*<th>Parish</th>
+                    <th>Relation In Campus</th>*@
+                <th>City</th>
+                @*<th class="hidden">Room</th>*@
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.liApplicant != null && Model.liApplicant.Count > 0)
+            {
+                foreach (var item in Model.liApplicant)
+                {
+                    <tr>
+                        <td>
+                            @{ count++;}@count
+                        </td>
+                        <td><input type="checkbox" name="myTextEditBox" id="chkID" cms-receiveid="@item.RECEIVE_ID" cms-applicationno="@item.APPLICATION_NO" cms-issuedid="@item.ISSUED_ID" cms-programmeId="@item.PROGRAMME_GROUP_ID" /></td>
+                        <td>@Html.DisplayFor(modelItem => item.APPLICATION_NO)</td>
+                        <td>@Html.DisplayFor(modelItem => item.FIRST_NAME)</td>
+                        <td>@Html.DisplayFor(modelItem => item.PROGRAMME_NAME)</td>
+                        <td>@Html.DisplayFor(modelItem => item.RELIGION)</td>
+                        <td>@Html.DisplayFor(modelItem => item.MAIN_COMMUNITY)</td>
+                        @*<td>@Html.DisplayFor(modelItem => item.PARISH_NAME)</td>
+                            <td>@Html.DisplayFor(modelItem => item.COLLEGE_RELATION)</td>*@
+                        <td>@Html.DisplayFor(modelItem => item.CVILLAGE_AREA)</td>
+                        @*<td class="hidden"><input type="text" style="width:95px !important;"class="text form-control" placeholder="Room No" /></td>*@
+                    </tr>
+                                    }
+
+                                }
+        </tbody>
+    </table>
+</div>
+<script>
+    $(".text").keypress(function (e) {
+        if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+            return false;
+        }
+    });
+</script>

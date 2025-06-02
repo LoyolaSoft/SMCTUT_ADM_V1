@@ -1,0 +1,582 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+
+@{
+    ViewBag.Title = "BankApplication";
+    Layout = "~/Views/Shared/_AdminLayoutPage.cshtml";
+}
+
+@section styles{
+    <link href="~/Content/assets/plugins/parsley/src/parsley.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" />
+}
+
+<div id="content" class="content">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb pull-right">
+        <li><a href="javascript:;">Home</a></li>
+
+        <li class="active">Bank Application</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">Bank Application <small></small></h1>
+    <!-- end page-header -->
+    <!-- begin row -->
+    <div class="row">
+        <!-- begin col-12 -->
+        <div class="col-md-12">
+            <!-- begin panel -->
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="panel-heading-btn">
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                        @*<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>*@
+                    </div>
+                    <h4 class="panel-title">Bank Application</h4>
+                </div>
+                <div class="panel-body">
+                    <div id="devForm" data-parsley-validate="true">
+                        <fieldset>
+                            <legend class="pull-left width-full">Student Info</legend>
+                            <div class="col-md-12">
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label>Salutation</label>
+                                            @Html.DropDownListFor(model => model.SALUTATION, (Model.SALUTATION != null) ? Model.SALUTATION : Enumerable.Empty<SelectListItem>(), "-- Select --", new { @class = "selectpicker form-control", @data_parsley_required = "true" })
+                                            @Html.ValidationMessageFor(model => model.GENDER, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label>First Name</label>
+                                            @Html.EditorFor(model => model.ObjBankApplication.FIRST_NAME, new { htmlAttributes = new { @class = "form-control", @data_parsley_required = "true", @data_parsley_maxlength = "50",Placeholder= "Enter First Name" } })
+                                            @Html.ValidationMessageFor(model => model.ObjBankApplication.FIRST_NAME, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label>Last Name</label>
+                                            @Html.EditorFor(model => model.ObjBankApplication.LAST_NAME, new { htmlAttributes = new { @class = "form-control", @data_parsley_required = "true", @data_parsley_maxlength = "50", Placeholder = "Enter Last Name" } })
+                                            @Html.ValidationMessageFor(model => model.ObjBankApplication.LAST_NAME, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                            </div>
+
+                            <div class="col-md-12">
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label>Gender</label>                                        
+                                            @Html.DropDownListFor(model => model.GENDER, (Model.GENDER != null) ? Model.GENDER : Enumerable.Empty<SelectListItem>(), "-- Select --", new { @class = "selectpicker form-control", @data_parsley_required = "true" })
+                                            @Html.ValidationMessageFor(model => model.GENDER, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label>Marital Status</label>
+                                            @Html.DropDownListFor(model => model.MARITAL_STATUS, (Model.MARITAL_STATUS != null) ? Model.MARITAL_STATUS : Enumerable.Empty<SelectListItem>(), "-- Select --", new { @class = "selectpicker form-control", @data_parsley_required = "true" })
+                                            @Html.ValidationMessageFor(model => model.GENDER, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label>Designation</label>
+                                            @Html.EditorFor(model => model.ObjBankApplication.DESIGNATION, new { htmlAttributes = new { @class = "form-control", @data_parsley_required = "true", @data_parsley_maxlength = "50",  Placeholder = "Enter Designation" } })
+                                            @Html.ValidationMessageFor(model => model.ObjBankApplication.DESIGNATION, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                            </div>
+
+                            <div class="col-md-12">
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label>Date Of Birth</label>
+                                       @Html.EditorFor(model => model.ObjBankApplication.DOB, new { htmlAttributes = new { @class = "form-control datepicker", @data_parsley_required = "true", Placeholder = "Select Date" } })
+                                       @Html.ValidationMessageFor(model => model.ObjBankApplication.DOB, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label>Email</label>
+                                        @Html.EditorFor(model => model.ObjBankApplication.EMAIL, new { htmlAttributes = new { @class = "form-control", @data_parsley_required = "true", @data_parsley_maxlength = "50",@data_parsley_type="email", Placeholder = "Enter Mail Id" } })
+                                        @Html.ValidationMessageFor(model => model.ObjBankApplication.EMAIL, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label>Mobile Number</label>
+                                        @Html.EditorFor(model => model.ObjBankApplication.MOBILE_NUMBER, new { htmlAttributes = new { @class = "form-control", @data_parsley_required = "true", @data_parsley_maxlength = "50", @data_parsley_type = "number", Placeholder = "Enter Mobile Number" } })
+                                        @Html.ValidationMessageFor(model => model.ObjBankApplication.MOBILE_NUMBER, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                            </div>
+
+                            <div class="col-md-12">
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label>Father Name</label>
+                                        @Html.EditorFor(model => model.ObjBankApplication.FATHER_NAME, new { htmlAttributes = new { @class = "form-control", @data_parsley_required = "true", @data_parsley_maxlength = "50", Placeholder = "Enter Father Name" } })
+                                        @Html.ValidationMessageFor(model => model.ObjBankApplication.FATHER_NAME, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label>Mother Name</label>
+                                        @Html.EditorFor(model => model.ObjBankApplication.MOTHER_NAME, new { htmlAttributes = new { @class = "form-control", @data_parsley_required = "true", @data_parsley_maxlength = "50", Placeholder = "Enter Mother Name" } })
+                                        @Html.ValidationMessageFor(model => model.ObjBankApplication.MOTHER_NAME, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label>Spouse Name</label>
+                                        @Html.EditorFor(model => model.ObjBankApplication.SPOUSE_NAME, new { htmlAttributes = new { @class = "form-control", @data_parsley_maxlength = "50", Placeholder = "Enter Spouse Name" } })
+                                        @Html.ValidationMessageFor(model => model.ObjBankApplication.MOBILE_NUMBER, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                            </div>
+
+                            <div class="col-md-12">
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label>Student Id Card Number</label>
+                                        @Html.EditorFor(model => model.ObjBankApplication.STUDENT_ID_CARD_NUMBER, new { htmlAttributes = new { @class = "form-control ", @data_parsley_required = "true", @data_parsley_maxlength = "50", Placeholder = "Student Id Card Number" } })
+                                        @Html.ValidationMessageFor(model => model.ObjBankApplication.STUDENT_ID_CARD_NUMBER, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label>Aadhar Number</label>
+                                        @Html.EditorFor(model => model.ObjBankApplication.NUMBER, new { htmlAttributes = new { @class = "form-control", @data_parsley_required = "true", @data_parsley_maxlength = "50", Placeholder = "Enter Aadhar Number", @data_parsley_type = "number" } })
+                                        @Html.ValidationMessageFor(model => model.ObjBankApplication.NUMBER, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+
+                                    @*<div class="">
+                                        <label>Did You Study In Tamil Medium ?</label>
+                                        <div class="form-inline">
+                                            <div class="radio radio-css radio-pink radio-inline">
+                                                <input type="radio" name="Medium" id="MediumYes" value="1"  data-parsley-required="true"/>
+                                                <label for="MediumYes">
+                                                    Yes
+                                                </label>
+                                            </div>
+                                            <div class="radio radio-css radio-danger radio-inline">
+                                                <input type="radio" name="Medium" id="MediumNo" value="2" data-parsley-required="true"/>
+                                                <label for="MediumNo">
+                                                    No
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>*@
+
+                                    <div class="form-group block1">
+                                        <label>Did You Study In Tamil Medium ?</label>
+                                        @Html.DropDownListFor(model => model.MEDIUM, (Model.MEDIUM != null) ? Model.MEDIUM : Enumerable.Empty<SelectListItem>(), "-- Select --", new { @class = "selectpicker form-control", @data_parsley_required = "true" })
+                                        @Html.ValidationMessageFor(model => model.MEDIUM, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                            </div>
+
+                            <legend class="pull-left width-full">Permanent Address</legend>
+
+                            <div class="col-md-12">
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">     
+                                        <label> Address 1</label>
+                                        @Html.EditorFor(model => model.ObjBankApplication.PERMANENT_ADDRESS1, new { htmlAttributes = new { @class = "form-control", @data_parsley_required = "true", @data_parsley_maxlength = "100", Placeholder = "Enter Permanent Address 1" } })
+                                        @Html.ValidationMessageFor(model => model.ObjBankApplication.PERMANENT_ADDRESS1, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label> Address 2</label>
+                                        @Html.EditorFor(model => model.ObjBankApplication.PERMANENT_ADDRESS2, new { htmlAttributes = new { @class = "form-control", @data_parsley_required = "true", @data_parsley_maxlength = "100", Placeholder = "Enter Permanent Address 2" } })
+                                        @Html.ValidationMessageFor(model => model.ObjBankApplication.PERMANENT_ADDRESS2, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label> Address 3</label>
+                                        @Html.EditorFor(model => model.ObjBankApplication.PERMANENT_ADDRESS3, new { htmlAttributes = new { @class = "form-control", @data_parsley_required = "true", @data_parsley_maxlength = "100", Placeholder = "Enter Permanent Address 3" } })
+                                        @Html.ValidationMessageFor(model => model.ObjBankApplication.PERMANENT_ADDRESS3, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                            </div>
+
+                            <div class="col-md-12">
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label> State</label>
+                                        @Html.EditorFor(model => model.ObjBankApplication.PERMANENT_STATE, new { htmlAttributes = new { @class = "form-control", @data_parsley_required = "true", @data_parsley_maxlength = "50", Placeholder = "Enter Permanent State" } })
+                                        @Html.ValidationMessageFor(model => model.ObjBankApplication.PERMANENT_STATE, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label> City</label>
+                                        @Html.EditorFor(model => model.ObjBankApplication.PERMANENT_CITY, new { htmlAttributes = new { @class = "form-control", @data_parsley_required = "true", @data_parsley_maxlength = "50", Placeholder = "Enter Permanent City" } })
+                                        @Html.ValidationMessageFor(model => model.ObjBankApplication.PERMANENT_CITY, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label> Pincode</label>
+                                        @Html.EditorFor(model => model.ObjBankApplication.PERMANENT_PINCODE, new { htmlAttributes = new { @class = "form-control", @data_parsley_required = "true", @data_parsley_maxlength = "15", Placeholder = "Enter Permanent Pincode" , @data_parsley_type = "number" } })
+                                        @Html.ValidationMessageFor(model => model.ObjBankApplication.PERMANENT_PINCODE, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                            </div>
+
+                            <legend class="pull-left width-full">Communication Address</legend>
+
+                            <div class="col-md-12">
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label> Address 1</label>
+                                        @Html.EditorFor(model => model.ObjBankApplication.COMMUNICATION_ADDRESS1, new { htmlAttributes = new { @class = "form-control ", @data_parsley_required = "true", @data_parsley_maxlength = "100", Placeholder = "Enter Communication Address 1",disabled=true } })
+                                        @Html.ValidationMessageFor(model => model.ObjBankApplication.COMMUNICATION_ADDRESS1, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label> Address 2</label>
+                                        @Html.EditorFor(model => model.ObjBankApplication.COMMUNICATION_ADDRESS2, new { htmlAttributes = new { @class = "form-control", @data_parsley_required = "true", @data_parsley_maxlength = "100", Placeholder = "Enter Communication Address 2", disabled = true } })
+                                        @Html.ValidationMessageFor(model => model.ObjBankApplication.COMMUNICATION_ADDRESS2, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label> Address 3</label>
+                                        @Html.EditorFor(model => model.ObjBankApplication.COMMUNICATION_ADDRESS3, new { htmlAttributes = new { @class = "form-control", @data_parsley_required = "true", @data_parsley_maxlength = "100", Placeholder = "Enter Communication Address 3", disabled = true } })
+                                        @Html.ValidationMessageFor(model => model.ObjBankApplication.COMMUNICATION_ADDRESS3, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                            </div>
+
+                            <div class="col-md-12">
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label> State</label>
+                                        @Html.EditorFor(model => model.ObjBankApplication.COMMUNICATION_STATE, new { htmlAttributes = new { @class = "form-control ", @data_parsley_required = "true", @data_parsley_maxlength = "50", Placeholder = "Enter Communication State", disabled = true } })
+                                        @Html.ValidationMessageFor(model => model.ObjBankApplication.COMMUNICATION_STATE, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label> City</label>
+                                        @Html.EditorFor(model => model.ObjBankApplication.COMMUNICATION_CITY, new { htmlAttributes = new { @class = "form-control", @data_parsley_required = "true", @data_parsley_maxlength = "50", Placeholder = "Enter Communication City", disabled = true } })
+                                        @Html.ValidationMessageFor(model => model.ObjBankApplication.COMMUNICATION_CITY, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label> Pincode</label>
+                                        @Html.EditorFor(model => model.ObjBankApplication.COMMUNICATION_PINCODE, new { htmlAttributes = new { @class = "form-control", @data_parsley_required = "true", @data_parsley_maxlength = "10", Placeholder = "Enter Communication Pincode", disabled = true } })
+                                        @Html.ValidationMessageFor(model => model.ObjBankApplication.COMMUNICATION_PINCODE, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                            </div>
+
+                            <legend class="pull-left width-full">Nominee Info</legend>
+
+                            <div class="col-md-12">
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label> Name</label>
+                                        @Html.EditorFor(model => model.ObjBankApplication.NOMINEE_NAME, new { htmlAttributes = new { @class = "form-control ", @data_parsley_required = "true", @data_parsley_maxlength = "100", Placeholder = "Enter Nominee Name" } })
+                                        @Html.ValidationMessageFor(model => model.ObjBankApplication.NOMINEE_NAME, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label> Age</label>
+                                        @Html.EditorFor(model => model.ObjBankApplication.NOMINEE_AGE, new { htmlAttributes = new { @class = "form-control", @data_parsley_required = "true", @data_parsley_maxlength = "3", @data_parsley_type="number", Placeholder = "Enter Nominee Age" } })
+                                        @Html.ValidationMessageFor(model => model.ObjBankApplication.NOMINEE_AGE, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label> Mobile</label>
+                                        @Html.EditorFor(model => model.ObjBankApplication.NOMINEE_PHONE, new { htmlAttributes = new { @class = "form-control", @data_parsley_required = "true", @data_parsley_maxlength = "15", @data_parsley_type = "number", Placeholder = "Enter Nominee Mobile" } })
+                                        @Html.ValidationMessageFor(model => model.ObjBankApplication.NOMINEE_PHONE, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                            </div>
+
+                            <div class="col-md-12">
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label> Address 1</label>
+                                        @Html.EditorFor(model => model.ObjBankApplication.NOMINEE_ADDRESS1, new { htmlAttributes = new { @class = "form-control", @data_parsley_required = "true", @data_parsley_maxlength = "100", Placeholder = "Enter Nominee Address 1" } })
+                                        @Html.ValidationMessageFor(model => model.ObjBankApplication.NOMINEE_ADDRESS1, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label> Address 2</label>
+                                        @Html.EditorFor(model => model.ObjBankApplication.NOMINEE_ADDRESS2, new { htmlAttributes = new { @class = "form-control", @data_parsley_required = "true", @data_parsley_maxlength = "100",  Placeholder = "Enter Nominee Address 2" } })
+                                        @Html.ValidationMessageFor(model => model.ObjBankApplication.NOMINEE_ADDRESS2, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label> Relation</label>
+                                        @Html.DropDownListFor(model => model.RELATION, (Model.RELATION != null) ? Model.RELATION : Enumerable.Empty<SelectListItem>(), "-- Select --", new { @class = "selectpicker form-control", @data_parsley_required = "true" })
+                                        @Html.ValidationMessageFor(model => model.RELATION, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                            </div>
+
+                            <div class="col-md-12">
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label> State</label>
+                                        @Html.EditorFor(model => model.ObjBankApplication.NOMINEE_STATE, new { htmlAttributes = new { @class = "form-control", @data_parsley_required = "true", @data_parsley_maxlength = "50", Placeholder = "Enter Nominee State" } })
+                                        @Html.ValidationMessageFor(model => model.ObjBankApplication.NOMINEE_STATE, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label> City</label>
+                                        @Html.EditorFor(model => model.ObjBankApplication.NOMINEE_CITY, new { htmlAttributes = new { @class = "form-control", @data_parsley_required = "true", @data_parsley_maxlength = "50", Placeholder = "Enter Nominee City" } })
+                                        @Html.ValidationMessageFor(model => model.ObjBankApplication.NOMINEE_CITY, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                                <!-- begin col-4 -->
+                                <div class="col-md-4">
+                                    <div class="form-group block1">
+                                        <label>Pincode</label>
+                                        @Html.EditorFor(model => model.ObjBankApplication.NOMINNE_PINCODE, new { htmlAttributes = new { @class = "form-control", @data_parsley_required = "true", @data_parsley_maxlength = "30", Placeholder = "Enter Nominee Pincode", @data_parsley_type = "number" } })
+                                        @Html.ValidationMessageFor(model => model.ObjBankApplication.NOMINNE_PINCODE, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group">
+                                        <a class="btn btn-primary pull-right" id="btnSubmit">Submit</a>
+                                    </div>
+                                </div>
+                                <!-- end col-4 -->
+                                
+                            </div>
+                           
+                        </fieldset>
+                    </div>
+                    
+                </div>
+            </div>
+            <!-- end panel -->
+        </div>
+        <!-- end col-12 -->
+    </div>
+    <!-- end row -->
+</div>
+
+<!-- Hidden Field-->
+@Html.HiddenFor(model => model.ObjBankApplication.STUDENT_ID)
+@Html.HiddenFor(model => model.ObjBankApplication.BANK_APPLICATION_ID)
+@Html.HiddenFor(model => model.ObjBankApplication.GENDER_ID)
+@Html.HiddenFor(model => model.ObjBankApplication.MARITUAL_STATUS)
+@Html.HiddenFor(model => model.ObjBankApplication.NOMINEE_RELATION)
+@Html.HiddenFor(model => model.ObjBankApplication.MEDIUM)
+@Html.HiddenFor(model => model.ObjBankApplication.SALUTATION)
+
+<!-- Hidden Field-->
+
+@section Scripts{
+<script src="~/Content/assets/plugins/parsley/dist/parsley.js"></script>
+<script src="~/Content/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="~/Content/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+<script src="~/Content/assets/plugins/gritter/js/jquery.gritter.js"></script>
+<script src="~/Content/assets/plugins/bootstrap-sweetalert/sweetalert.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        handleDatepicker = function () {
+            "use strict";
+            $(".datepicker").datepicker({
+                todayHighlight: !0,
+                autoclose: !0,
+                format: "dd/mm/yyyy",
+                orientation: "left bottom"
+                // 'top': top,
+                // 'left': left
+            })
+        }
+       
+        handleDatepicker();
+        $('.selectpicker').selectpicker({
+            size: 4
+        });
+        
+        $('#SALUTATION').val($('#ObjBankApplication_SALUTATION').val());
+        $('#GENDER').val($('#ObjBankApplication_GENDER_ID').val());
+        $('#MARITAL_STATUS').val($('#ObjBankApplication_MARITUAL_STATUS').val());
+        $('#RELATION').val($('#ObjBankApplication_NOMINEE_RELATION').val());
+        $('#MEDIUM').val($('#ObjBankApplication_MEDIUM').val());
+        //if ($('#ObjBankApplication_MEDIUM').val() == "1")
+        //{
+        //    $('#MediumYes').click();
+        //} else {
+        //    $('#MediumNo').click();
+        //}
+
+        $('.selectpicker').selectpicker("refresh");
+    });
+    
+   
+    
+    $('#ObjBankApplication_DESIGNATION').val("STUDENT");
+    $('#ObjBankApplication_COMMUNICATION_STATE').val("Tamil Nadu");
+</script>
+
+<script>
+    $('#btnSubmit').on('click', function ()
+    {
+        var isValid = true;
+        if ($('#devForm').parsley().validate() !== true) isValid = false;
+        if (!isValid) {
+            myAlert('Something went wrong ! Please check your inputs !', 'gritter-warning', '');
+            return false;
+        }
+
+        var JsonData = null;
+
+       
+        // Prepare Data For Ajax Post ...
+        JsonData='{"SALUTATION":"'+$('#SALUTATION').val()+'"\
+                   ,"FIRST_NAME":"'+$('#ObjBankApplication_FIRST_NAME').val()+'"\
+                   ,"LAST_NAME":"'+$('#ObjBankApplication_LAST_NAME').val()+'"\
+                   ,"GENDER_ID":"'+$('#GENDER').val()+'"\
+                   ,"MARITUAL_STATUS":"' + $('#MARITAL_STATUS').val() + '"\
+                   ,"FATHER_NAME":"'+$('#ObjBankApplication_FATHER_NAME').val()+'"\
+                   ,"MOTHER_NAME":"'+$('#ObjBankApplication_MOTHER_NAME').val()+'"\
+                   ,"SPOUSE_NAME":"'+$('#ObjBankApplication_SPOUSE_NAME').val()+'"\
+                   ,"DOB":"'+$('#ObjBankApplication_DOB').val()+'"\
+                   ,"PERMANENT_ADDRESS1":"'+$('#ObjBankApplication_PERMANENT_ADDRESS1').val()+'"\
+                   ,"PERMANENT_ADDRESS2":"'+$('#ObjBankApplication_PERMANENT_ADDRESS2').val()+'"\
+                   ,"PERMANENT_ADDRESS3":"'+$('#ObjBankApplication_PERMANENT_ADDRESS3').val()+'"\
+                   ,"PERMANENT_CITY":"'+$('#ObjBankApplication_PERMANENT_CITY').val()+'"\
+                   ,"PERMANENT_STATE":"'+$('#ObjBankApplication_PERMANENT_STATE').val()+'"\
+                   ,"PERMANENT_PINCODE":"'+$('#ObjBankApplication_PERMANENT_PINCODE').val()+'"\
+                   ,"COMMUNICATION_ADDRESS1":"'+$('#ObjBankApplication_COMMUNICATION_ADDRESS1').val()+'"\
+                   ,"COMMUNICATION_ADDRESS2":"'+$('#ObjBankApplication_COMMUNICATION_ADDRESS2').val()+'"\
+                   ,"COMMUNICATION_ADDRESS3":"'+$('#ObjBankApplication_COMMUNICATION_ADDRESS3').val()+'"\
+                   ,"COMMUNICATION_STATE":"'+$('#ObjBankApplication_COMMUNICATION_STATE').val()+'"\
+                   ,"COMMUNICATION_CITY":"'+$('#ObjBankApplication_COMMUNICATION_CITY').val()+'"\
+                   ,"COMMUNICATION_PINCODE":"'+$('#ObjBankApplication_COMMUNICATION_PINCODE').val()+'"\
+                   ,"MOBILE_NUMBER":"'+$('#ObjBankApplication_MOBILE_NUMBER').val()+'"\
+                   ,"EMAIL":"'+$('#ObjBankApplication_EMAIL').val()+'"\
+                   ,"NUMBER":"'+$('#ObjBankApplication_NUMBER').val()+'"\
+                   ,"STUDENT_ID_CARD_NUMBER":"'+$('#ObjBankApplication_STUDENT_ID_CARD_NUMBER').val()+'"\
+                   ,"NOMINEE_NAME":"'+$('#ObjBankApplication_NOMINEE_NAME').val()+'"\
+                   ,"NOMINEE_AGE":"'+$('#ObjBankApplication_NOMINEE_AGE').val()+'"\
+                   ,"NOMINEE_RELATION":"'+$('#RELATION').val()+'"\
+                   ,"NOMINEE_ADDRESS1":"'+$('#ObjBankApplication_NOMINEE_ADDRESS1').val()+'"\
+                   ,"NOMINEE_ADDRESS2":"'+$('#ObjBankApplication_NOMINEE_ADDRESS2').val()+'"\
+                   ,"NOMINEE_STATE":"'+$('#ObjBankApplication_NOMINEE_STATE').val()+'"\
+                   ,"NOMINEE_CITY":"'+$('#ObjBankApplication_NOMINEE_CITY').val()+'"\
+                   ,"NOMINNE_PINCODE":"'+$('#ObjBankApplication_NOMINNE_PINCODE').val()+'"\
+                   ,"NOMINEE_PHONE":"'+$('#ObjBankApplication_NOMINEE_PHONE').val()+'"\
+                   ,"MEDIUM":"' + $('#MEDIUM').val()+ '"\
+                   ,"DESIGNATION":"'+$('#ObjBankApplication_DESIGNATION').val()+'"\
+                   ,"COLLEGE_NAME":"St. Mary's College"\
+                   ,"ID_TYPE":"Aathar Card"\
+                   ,"STUDENT_ID":"'+$('#ObjBankApplication_STUDENT_ID').val()+'"}';
+        $.ajax({
+            url:"@Url.Action("SaveBankApplication", "Admission")",
+            method:"POST",
+            datatype:"json",
+            data:{sBankApplication:JsonData},
+            success:function (data) 
+            {
+                if (data.Message=="200") 
+                {
+                    myAlert('Record Saved Success fully !', 'gritter-success', '');
+
+                }else 
+                {
+                    myAlert(data.Message, 'gritter-warning', '');
+                }
+            },error:function (error) 
+            {
+                myAlert('Internal Server Error !', 'gritter-warning', '');
+            }
+        });
+    });
+
+   
+    
+</script>
+}

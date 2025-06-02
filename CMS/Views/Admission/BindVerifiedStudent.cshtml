@@ -1,0 +1,98 @@
+﻿
+@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{
+    ViewBag.Title = "BindVerifiedStudent";
+    Layout = null;
+}
+<table class="table table-bordered" id="bindtable">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>College Name</th>
+        <th>Designation</th>
+        <th>Roll No</th>
+        <th>Name</th>
+        <th>Gender Name</th>
+       
+        <th>Father Name</th>
+        <th>Mother Name</th>
+        <th>DOB</th>
+
+        <th>Permanent Address</th>
+        <th>Permanent City</th>
+        <th>Permanent State</th>
+        <th>Permanent Pincode</th>
+
+        <th>Communication Address</th>
+        <th>Communication City</th>
+        <th>Communication State</th>
+        <th>Communication Pincode</th>
+
+        <th>Mobile No</th>
+        <th>Email ID</th>
+        <th>ID Type</th>
+        <th>Number</th>
+        <th>Nominee Name</th>
+        <th>Nominee Age</th>
+        <th>Relation</th>
+
+        <th>Nominee Address</th>
+        <th>Nominee City</th>
+        <th>Nominee State</th>
+        <th>Nominee Pincode</th>
+
+        <th>Marital Status</th>
+        <th>Account No</th>
+    
+    </tr>
+     </thead>
+    <tbody>
+        @if (Model.liIssueApplication != null && Model.liIssueApplication.Count > 0)
+        {
+            int count = 0;
+            foreach (var item in Model.liIssueApplication)
+            {
+                count++;
+                <tr>
+                    <td>@count</td>
+                    <td>@item.MANAGEMENT_NAME</td>
+                    <td>@item.DESIGNATION</td>
+                    <td>@item.ROLL_NO</td>
+                    <td>@item.FIRST_NAME</td>
+                    <td>@item.GENDER_NAME</td>
+                   
+                    <td>@item.FATHER_NAME</td>
+                    <td>@item.MOTHER_NAME</td>
+                    <td>@item.DOB</td>
+
+                    <td>@item.PADDRESS</td>
+                    <td>@item.PDISTRICT</td>
+                    <td>@item.PSTATE</td>
+                    <td>@item.PPINCODE</td>
+
+                    <td>@item.NOMINEE_ADDRESS</td>
+                    <td>@item.NOMINEE_DISTRICT</td>
+                    <td>@item.NOMINEE_STATE</td>
+                    <td>@item.NOMINEE_PINCODE</td>                                  
+                   
+                    <td>@item.SMS_MOBILE_NO</td>
+                    <td>@item.EMAIL_ID</td>
+                    <td>@item.ID_TYPE</td>
+                    <td>@item.NUMBER</td>
+                    <td>@item.NOMINEE </td>
+                    <td>@item.FATHER_AGE</td>
+                    <td>Father</td>
+
+                    <td>@item.PADDRESS</td>
+                    <td>@item.PDISTRICT</td>
+                    <td>@item.PSTATE</td>
+                    <td>@item.PPINCODE</td>
+                   
+                    <td>@item.MARITAL_STATUS_NAME</td>
+                    <td>@item.ACCOUNT_NO</td>
+                  
+                </tr>
+            }
+        }
+    </tbody>
+</table>

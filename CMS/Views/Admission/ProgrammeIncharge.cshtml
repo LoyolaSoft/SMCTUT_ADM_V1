@@ -1,0 +1,210 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{
+    ViewBag.Title = "ProgrammeIncharge";
+    Layout =null;
+}
+
+    <link href="~/Content/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="~/Content/assets/plugins/DataTables/media/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/assets/plugins/DataTables/extensions/Responsive/css/responsive.bootstrap.min.css" rel="stylesheet" />    
+
+<div class="content" id="content">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">Home</a></li>
+            <li class="active">Programme Incharge </li>
+        </ol>
+        <h2 class="page-header">Programme Incharge </h2>
+        <div class="panel">
+            <div class="panel-heading bg-primary">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" onclick="loadContent('/Admission/ProgrammeIncharge');" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                </div>
+                <h4 class="panel-title">Programme Incharge</h4>
+            </div>
+            <div class="panel-body">
+                @{int count = 0;}
+                <div class="form-horizontal">
+                    <div class="col-md-12 form-group">
+                        <a class="btn btn-success form-group pull-right m-b-5" title="Add Programme Incharge" data-toggle="modal" style="cursor:pointer" href="#Head-dialog"><i class="fa fa-plus" title="Add"> Add</i></a>
+                    </div>
+                    <div class="col-md-12">                                              
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered" id="tblAdmissionProgrammeIncharge">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Programme Mode</th>
+                                        <th>Staff Name</th>
+                                        <th>Programme</th>
+                                        <th>Active</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.liCourses != null && Model.liCourses.Count > 0)
+                                    {
+                                        foreach (var item in Model.liCourses)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @{ count++;}@count
+                                                </td>
+                                                <td>@Html.DisplayFor(modelItem => item.PROGRAMME_MODE)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.FIRST_NAME)</td>
+                                                <td>@Html.DisplayFor(modelItem => item.PROGRAMME_NAME)</td>
+                                                <td>
+                                                    @if (item.IS_ACTIVE == "0")
+                                                    {
+                                                        <i class="fa fa-close text-danger" style="cursor:pointer" onclick="ActiveProgrammeIncharge(@item.INCHARGE_ID,@item.IS_ACTIVE);"></i>
+                                                    }
+                                                    else
+                                                    {
+                                                        <i class="fa fa-check text-success"  style="cursor:pointer" onclick="ActiveProgrammeIncharge(@item.INCHARGE_ID,@item.IS_ACTIVE);"></i>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    }
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+  }
+</div>
+
+    <script src="~/Content/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/Content/assets/plugins/DataTables/media/js/jquery.dataTables.js"></script>
+    <script src="~/Content/assets/plugins/DataTables/media/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/Content/assets/plugins/DataTables/extensions/Responsive/js/dataTables.responsive.min.js"></script>       
+    <script>
+  
+            $('.selectpicker').selectpicker({
+                size: 5
+            });
+
+            $("#tblAdmissionProgrammeIncharge").DataTable({ "bPaginate": false });
+      
+        ActiveProgrammeIncharge = function (ID,sAId) {
+            if (!confirm('Are you sure to Change Active State ?')) {
+                return false;
+            }
+            $.ajax({
+                url: "@Url.Action("UpdateActiveProgrammeIncharge", "Admission")",
+                method: "POST",
+                datatype: "html",
+                data: { sInchargeId: ID, sActive: sAId },
+                success: function (data) {
+                    alert(data.Message);
+                    loadContent('/Admission/ProgrammeIncharge');
+                }, error: function (error) {
+                    alert(error);
+                }
+            });
+        }
+
+        $('#ProgrammeList').on("change", function () {
+           
+            $.ajax({
+                url: "@Url.Action("FetchStaffByProgramme", "Admission")",
+                method: "POST",
+                datatype: "html",
+                data: { sProgrammeGroupId: $(this).val() },
+                success: function (data) {
+                    if (data.Message!=null&& data.Message!='') {
+                        alert(data.Message);
+                    } else {
+                        var ddl = $('#ddlStaff');
+                        ddl.empty();
+                        ddl.append(data.sResult);
+                    }                   
+                    $('.selectpicker').selectpicker('refresh');
+                }, error: function (error) {
+                    alert(error);
+                }
+            })
+        })
+
+        $('#btnSave').on("click", function () {           
+            if ($('#ProgrammeList').val() && $('#ddlStaff').val()) {
+                var StaffIds = String($('#ddlStaff').val());
+                var IsActive = 0;
+                if ($('#chkIsActive').prop("checked")==true) {
+                    IsActive = 1;
+                }                    
+                $.ajax({
+                    url: "@Url.Action("SaveProgrammeIncharge", "Admission")",
+                    method: "POST",
+                datatype: "html",
+                data: { sStaffIds: StaffIds, sProgrammeGroupId: $('#ProgrammeList').val(), sIsActive: IsActive },
+               
+                success: function (data)
+                {
+                    alert(data.Message);
+                    loadContent('/Admission/ProgrammeIncharge');
+                }, error: function (error)
+                {
+                    alert('Record not saved try again ..!');
+                }
+            });
+            } else {
+                alert("select the Fields..!");
+            }
+            
+        })
+    </script>
+
+<div class="modal fade" id="Head-dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Add / Edit</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ProgrammeList, "Programme", htmlAttributes: new { @class = "control-label col-md-3" })
+                        <div class="col-md-8">
+                            @Html.DropDownListFor(model => model.ProgrammeList, (Model.ProgrammeList != null) ? Model.ProgrammeList : Enumerable.Empty<SelectListItem>(), "--select--", new { @class = "selectpicker show-menu-arrow show-tick drop-down form-control  input-sm", @data_live_search = "true" })
+                            @Html.ValidationMessageFor(model => model.ProgrammeList, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3">Staff</label>
+                        <div class="col-md-8">
+                            <select id="ddlStaff" class="selectpicker show-menu-arrow show-tick drop-down form-control  input-sm" data-live-search="true" multiple>            
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3"></label>
+                        <div class="col-md-8">
+                            <div class="checkbox checkbox-css">
+                                <input type="checkbox" id="chkIsActive" value="" />
+                                <label for="chkIsActive">Is Active</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:;" id="btnSave" class="btn btn-sm btn-primary" data-dismiss="modal">Save</a>
+                <a href="javascript:;" class="btn btn-sm btn-danger" data-dismiss="modal">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>

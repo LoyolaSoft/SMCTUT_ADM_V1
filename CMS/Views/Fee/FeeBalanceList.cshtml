@@ -1,0 +1,205 @@
+﻿@model CMS.ViewModel.ViewModel.FeeTransactionViewModel
+@using CMS.Utility;
+@{
+    ViewBag.Title = "FeeBalanceList";
+    Layout = null;
+    string statuscount = string.Empty;
+    string statusname = string.Empty;
+
+}
+
+<div id="content" class="content">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb pull-right">
+        <li><a href="javascript:;">Home</a></li>
+        <li><a href="javascript:;">Fee</a></li>
+        <li class="active">Fee Balance List</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">Fee Balance<small></small></h1>
+    <!-- end page-header -->
+    @{ int count = 0;}
+
+    <div class="form-horizontal">
+        <div class="panel panel-primary">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                </div>
+                <h4 class="panel-title">Fee Balance</h4>
+            </div>
+            <div class="panel-body table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th><center>S.No.</center></th>
+                            <th><center>Frequency</center></th>
+                            <th><center>Amount</center></th>
+                            <th><center>Action</center></th>
+                            <th><center>Status</center></th>
+                            <th><center>Receipt</center></th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.liFeeStudentAccount != null && Model.liFeeStudentAccount.Count > 0)
+                        {
+                            foreach (var item in Model.liFeeStudentAccount)
+                            {
+                                if (Model.liStatusVerification != null)
+                                {
+                                    foreach (var status in Model.liStatusVerification)
+                                    {
+                                        if (status.FREQUENCY_TYPE_ID == item.FREQUENCY_TYPE_ID)
+                                        {
+                                            statuscount = status.STATUS;
+                                            statusname = status.STATUS_NAME;
+                                        }
+                                    }
+                                }
+
+                                <tr>
+                                    <td>@{count++;} @count</td>
+                                    <td>@item.FREQUENCY_NAME</td>
+                                    @if (item.BALANCE != "0")
+                                    {
+                                        <td><i class="fa fa-inr f-s-14"> @item.BALANCE</i></td>
+                                        if (statuscount == Common.STATUS.Verified)
+                                        {
+                                            @*if (item.FREQUENCY_TYPE_ID == Common.FrequencyType.AdmissionFee)
+                                            {
+                                                <td><a href="#" onclick="ValidatePaymentAgree('/FEE/RazorPayPaymentGate?sFrequencyTypeId=@item.FREQUENCY_TYPE_ID&sFeeRootId=@item.FEE_ROOT_ID')" class="btn btn-success " title="Go for Payment"><i class="ion-card"></i> Proceed to Pay</a></td>
+                                            }
+                                            else
+                                            {*@
+                                                <td><a href="/FEE/RazorPayPaymentGate?sFrequencyTypeId=@item.FREQUENCY_TYPE_ID&sFeeRootId=@item.FEE_ROOT_ID" class="btn btn-success " title="Go for Payment"><i class="ion-card"></i> Proceed to Pay</a></td>
+
+                                        }
+                                        else
+                                        {
+                                            if (item.FREQUENCY_TYPE_ID == Common.FrequencyType.HostelApplication || item.FREQUENCY_TYPE_ID == Common.FrequencyType.HostelFee)
+                                            {
+                                                <td><a href="/FEE/RazorPayPaymentGate?sFrequencyTypeId=@item.FREQUENCY_TYPE_ID&sFeeRootId=@item.FEE_ROOT_ID" class="btn btn-success " title="Go for Payment"><i class="ion-card"></i> Proceed to Pay</a></td>
+                                            }
+                                            else
+                                            {
+                                                <td><label class="label label-danger">Status:@statusname</label></td>
+                                            }
+                                        }
+                                        <td><label class="label label-danger f-s-12">Not Paid</label></td>
+                                        <td><label class="label label-danger f-s-12">No Receipt</label></td>
+                                    }
+                                    else
+                                    {
+                                        <td><label class="fa fa-inr f-s-14"> @item.DEBIT</label></td>
+
+                                        <td><i class="ion-ios-checkmark-outline fa-2x text-success"></i></td>
+                                        <td><label class="label label-success f-s-12">Paid</label></td>
+                                        <td><button class="btn btn-primary" onclick="loadContent('/Fee/FeeReceipt?sFrequencyId=@item.FREQUENCY_ID&sFrequencytypeId=@item.FREQUENCY_TYPE_ID')"><i class="fa  fa-eye"></i>View Receipt</button></td>
+                                    }
+
+
+                                </tr>
+
+
+
+                            }
+                        }
+                        else
+                        {
+                            <tr><td> No Records Found..! </td> </tr>
+                        }
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="paymentrules" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel"><b>St. Mary's College ONLINE APPLICATION 2020 - 2021</b></h5>
+            </div>
+            <div class="modal-body">
+                <div class="text-justify">
+                    <p style="font-weight: bold;font-size: 12pt;"> Dear Holy Crossian,</p>
+                    <p>Welcome to St. Mary's College (Autonomous) Tiruchirappalli!</p>
+                    <p>Congratulations! You are now a member of St. Mary's College (Autonomous) a nurturing ground for an individual’s holistic development to make effective contribution to the society in a dynamic environment. The motto of the college is Truth and Charity.</p>
+                    <p>In keeping with the vision, our College stands for academic excellence, character formation, moral rectitude, intellectual integrity, sound aesthetic sense, development of skills, courage and compassion. We strive to develop effective leaders with ethical and human values to reshape the nation’s destiny through developing morally upright and socially responsible citizens.</p>
+                    <p>Discipline, humility, hard work and team work are embedded in all processes that the institution engages in. We expect our students to live up to this goal of academic excellence through continuous learning and active engagement in co-curricular and extra-curricular activities and extensive use of the library and other skill enhancing opportunities.</p>
+                    <p>Your admission to the programme is provisional and is subject to the approval of eligibility, if there are any pending documents. </p>
+
+                    <p style="font-weight: bold;font-size: 12pt;">Kindly Note: If there is any discrepancy or incorrect information found in the documents submitted, please be informed that your admission may be cancelled at any time.</p>
+
+
+                    <p style="font-weight: bold;font-size: 12pt;">You are asked to read the following carefully:</p>
+                    <p style="font-weight: bold;font-size: 12pt;"><u>THE  STUDENT  CONTRACT</u></p>
+
+                    <p>By agreeing to this contract at the time of admission to St. Mary's College (Autonomous), Tiruchirappalli, you have entered voluntarily into an agreement to abide by the rules and regulations of the College, bearing in mind that the action of any member of a community directly or indirectly affects all the other members. </p>
+                    <p>In accepting the offer of admission from St. Mary's College, each student accepts the responsibility of upholding the standards of the College, whether on or off campus, much of it to be stringently followed when classes begin on campus after the COVID ’19 Lockdown. </p>
+
+
+                    <p>1. Every student should wear her/his identity card while on campus and is expected to bring the College calendar every day. </p>
+                    <p>2. The student is expected to be in class at the stroke of the first bell at 8.20 a.m.  The day begins with a common prayer for which all should be present and participate with respect and attention.</p>
+                    <p class="text-justify">
+                        3. The student is expected to attend classes regularly. Attendance is taken at every lecture or practical, as prescribed in the College timetable. The attendance requirement of 85% must be fulfilled by every student in every course. Any student who does not meet this requirement will not be permitted to take the End Semester Examination.
+                    </p>
+
+                    <p>4. The student is expected to follow the entire academic programme, write all the tests and submit the assignments given for each course on time. A student cannot absent herself / himself for internal tests, quizzes, seminars and assignments. </p>
+                    <p>5. Every student is expected to dress modestly and observe the College dress code. A student is not permitted to wear <b>sleeveless tops and T Shirts, Leggings, net sleeves and net leggings, three fourth pants or skin fits.</b> </p>
+                    <p>6.<b>Students are not permitted to do any of the following without the prior permission of the Principal:</b> give Interviews, publish any material, participate in photographic modeling / fashion shows / stage shows/ radio / T.V. programmes / any other public performance.</p>
+                    <p>7.<b>Ragging is a serious offence</b>, and in accordance with UGC norms, ragging in any form is forbidden. A student found guilty of ragging will face cancellation of admission and suspension from the College,  hostel. In case you experience ragging, kindly contact the <b>Anti-Ragging Committee for assistance</b></p>
+                    <p>8.<b>Cell phone is banned on campus,</b> student is not permitted to use cell phones at any time or in any place in the College campus. Violation of this rule will result in <b>confiscation of the phone and payment of a fine.</b></p>
+                    <p>9.The student is not permitted to leave the College during class hours. In case of an emergency, permission must be obtained from the Principal through the Head of the Department.</p>
+                    <p>10.Littering is prohibited. Student is required to keep the campus neat and clean and respect College property.</p>
+                    <p>11.The student is encouraged to grow with responsibility and discipline. Every Holy Crossian shall honour and respect the reverend sisters and teachers of the institution, parents and every person she / he meets in daily life. The student will abstain from using offensive or derogatory language either for friendly conversation or to speak ill of others.</p>
+                    <p>12.Every Holy Crossian shall use God’s resource of time for everyday learning, intellectual and skill development.<b> Please Be Before Time (PBBT)</b> and do not waste time in unproductive activities. The student shall initiate and volunteer to be of service and contribute one’s talents for all the College activities and guided social out-reach programmes.</p>
+
+                    <p>We joyfully welcome you and believe that you will live up to the ideals of St. Mary's College, and co-operate with the faculty and administrators of the College, to be and to become a Holy Crossian of Excellence.</p>
+
+
+
+                    <p>&nbsp; </p>
+                    <p>The Principal ,</p>
+                    <p>St. Mary's College (Autonomous)</p>
+                    <p>Tiruchirappalli</p>
+                    <p>&nbsp; </p>
+
+                    <p>I declare that, I have read all the guidelines and shall abide by the above said  rules and regulations of the College, bearing in mind that the action of any member of a community directly or indirectly affects all the other members.</p>
+
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+
+                <a href="#" class="btn btn-primary" id="btnagree">Agree</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*<script>
+    (function () {
+        // Document Ready Function .
+        speak('Please do not press back button or refresh when you make payment');
+    })();
+    function ValidatePaymentAgree(ID) {
+        $('#paymentrules').modal('show');
+        $('#btnagree').attr('href', ID);
+    }
+</script>*@

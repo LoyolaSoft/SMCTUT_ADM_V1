@@ -1,0 +1,73 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{int count = 0;}
+@if (Model.liSelectionProcess != null && Model.liCourses != null)
+{
+    foreach (var list in Model.liCourses)
+    {
+        var TempList = Model.liSelectionProcess.Where(s => s.PROGRAMME_ID == list.PRO_GROUPS_ID).ToList();
+        if (TempList != null && TempList.Count > 0)
+        {
+            <div style="page-break-after:always !important;page-break-inside:avoid !important;">
+                <center>
+                    @if (Model.liCollegeDetails != null)
+                    {
+                        foreach (var item in Model.liCollegeDetails)
+                        {
+                            <center>
+                                <table>
+                                    <tr>
+                                        <td><center><strong>@item.COLLEGE_NAME</strong></center></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b> @item.GRADE</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center">
+                                            @item.UNIVERSITY
+                                        </td>
+                                    </tr>
+                                </table>
+                            </center>
+                        }
+                    }
+                    <p><b> @list.PROGRAMME_NAME</b></p>
+                    <br />
+                    <br />
+                    <table class="" id="StudentPrintList" width="100%" border="1">
+                        <thead>
+                            <tr>
+                                <th style="padding:5px !important;" width="5%" >#</th>
+                                <th style="padding:5px !important;" width="10%" >APP.NO</th>
+                                <th style="padding:5px !important;" width="30%" >NAME</th>
+                                <th style="padding:5px !important;" width="5%" >CASTE</th>
+                                <th style="padding:5px !important;" width="10%" >S.DATE</th>
+                                <th style="padding:5px !important;" width="15%" >MOBILE</th>
+                                <th style="padding:5px !important;" width="25%" >VILLAGE</th>
+                                <th style="padding:5px !important;" width="10%">STATUS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in TempList)
+                        {
+                                <tr>
+                                    <td style="padding:5px !important;">
+                                        @{ count++;}@count
+                                    </td>
+                                    <td style="padding:5px !important;">@item.APPLICATION_NO</td>
+                                    <td style="padding:5px !important;">@item.FIRST_NAME.ToUpper()</td>
+                                    <td style="padding:5px !important;">@item.COMMUNITY</td>
+                                    <td style="padding:5px !important;">@item.SELECTION_DATE</td>
+                                    <td style="padding:5px !important;">@item.SMS_MOBILE_NO</td>
+                                    <td style="padding:5px !important;">@item.CVILLAGE_AREA</td>
+                                    <td style="padding:5px !important;">@item.STATUS</td>
+                                </tr>
+                                            }
+                            @{ count = 0;}
+                        </tbody>
+                    </table>
+                </center>
+            </div>
+                                        }
+
+                                    }
+                                }

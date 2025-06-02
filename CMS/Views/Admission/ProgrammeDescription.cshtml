@@ -1,0 +1,93 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+
+@{
+    ViewBag.Title = "ProgrammeDescription";
+    Layout = "~/Views/Shared/_HCCAdmissionLayoutPage.cshtml";
+}
+
+
+@{
+    if (Model.liProgarammeDescription != null && Model.liProgarammeDescription.Count > 0)
+    {
+        <div class="colorlib-event">
+            <div class="container">
+                <ol class="breadcrumb " style="box-shadow: 0 2px 4px 0 rgba(0,0,0,0.10);">
+                    <li><a href="@Url.Action("hccindex","admission")">Home</a></li>
+
+                    <li ><a href="@Url.Action("hccindex","admission")">Programme</a></li>
+                    <li class="active"><a href="@Url.Action("hccindex","admission")">Programme Description</a></li>
+
+                </ol>
+                <div class="row col-lg-12">
+                    <h3 style="background: #007afd;color: #fff;padding: 20px;box-shadow: 0 2px 4px 0 rgba(0,0,0,0.10);">Programme- @Model.liProgarammeDescription.FirstOrDefault().PROGRAMME_NAME</h3>
+                    @{
+                        var List = Model.liProgarammeDescription.Select(x => new CMS.ViewModel.Model.ADM_PROGRAMME_DESCRIPTION { PROGRAMME_DESCRIPTION = Model.liProgarammeDescription.FirstOrDefault().PROGRAMME_DESCRIPTION, COURSE_OBJECTIVE = Model.liProgarammeDescription.FirstOrDefault().COURSE_OBJECTIVE, PROGRAMME_OUTCOME = Model.liProgarammeDescription.FirstOrDefault().PROGRAMME_OUTCOME, PROGRAMME_CONTENT = Model.liProgarammeDescription.FirstOrDefault().PROGRAMME_CONTENT, PROGRAMME_ELIGIBLITY = Model.liProgarammeDescription.FirstOrDefault().PROGRAMME_ELIGIBLITY }).ToList();
+
+                        if (List != null && List.Count > 0)
+                        {
+                            <div class="col-md-8 event-entry" style="animation-duration:0.25s">
+                                @{
+                                    if (!string.IsNullOrEmpty(List.FirstOrDefault().PROGRAMME_DESCRIPTION) && (List.FirstOrDefault().PROGRAMME_DESCRIPTION != "<p><br></p>"))
+                                    {
+                                        <h3>Programme Description</h3>
+                                        <div>@Html.Raw(List.FirstOrDefault().PROGRAMME_DESCRIPTION)</div>
+                                    }
+                                    @*if (!string.IsNullOrEmpty(List.FirstOrDefault().COURSE_OBJECTIVE) && (List.FirstOrDefault().COURSE_OBJECTIVE != "<p><br></p>"))
+                                    {
+                                        <h3>Course Objective</h3>
+                                        <div>@Html.Raw(List.FirstOrDefault().COURSE_OBJECTIVE)</div>
+                                    }*@
+                                    if (!string.IsNullOrEmpty(List.FirstOrDefault().PROGRAMME_OUTCOME) && (List.FirstOrDefault().PROGRAMME_OUTCOME != "<p><br></p>"))
+                                    {
+                                        <h3>Programme OutCome</h3>
+                                        <div>@Html.Raw(List.FirstOrDefault().PROGRAMME_OUTCOME)</div>
+                                    }
+                                    @*if (!string.IsNullOrEmpty(List.FirstOrDefault().PROGRAMME_CONTENT) && (List.FirstOrDefault().PROGRAMME_CONTENT != "<p><br></p>"))
+                        {
+                                    <h3>Programme Content</h3>
+                                    <div>@Html.Raw(List.FirstOrDefault().PROGRAMME_CONTENT)</div>
+                        }*@
+                                if (!string.IsNullOrEmpty(List.FirstOrDefault().PROGRAMME_ELIGIBLITY) && (List.FirstOrDefault().PROGRAMME_ELIGIBLITY != "<p><br></p>"))
+                                {
+                                        <h3>Programme Eligiblity</h3>
+                                        <div>@Html.Raw(List.FirstOrDefault().PROGRAMME_ELIGIBLITY)</div>
+                                }
+                                    @*if (string.IsNullOrEmpty(Model.liProgarammeDescription.FirstOrDefault().SYLLABUS_PATH))
+                        {
+                            <div class="col-md-12 animate-box fadeInUp animated-fast" style="animation-duration:0.25s">
+                                <div class="event-entry">
+                                    <a href="@Model.liProgarammeDescription.FirstOrDefault().SYLLABUS_PATH">DownLoadSyllabus</a>
+                                </div>
+                            </div>
+                        }*@
+                                }
+                            </div>
+                            <div class="col-md-4 event-entry" style="animation-duration:0.25s">
+                                @{
+
+                                    if (!string.IsNullOrEmpty(List.FirstOrDefault().COURSE_OBJECTIVE) && (List.FirstOrDefault().COURSE_OBJECTIVE != "<p><br></p>"))
+                                    {
+                                        @*<h3>Course Objective</h3>*@
+                                        <div class="col-md-12" style="overflow:hidden">@Html.Raw(List.FirstOrDefault().COURSE_OBJECTIVE)</div>
+                                        }
+                                    }
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+                                    }
+                                    else
+                                    {<div class="colorlib-event">
+            <div class="container">
+                <div class="row">
+                    <div class="alert bg-warning alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        No Data Found.
+                    </div>
+                </div>
+            </div>
+        </div>
+                                    }
+}

@@ -1,0 +1,72 @@
+﻿@model  CMS.ViewModel.ViewModel.AdmissionFeeViewModel
+@{
+    ViewBag.Title = "AdmissionFeeStucture";
+    Layout = "~/Views/Shared/_AdminLayoutPage.cshtml";
+}
+
+<div id="content" class="content">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb pull-right">
+        <li><a href="javascript:;">Home</a></li>
+        <li class="active">Fee Structure </li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">Fee Structure</h1>
+    <!-- end page-header -->
+
+    <div class="panel panel-primary" id="panel">
+        <div class="panel-heading">
+            <div class="panel-heading-btn">
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" id="btnReload" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+            </div>
+            <h4 class="panel-title">Fee Structure</h4>
+        </div>
+        <div class="panel-body">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+
+                    <div class="form-group  col-md-12">
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.programmeMode, "Programme Mode", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <div class="col-md-7">
+                                @Html.DropDownListFor(model => model.AcademicyearList, (Model.programmeMode != null) ? Model.programmeMode : Enumerable.Empty<SelectListItem>(), "-- Select --", new { @class = " selectpicker show-menu-arrow show-tick drop-down form-control  input-sm", @data_live_search = "true" })
+                                @Html.ValidationMessageFor(model => model.programmeMode, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.FrequencyList, "Frequency List", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <div class="col-md-7">
+                                @Html.DropDownListFor(model => model.FrequencyList, (Model.FrequencyList != null) ? Model.FrequencyList : Enumerable.Empty<SelectListItem>(), "-- Select --", new { @class = " selectpicker show-menu-arrow show-tick drop-down form-control  input-sm", @data_live_search = "true" })
+                                @Html.ValidationMessageFor(model => model.FrequencyList, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            @Html.LabelFor(model => model.ClassList, "Class List", htmlAttributes: new { @class = "control-label col-md-5" })
+                            <div class="col-md-7">
+                                @Html.DropDownListFor(model => model.ClassList, (Model.ClassList != null) ? Model.ClassList : Enumerable.Empty<SelectListItem>(), "-- Select --", new { @class = " selectpicker show-menu-arrow show-tick drop-down form-control  input-sm", @data_live_search = "true" })
+                                @Html.ValidationMessageFor(model => model.ClassList, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*<div>
+                        <div class="col-md-12">
+                            <a class="btn btn-success pull-right form-group m-b-5" href="@Url.Action("Assignment","TaskManagement")"><i class="fa fa-plus" title="Add"> Add</i></a>
+                        </div>
+                    </div>*@
+                <div class="col-md-12 table-responsive">
+                    <div id="dvFeeStructureBind"></div>
+                </div>
+            }
+        </div>
+
+    </div>
+</div>
+

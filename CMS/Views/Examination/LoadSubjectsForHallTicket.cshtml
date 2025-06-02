@@ -1,0 +1,153 @@
+﻿@model CMS.ViewModel.ViewModel.ExaminationViewModel
+@using CMS.Utility;
+
+@if (Model.sessionFlag)
+{
+    <div class="form-horizontal">
+        <div id="HallTicket" style="height:auto;">
+            <div class="form-group">
+                @*<img src="~/Content/assets/img/hcc-img/hcclogo.jpg" class="col-md-1"/>*@
+                <div class="col-md-2 pull-left">
+                    <img src="~/Content/assets/img/hcc-img/hcclogo.jpg" style="width:150px; height:150px" />
+                </div>
+
+                <div class="col-md-8 text-center pull-left">
+                    <h2>St. Mary's College (AUTONOMOUS)</h2>
+                    
+                    
+                    <h3>
+                        Affiliated to Bharathidasan University<br />
+                        Nationally Accredited (3 rd Cycle) with A Grade by NAAC <br />
+                        College with Potential for Excellence<br />
+                        Tiruchirappalli – 620 002.<br />
+                        @Model.liRegistration.FirstOrDefault().DEGREE&nbsp;&nbsp;&nbsp; DEGREE EXAMINATION - APRIL 2018
+                    </h3>
+                    <h4>HALL TICKET</h4>
+                </div>
+                <div class="col-md-2 pull-right">
+                    @{
+                        if (Session[Common.SESSION_VARIABLES.PHOTO] != null && !string.IsNullOrEmpty(Session[Common.SESSION_VARIABLES.PHOTO].ToString()))
+                        {
+                            <img src="@Url.Content(Session[Common.SESSION_VARIABLES.PHOTO].ToString())" alt="Photo" style="width:150px; height:150px" />
+                        }
+                        else
+                        {
+                            @*<img src="@Url.Content("~/Content/hcc_img/student_img/IMG_20180108_110724.jpg")" alt="" style="width:150px; height:150px" />*@
+                            <div id="Result"><center><br /><br /><br /> PHOTO</center></div>
+                        }
+                    }
+                </div>
+
+
+
+            </div>
+            <hr />
+            <table cellpadding="10" cellspacing="10" style="font-size:16px">
+                <tbody>
+                    <tr>
+                        <td><b>Name of the Candidate : </b></td>
+                        <td>&nbsp;&nbsp;&nbsp;@Model.liRegistration.FirstOrDefault().FIRST_NAME</td>
+
+                        <td><b>&nbsp;&nbsp;&nbsp;Major :</b></td>
+                        <td>&nbsp;&nbsp;&nbsp;@Model.liRegistration.FirstOrDefault().DEPARTMENT</td>
+
+                        <td><b>&nbsp;&nbsp;&nbsp;Date of Birth:</b></td>
+
+                        <td>&nbsp;&nbsp;&nbsp;@Model.liRegistration.FirstOrDefault().DATE_OF_BIRTH</td>
+                    </tr>
+                    <tr>
+                        <td><b>Register No : </b></td>
+                        <td>&nbsp;&nbsp;&nbsp;@Model.liRegistration.FirstOrDefault().REGISTER_NO</td>
+
+                        <td><b>&nbsp;&nbsp;&nbsp;Month & Year :</b></td>
+                        <td>&nbsp;&nbsp;&nbsp;@Model.Month_Year</td>
+
+                        <td><b>&nbsp;&nbsp;&nbsp;Semester:</b></td>
+                        <td>&nbsp;&nbsp;&nbsp;@Model.sSemester</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br /><br />
+            <div>@{int count = 0;}</div>
+            <table class="table table-hover table-bordered" style="font-size:medium">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Semester</th>
+                        <th>Course Tittle</th>
+                        <th>Course Code</th>
+                        <th>Status</th>
+                        <th>
+                            Invigilator's Sign
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.liFetchHallTicket != null)
+                    {
+                        foreach (var item in Model.liFetchHallTicket)
+                        {
+                            <tr>
+                                <td>@{count++;}@count</td>
+                                <td class="semi-bold">@Html.DisplayFor(modelItem => item.SEMESTER_ID)</td>
+                                <td class="semi-bold">@Html.DisplayFor(modelItem => item.COURSE_TITLE)</td>
+                                <td class="semi-bold">@Html.DisplayFor(modelItem => item.COURSE_CODE)</td>
+                                <td class="semi-bold">@Html.DisplayFor(modelItem => item.STATUS)</td>
+                                <td></td>
+                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                        <tr>
+                            <td>No data found ...!</td>
+                        </tr>
+                                    }
+
+                </tbody>
+            </table>
+            <div class="form-group pull-right">
+                <div class="col-md-12 pull-right">
+                    <label>R - Regular &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;  A - Arrear </label>
+                </div>
+            </div>
+            <br />
+        </div>
+        <br /><br /><br />
+        <table>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  <img src="~/Content/hcc_img/sign/Principal_Sign.jpg" width="150px" /></td>
+                    <td> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="~/Content/hcc_img/sign/Controller_Sign.jpg" width="120px" /></td>
+                </tr>
+                <tr>
+                    <td><b>Signature of the Student </b></td>
+
+                    <td>
+
+
+                        <b>
+                            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                            Principal
+                        </b>
+                    </td>
+
+                    <td>
+
+                        <b>
+                            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+                            Controller of Examination
+                        </b>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+                                    }
+                                    else {
+                                        <div >Session out,Please Login again!!</div>
+                                    }
+
+

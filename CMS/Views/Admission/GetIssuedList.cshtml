@@ -1,0 +1,45 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{
+    int count = 0;
+    <div class="">
+        <table class="table table-bordered table-responsive table-hover" id="tblIssuedApplication">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Application Type</th>
+                    <th>Application No</th>
+                    <th>First Name</th>
+                    <th>Programme</th>
+                    <th>Programme Mode</th>
+                    <th>Shift</th>
+                    <th>Application Fee</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.liApplicant != null && Model.liApplicant.Count > 0)
+                {
+                    foreach (var student in Model.liApplicant)
+                    {
+                <tr>
+                    <td>@{count++;}@count</td>
+                    <td>@student.APPLICATION_TYPE</td>
+                    <td>@student.APPLICATION_NO</td>
+                    <td>@student.FIRST_NAME</td>
+                    <td>@student.PROGRAMME_NAME</td>
+                    <td>@student.PROGRAMME_MODE</td>
+                    <td>@student.SHIFT_NAME</td>
+                    <td>@student.APP_FEE</td>
+                </tr>
+                    }
+                }               
+            </tbody>
+        </table>
+
+        </div>
+
+
+
+
+
+        }
+

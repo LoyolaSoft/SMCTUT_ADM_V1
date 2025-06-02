@@ -1,0 +1,160 @@
+﻿@model CMS.ViewModel.ViewModel.ExaminationViewModel
+@using CMS.Utility;
+
+@{
+    Layout = null;
+}
+
+
+<br />
+<div class="form-horizontal ">
+    <div class="row">
+        <div class="col-md-3">
+            <lable><b>College Roll No :</b> &nbsp;&nbsp;@Model.liExamRegistrationModel.FirstOrDefault().ROLL_NO</lable>
+        </div>
+
+        <div class="col-md-3 pull-right">
+            <lable><b>Exam.Reg.No :</b> &nbsp;&nbsp;@Model.liExamRegistrationModel.FirstOrDefault().REGISTER_NO</lable>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-2 pull-left">
+            <img src="@Url.Content("~/Content/assets/img/hcc-img/hcclogo.jpg")" style="width:150px; height:150px" />
+        </div>
+        <div class="col-md-10 pull-left text-center">
+            <h3>@Model.liCollegeDetails.FirstOrDefault().COLLEGE_NAME </h3>
+            <h4>@Model.liCollegeDetails.FirstOrDefault().PLACE .</h4>
+            <h5>@Model.liCollegeDetails.FirstOrDefault().UNIVERSITY.</h5>
+            <h5>
+                @Model.liCollegeDetails.FirstOrDefault().GRADE <br />
+                EXAMINATION APPLICATION FORM<br />
+                SEMESTER &nbsp;<b>@Model.liFetchHallTicket.FirstOrDefault().SEMESTER_ID</b> &nbsp;&nbsp; MONTH & YEAR &nbsp;&nbsp; @Model.liFetchHallTicket.FirstOrDefault().MONTH_YEAR<b></b>
+            </h5>
+        </div>
+    </div>
+</div>
+
+<br />
+
+<div class="row ">
+    <div class="form-horizontal">
+        <table style="font-family:'Times New Roman', Times, serif; font:bold; font-size:small">
+            <tbody>
+                <tr>
+                    <td><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name of the Candidate : </b></td>
+                    <td> &nbsp;&nbsp; @Model.liExamRegistrationModel.FirstOrDefault().NAME</td>
+                    <td> &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;<b>Major : </b> &nbsp;&nbsp; @Model.liExamRegistrationModel.FirstOrDefault().DEPARTMENT</td>
+                    <td> </td>
+                </tr>
+
+                <tr>
+                    <td><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Permanent Address :</b></td>
+                    <td> @Model.liExamRegistrationModel.FirstOrDefault().ADDRESS1</td>
+                    <td> &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;<b>Date of Birth : </b> &nbsp;&nbsp; @Model.liExamRegistrationModel.FirstOrDefault().DATE_OF_BIRTH</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td> @Model.liExamRegistrationModel.FirstOrDefault().ADDRESS2</td>
+                </tr>
+
+                <tr>
+                    <td><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Phone No:</b></td>
+                    <td>@Model.liExamRegistrationModel.FirstOrDefault().MOBILE_NO</td>
+                    <td><b> &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;Total Amount : <i class="fa fa-inr"> </i> @Model.feeTransactions.FirstOrDefault().CREDIT</b></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        @{ string status = string.Empty; if (Model.feeTransactions.FirstOrDefault().BALANCE.Equals("0"))
+                            {
+                                status = "Paid";
+                            }
+                            else
+                            {
+                                status = "Not Paid";
+                            }} <b> &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;Status :   @status</b>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <input type="hidden" name="name" id="hdFrequencyId" value="@Model.feeTransactions.FirstOrDefault().FREQUENCY_ID" />
+    <br /> <br />
+           <div class="table-responsive">
+               @{int No = 0;}
+               <table class="table table-hover">
+                   <thead>
+                       <tr>
+                           <th>S.No</th>
+                           <th>Semester</th>
+                           <th>Course Code</th>
+                           <th>Title of the Paper</th>
+                           <th>Status</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                       @if (Model.liFetchHallTicket != null)
+            {
+                foreach (var item in Model.liFetchHallTicket)
+                {
+                   <tr>
+                       <td>
+                           @{No++; } @No
+                       </td>
+                       <td>
+                           @Html.DisplayFor(modelItem => item.SEMESTER)
+                       </td>
+                       <td>
+                           @Html.DisplayFor(modelItem => item.COURSE_CODE)
+                       </td>
+                       <td>
+                           @Html.DisplayFor(modelItem => item.COURSE_TITLE)
+                       </td>
+                       <td>
+                           @Html.DisplayFor(modelItem => item.STATUS)
+                       </td>
+                   </tr>
+    }
+}
+else
+{
+           <tr>
+               <td>No Data Found ...!</td>
+           </tr>
+}
+                   </tbody>
+               </table>
+               <br />
+           </div>
+
+    <div class="form-horizontal" id="Footer">
+        <label><b>Date: </b>&nbsp;&nbsp; @Model.liExamRegistrationModel.FirstOrDefault().DATE</label>
+        <div class="form-group pull-right">
+            <label class="col-md-12 pull-right">
+                R - Regular &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;  A - Arrears  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; AAA - Absent
+            </label>
+        </div>
+        <br /><br /><br />
+        <lable><b>Signature of the Class Teacher</b></lable>
+        <div class="form-group pull-right">
+            <label class="col-md-12 pull-right"><b>Signature of the Candidate</b></label>
+        </div>
+        <hr />
+        <label>
+               <b>Note : </b> &nbsp;&nbsp;&nbsp;
+            1. Verify your name as found in your records (HigherSec.) <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 2. Verify the paper and subject code.<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 3. The fees once paid will NOT be refunded.<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 4. Is there any issue contact your class teacher.<br />
+        </label>
+        @if (status.ToLower() != "paid" && !string.IsNullOrEmpty(Model.feeTransactions.FirstOrDefault().BALANCE))
+        {
+            <a href="#" class="btn btn-success" id="btnFeeSummary" onclick="loadFeeSummary()"><i class="ion-ios-list-outline"></i>Fee Details</a>
+            <a href="/FEE/PaymentOption?sStudentId=@Session[Common.SESSION_VARIABLES.USER_ID]&sFrequencyId=@Model.feeTransactions.FirstOrDefault().FREQUENCY_ID" class="btn btn-success " id="btnPay" title="Online Payment"><i class="ion-card"></i> Online Payment</a>
+        }       
+
+    </div>

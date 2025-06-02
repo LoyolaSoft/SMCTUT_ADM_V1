@@ -1,0 +1,260 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{
+    Layout = null;
+    int Count = 0;
+}
+
+<link href="~/Content/assets/plugins/DataTables/media/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/DataTables/extensions/Responsive/css/responsive.bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" />
+<div id="content" class="content">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">Home</a></li>
+            <li class="active">Admission ApplicationTranfer</li>
+        </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+        <h1 class="page-header">Admission ApplicationTranfer</h1>
+    <!-- begin row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <div class="panel-heading-btn">
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                                </div>
+                                <h3 class="panel-title"><i class="fa fa-inbox"></i>Admission ApplicationTranfer</h3>
+                            </div>
+                            <div class="panel-body noPadding">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-bordered" id="tblransfer">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Name</th>
+                                                <th>Application No</th>
+                                                <th>HSC No</th>
+                                                <th>Transfer code</th>
+                                                <th>Email</th>
+                                                <th>Mobile</th>
+                                                <th>Programme</th>
+                                                <th>App.Status</th>
+                                                <th>Transfer Status</th>
+                                                <th>Transfer</th>
+                                                <th>Transfer</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (Model.LiTransferapprovalApplicant != null)
+                                            {
+
+                                                foreach (var o in Model.LiTransferapprovalApplicant)
+                                                {
+                                                    Count++;
+                                                    <tr>
+                                                        <td>@Count</td>
+                                                        <td>@o.FIRST_NAME</td>
+                                                        <td>@o.APPLICATION_NO</td>
+                                                        <td>@o.APPLICATION_NO</td>
+                                                        <td>@o.APPLICATION_NO</td>
+                                                        <td>@o.EMAIL_ID</td>
+                                                        <td>@o.SMS_MOBILE_NO</td>
+                                                        <td>@o.PROGRAMME_NAME</td>
+                                                        <td><label class="label label-primary">@o.STATUS_NAME</label> </td>
+                                                        <td><label class="label label-primary">@o.STATUS_NAME</label> </td>
+                                                        <td><a href="#" onclick="SaveApplication(@o.TRANSFER_REQUEST_ID)" class="btn btn-primary btn-sm">Transfer</a></td>
+                                                        <td><a @*href="#FeeModal" data-toggle="modal"*@ onclick="FetchRefundInfoApplication(@o.TRANSFER_REQUEST_ID)" class="btn btn-primary btn-sm">Refund</a></td>
+                                                    </tr>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+<div class="modal fade" id="FeeModal" data-backdrop="static" data-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div id="dvStudentAccount">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:;" id="btnrefund" class="btn btn-sm btn-primary" data-dismiss="modal">Refund</a>
+                <a href="javascript:;" class="btn btn-sm btn-danger" data-dismiss="modal">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Content/assets/plugins/DataTables/media/js/jquery.dataTables.js"></script>
+<script src="~/Content/assets/plugins/DataTables/media/js/dataTables.bootstrap.min.js"></script>
+<script src="~/Content/assets/plugins/DataTables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+<script src="~/Content/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+<script src="~/Content/assets/plugins/bootstrap-sweetalert/sweetalert.min.js"></script>
+<script>
+    //$(document).ready(function () {
+
+    // });
+    $('.selectpicker').selectpicker({
+        size: 4
+    });
+
+    $("#tblransfer").DataTable({ "bPaginate": false });
+
+    function SaveApplication(id) {
+        var Requestd = id;
+        if (true) {
+            swal({
+                title: "Are you sure want to Transfer the Student ?",
+                text: "Admission Transfer",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-success",
+                confirmButtonText: "Yes, I agree!",
+                closeOnConfirm: false
+            }, function () {
+                $.ajax({
+                    url: "@Url.Action("SaveAdmissionApplicationTranfer", "Admission")",
+                    method: 'POST',
+                    type: 'json',
+                    data: { sTransferRequestId: Requestd },
+                    success: function (data) {
+                        if (data.ErrorCode != null && data.ErrorCode == "200") {
+                            swal({ title: "Success..!!", text: data.Message, showConfirmButton: false, timer: 1800, type: 'success', animation: true });
+                            loadContent('/Admission/AdmissionApplicationTranfer');
+                        } else {
+                            swal({ title: "Error..!!", text: data.Message, showConfirmButton: false, timer: 1800, type: 'error', animation: true });
+                        }
+                    }, errorr: function (data) {
+                        swal({ title: "Error..!!", text: "Internal Server Error..!!", showConfirmButton: false, timer: 1800, type: 'error', animation: true });
+                    }
+                });
+            });
+        }
+        else {
+            swal({ title: "Error..!!", text: "Internal Server Error..!!", showConfirmButton: false, timer: 1800, type: 'error', animation: true });
+        }
+    }
+
+    function FetchRefundInfoApplication(id) {
+        alert(id);
+        $.ajax({
+            url: "@Url.Action("FetchStudentAccountForRefund", "Admission")",
+            method: 'POST',
+            type: 'json',
+            data: { sTransferRequestId: id },
+            success: function (data) {
+                alert(data);
+                $('#dvStudentAccount').empty();
+                $('#dvStudentAccount').append(data);
+                $('#FeeModal').modal('show');              
+            }, errorr: function (data) {
+                swal({ title: "Error..!!", text: "Internal Server Error..!!", showConfirmButton: false, timer: 1800, type: 'error', animation: true });
+            }
+        });
+    }
+
+    function SaveApplication(id) {
+        var Requestd = id;
+        if (true) {
+            swal({
+                title: "Are you sure want to Transfer the Student ?",
+                text: "Admission Transfer",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-success",
+                confirmButtonText: "Yes, I agree!",
+                closeOnConfirm: false
+            }, function () {
+                $.ajax({
+                    url: "@Url.Action("SaveAdmissionApplicationTranfer", "Admission")",
+                    method: 'POST',
+                    type: 'json',
+                    data: { sTransferRequestId: Requestd },
+                    success: function (data) {
+                        if (data.ErrorCode != null && data.ErrorCode == "200") {
+                            swal({ title: "Success..!!", text: data.Message, showConfirmButton: false, timer: 1800, type: 'success', animation: true });
+                            loadContent('/Admission/AdmissionApplicationTranfer');
+                        } else {
+                            swal({ title: "Error..!!", text: data.Message, showConfirmButton: false, timer: 1800, type: 'error', animation: true });
+                        }
+                    }, errorr: function (data) {
+                        swal({ title: "Error..!!", text: "Internal Server Error..!!", showConfirmButton: false, timer: 1800, type: 'error', animation: true });
+                    }
+                });
+            });
+        }
+        else {
+            swal({ title: "Error..!!", text: "Internal Server Error..!!", showConfirmButton: false, timer: 1800, type: 'error', animation: true });
+        }
+    }
+
+
+    $('#btnrefund').on('click', function () {
+        
+        var JsonData = '{"JSON_ADM_REFUND_STUDENT_ACCOUNT":[';
+        $('#tblRefundStudentAccount tbody tr').each(function () {
+            var vcmsstudentid = $(this).attr("cmsstudentid");
+            var vcmsissuedid = $(this).attr("cmsissuedid");
+            var vcmsfrequencyid = $(this).attr("cmsfrequencyid");
+            var vcmstrasnactionid = $(this).attr("cmstrasnactionid");
+            var vcmsfeestructureid = $(this).attr("cmsfeestructureid");
+            var vcmsheadid = $(this).attr("cmsheadid");
+            var vcmsfeemainheadid = $(this).attr("cmsfeemainheadid");
+            var vcmsfeerootid = $(this).attr("cmsfeerootid");
+            var vAmount = $(this).find('input[type="number"]').val();
+            JsonData += '{"STUDENT_ID":"' + vcmsstudentid + '","ISSUED_ID":"' + vcmsstudentid + '","FREQUENCY_ID":"' + vcmsstudentid + '","HEAD":"' + vcmsheadid + '","AMOUNT":"' + vAmount + '","FEE_MAIN_HEAD_ID":"' + vcmsfeemainheadid + '","FEE_STRUCTURE_ID":"' + vcmsfeestructureid + '","FEE_ROOT_ID":"' + vcmsfeerootid + '","TRANSACTION_ID":"' + vcmstrasnactionid + '","REFUND_TYPE":"' + vcmsstudentid + '"},';
+        });
+        JsonData = JsonData.slice(0, -1);
+        JsonData += ']}';
+        if (JsonData != "" && JsonData != null) {
+            $.ajax({
+                url: '@Url.Action("SaveRefundStuentAccount", "Admission")',
+                method: "POST",
+                data: { sJsonData: JsonData },
+                success: function (data) {
+                    if (data.ErrorCode == '202') {
+                        swal({ title: "Success !", text: data.Message, showConfirmButton: false, timer: 1500, type: 'success', animation: true });
+                        LoadMarks();
+                    } else {
+                        swal({ title: "Failed !", text: data.Message, showConfirmButton: false, timer: 3000, type: 'error', animation: true });
+                    }
+                },
+                error: function (xhr, textStatus, error) {
+                    alert(error + "\n");
+                }
+            });
+        }
+    });
+</script>

@@ -1,0 +1,41 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{
+    Layout = null;
+}
+
+<table class="table table-bordered" id="tblsms">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                Mobile
+            </th>
+            <th>
+                Content
+            </th>
+            <th>
+                Date
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if(Model.Lisms!=null && Model.Lisms.Count>0)
+        {
+            int count = 0;
+            foreach (var item in Model.Lisms)
+            {
+                count++;
+                <tr>
+                    <td>@count</td>
+                    <td>@item.MOBILE_NO</td>
+                    <td>@item.CONTENT</td>
+                    <td>@item.DATE</td>
+
+
+                </tr>
+            }
+        }
+    </tbody>
+</table>

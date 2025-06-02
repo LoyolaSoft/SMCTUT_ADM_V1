@@ -1,0 +1,84 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+    @using CMS.Utility
+<style type="text/css" media="print">
+    /*@@page {
+        size: landscape;
+    }*/
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+</style>
+@if (Model.liSelectionProcess != null && Model.liSelectionProcess.Count > 0)
+{
+    var GroupList = Model.liSelectionProcess.GroupBy(s => s.PROGRAMME_ID).ToList();
+    foreach (var item in GroupList)
+    {
+        var programme = Model.liSelectionProcess.Where(s => s.PROGRAMME_ID == item.FirstOrDefault().PROGRAMME_ID).ToList();
+        if (programme != null && programme.Count > 0)
+        {
+            <div style="page-break-after:always !important;page-break-inside:avoid !important;">
+                <div class="col-md-12">
+                    <div class="col-md-6"><b>Programme:</b>&nbsp;&nbsp;@programme.FirstOrDefault().PROGRAMME_NAME</div>
+                    @*<div class="col-md-6"><b>Total:</b>&nbsp;&nbsp;@programme.Count.ToString()</div>*@
+                </div>
+                <table class="table table-hover table-bordered" id="TransferList">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            @*<th>Programme</th>*@
+                            <th>Application No</th>
+                            <th>Name</th>
+                            <th>Selection Date</th>
+                            @if (!string.IsNullOrEmpty(ViewBag.isPhone))
+                            {
+                                if (ViewBag.isPhone == Common.Delimiter.ONE)
+                                {
+                                    <th>Mobile No</th>
+                                }
+                            }
+
+                           
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{int count = 0;}
+                        @foreach (var Student in programme)
+                        {
+                            <tr>
+                                <td>
+                                    @{ count++;}@count
+                                </td>
+                                @*<td>@Student.PROGRAMME_NAME</td>*@
+                                <td>@Student.APPLICATION_NO</td>
+                                <td>@Student.FIRST_NAME</td>
+                                <td>@Student.SELECTION_DATE</td>
+
+                                @if (!string.IsNullOrEmpty(ViewBag.isPhone))
+                                {
+                                    if (ViewBag.isPhone == Common.Delimiter.ONE)
+                                    {
+                                        <td>@Student.SMS_MOBILE_NO</td>
+                                    }
+                                }
+
+                                
+                                <td>@Student.STATUS_NAME</td>
+                            </tr>
+                                        }
+
+                    </tbody>
+                </table>
+            </div>
+                                                }
+
+                                            }
+                                        }

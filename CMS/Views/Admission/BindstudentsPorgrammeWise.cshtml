@@ -1,0 +1,39 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{int count = 0;}
+<table class="table table-hover table-bordered" id="Issuedtbl">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Application No</th>
+            <th>Name</th>
+            <th>Total Mark</th>
+            <th>Mark Secured</th>
+            <th>Main Subject Total</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.liSelectionProcess != null)
+        {
+
+            foreach (var item in Model.liSelectionProcess)
+            {
+
+                <tr>
+                    <td>
+                        @{ count++;}@count
+                    </td>
+                    <td>@item.APPLICATION_NO</td>
+                    <td>@item.FIRST_NAME</td>
+                    <td>@item.MAX_TOTAL</td>
+                    <td>@item.TOTAL_SECURED</td>
+                    <td>@item.TOTAL_CUT_OFF_MARK</td>
+                   
+                </tr>
+                                }
+                            }
+
+
+    </tbody>
+</table>
+

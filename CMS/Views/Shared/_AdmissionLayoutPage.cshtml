@@ -1,0 +1,224 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+   
+    @Styles.Render("~/bundles/basecss")
+
+    @Scripts.Render("~/bundles/headerbasejs")
+    @RenderSection("styles", required: false)
+    <meta name="viewport" content="width=device-width" />
+    <title>SMC Admission | @ViewBag.Title</title>
+</head>
+<body class="f-s-15">
+    <!-- begin #page-loader -->
+    <div id="page-loader" class="fade in"><span class="spinner"></span></div>
+    <!-- end #page-loader -->
+    <!-- begin #page-container -->
+    <!-- begin #page-container -->
+    <div id="page-container" class="page-container fade page-without-sidebar page-header-fixed page-with-top-menu">
+        <!-- begin #header -->
+        <div id="header" class="header navbar navbar-default navbar-fixed-top">
+            <!-- begin container-fluid -->
+            <div class="container-fluid bg-blue">
+                <!-- begin mobile sidebar expand / collapse button
+    <div class="col-md-12">
+        <div class="col-md-1 pull-left">
+            <img src="~/Content/assets/img/hcc-img/hcclogo.jpg" style="width:100px; height:100px" />
+        </div>
+        <div class="col-md-8 m-t-5">
+
+            <h3 class=""><b>St. Mary's College (Autonomous)</b>,Affiliated to Bharathidasan University,Tiruchirappalli – 620 002</h3>
+            <h3>
+                Nationally Accredited (3 rd Cycle) with A Grade by NAAC <br/>
+                College with Potential for Excellence<br/>
+            </h3>
+
+        </div>
+
+    </div>
+        -->
+
+                <div class="navbar-header " >
+                    @*<a href="index.html" class="navbar-brand"><span class="navbar-logo"><i class="ion-ios-cloud"></i></span> <b>Color</b> Admin</a>*@
+                    <img class="img-circle img" src="~/Content/assets/img/hcc-img/hcclogo.jpg" style="width:53px; float:left;" />
+                    <a class="navbar-brand text-white">
+                        <b >SMC</b> Admission
+                    </a>
+                    <button type="button" class="navbar-toggle" data-click="top-menu-toggled">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <!-- end mobile sidebar expand / collapse button -->
+                <!-- begin header navigation right -->
+                <!-- begin header navigation right -->
+                <ul class="nav navbar-nav navbar-right">
+                    @*<li>
+                        <form class="navbar-form full-width">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Enter keyword" />
+                                <button type="submit" class="btn btn-search"><i class="ion-ios-search-strong"></i></button>
+                            </div>
+                        </form>
+                    </li>
+                    <li class="dropdown">
+                        <a href="javascript:;" data-toggle="dropdown" class="dropdown-toggle icon">
+                            <i class="ion-ios-bell"></i>
+                            <span class="label">5</span>
+                        </a>
+                        <ul class="dropdown-menu media-list pull-right animated fadeInDown">
+                            <li class="dropdown-header">Notifications (5)</li>
+                            <li class="media">
+                                <a href="javascript:;">
+                                    <div class="media-left"><i class="ion-ios-close-empty media-object bg-red"></i></div>
+                                    <div class="media-body">
+                                        <h6 class="media-heading">Server Error Reports</h6>
+                                        <div class="text-muted f-s-11">3 minutes ago</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="media">
+                                <a href="javascript:;">
+                                    <div class="media-left"><img src="assets/img/user-1.jpg" class="media-object" alt="" /></div>
+                                    <div class="media-body">
+                                        <h6 class="media-heading">John Smith</h6>
+                                        <p>Quisque pulvinar tellus sit amet sem scelerisque tincidunt.</p>
+                                        <div class="text-muted f-s-11">25 minutes ago</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="media">
+                                <a href="javascript:;">
+                                    <div class="media-left"><img src="assets/img/user-2.jpg" class="media-object" alt="" /></div>
+                                    <div class="media-body">
+                                        <h6 class="media-heading">Olivia</h6>
+                                        <p>Quisque pulvinar tellus sit amet sem scelerisque tincidunt.</p>
+                                        <div class="text-muted f-s-11">35 minutes ago</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="media">
+                                <a href="javascript:;">
+                                    <div class="media-left"><i class="ion-ios-plus-empty media-object bg-blue"></i></div>
+                                    <div class="media-body">
+                                        <h6 class="media-heading"> New User Registered</h6>
+                                        <div class="text-muted f-s-11">1 hour ago</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="media">
+                                <a href="javascript:;">
+                                    <div class="media-left"><i class="ion-ios-email-outline media-object bg-blue"></i></div>
+                                    <div class="media-body">
+                                        <h6 class="media-heading"> New Email From John</h6>
+                                        <div class="text-muted f-s-11"> 2 hour ago</div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="dropdown-footer text-center">
+                                <a href="javascript:;">View more</a>
+                            </li>
+                        </ul>
+                    </li>*@
+                    <li class="dropdown navbar-user">
+                        
+                    </li>
+                </ul>
+                <!-- end header navigation right -->
+                <!-- end header navigation right -->
+            </div>
+            <!-- end container-fluid -->
+        </div>
+        <!-- end #header -->
+        <!-- begin #top-menu -->
+        <div id="top-menu" class="top-menu" style="background-color:white !important; color:#000 !important; box-shadow: 1px 2px 4px rgba(0, 0, 0, .5);">
+            <!-- begin top-menu nav -->
+            <ul class="nav">
+                <li >
+                    <a href="@Url.Action("Home","Admission")">                     
+                        <i class="ion-ios-home-outline bg-gradient-blue"></i>
+                        <span>Home</span>
+                    </a>
+                    
+                </li>
+                <li class="">
+                    <a href="@Url.Action("Courses","Admission")">
+                        @*<span class="badge pull-right">10</span>*@
+                        <i class="bg-blue ion-ios-book-outline"></i>
+                        <span>Courses</span>
+                    </a>                    
+                </li>
+                <li>
+                    <a href="@Url.Action("OnlineApplication","Admission")">
+                        <i class="bg-purple ion-ios-paper-outline"></i>
+                        <span>Online Application</span>
+                    </a>
+                </li>
+                <li >
+                    <a href="@Url.Action("ContactUs","Admission")">                       
+                        <i class="ion-ios-telephone bg-pink"></i>
+                        <span>Contact Us </span>
+                    </a>
+                    
+                </li>
+                <li class="">
+                    <a href="@Url.Action("Help","Admission")">                        
+                        <i class="ion-ios-help-outline bg-gradient-green"></i>
+                        <span>Help</span>
+                    </a>                    
+                </li>               
+            </ul>
+            <!-- end top-menu nav -->
+        </div>
+        <!-- end #top-menu -->
+        <!-- begin #content -->
+        <div>
+            @RenderBody()
+        </div>
+        <!-- end #content -->
+        <!-- begin theme-panel -->
+
+        <br />
+        <div id="" class="col-lg-12 bg-black table-bordered "><h5 class="text-center text-white">
+    &copy; @DateTime.Today.Year   All Rights Reserved by SMC
+</h5>
+        </div>
+        <!-- end theme-panel -->
+        <!-- begin scroll to top btn -->
+        <a href="javascript:;" class="btn btn-icon btn-circle btn-primary btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+       
+        <!-- end scroll to top btn -->
+    </div>
+    <!-- end page container -->
+    
+    @Scripts.Render("~/bundles/footerbasejs")
+
+    @*@Scripts.Render("~/bundles/angularJS")*@
+
+    @RenderSection("scripts", required: false)
+    @Scripts.Render("~/bundle/pagebeginjs")
+
+    @*@Scripts.Render("~/bundles/jquery")*@
+    @*@Scripts.Render("~/bundles/bootstrap")*@
+    @RenderSection("scriptsafterbase", required: false)
+    <script>
+        $(document).ready(function () {
+            App.init();
+            //$('#btnmodal').click();
+        });
+
+      //  $("#btnmodal").click(function () {
+          //  $('#Admissioninfo').modal('show');
+       // });
+
+    </script>
+
+</body>
+</html>

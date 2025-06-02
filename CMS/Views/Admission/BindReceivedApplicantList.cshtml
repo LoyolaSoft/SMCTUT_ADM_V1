@@ -1,0 +1,337 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{int count = 0; int Total_Admitted = 0; int Ccount = 0; int Total_Quata = 0; int columnCount = 2; string yes = "YES"; string No = "NO";}
+
+<div class="form-group table-responsive" style="width:100%;">
+    <table class="table table-hover table-bordered">
+        <thead>
+            @{
+                //if (Model.liCasteWise_Quata != null && Model.liCasteWise_Quata.Count > 0)
+                //{
+                if (Model.liMainCommunity != null && Model.liMainCommunity.Count > 0)
+                {
+                    <tr>
+                        <th>#</th>
+                        <th>Programme</th>
+                        @foreach (var item in Model.liMainCommunity)
+                        {
+                            <th>@item.MAIN_COMMUNITY</th>
+                        }
+                        <th>MINORITY</th>
+
+                    </tr>
+                }
+                @*}*@
+
+            }
+        </thead>
+        <tbody>
+            @{
+                if (Model.liMainCommunity != null && Model.liMainCommunity.Count > 0)
+                {
+                    columnCount += Model.liMainCommunity.Count;
+                    if (Model.liProgram_Quata != null && Model.liProgram_Quata.Count > 0)
+                    {
+                        //if (Model.liCasteWise_Quata != null && Model.liCasteWise_Quata.Count > 0)
+                        //{
+                        var liTempList = Model.liProgram_Quata.GroupBy(o => o.PROGRAMME_ID).Select(x => new CMS.ViewModel.Model.ADM_CASTEWISE_QUATA()
+                        {
+                            INTAKE_ID = x.FirstOrDefault().INTAKE_ID,
+                            NO_OF_SEATS = x.FirstOrDefault().NO_OF_SEATS,
+                            PROGRAMME_ID = x.FirstOrDefault().PROGRAMME_ID,
+                            PROGRAMME_NAME = x.FirstOrDefault().PROGRAMME_NAME,
+                            CASTE_ID = x.FirstOrDefault().CASTE_ID,
+                            CQ_SEATS = x.FirstOrDefault().CQ_SEATS
+                        }).ToList();
+                        foreach (var item in liTempList)
+                        {
+            <tr>
+                <td>@{count++;} @count</td>
+                <td>@item.PROGRAMME_NAME - @item.NO_OF_SEATS</td>
+                @foreach (var lstCaste in Model.liMainCommunity)
+                                {
+                                    Total_Quata = 0;
+                                    Total_Admitted = 0;
+                                    if (Model.liCasteWise_Quata != null && Model.liCasteWise_Quata.Count > 0)
+                                    {
+                                        if (lstCaste.MAIN_COMMUNITY_ID == "2")
+                                        {
+                                            if (Model.liOccategoryWise != null && Model.liOccategoryWise.Count > 0)
+                                            {
+                                                Total_Quata = Model.liOccategoryWise.Count();
+                                            }
+                                        }
+                                        else
+                                        {
+                                            var liTemp = Model.liCasteWise_Quata.Where(s => s.CASTE_ID == lstCaste.MAIN_COMMUNITY_ID && s.PROGRAMME_ID == item.PROGRAMME_ID).ToList();
+                                            if (liTemp != null && liTemp.Count > 0)
+                                            {
+                                                Total_Quata = liTemp.Count;
+                                            }
+                                        }
+                                    }
+                                    if (Model.liCasteWiseAdmitted != null && Model.liCasteWiseAdmitted.Count > 0)
+                                    {
+                                        if (lstCaste.MAIN_COMMUNITY_ID == "2")
+                                        {
+                                            if (Model.liOccategoryWiseAdmitted != null && Model.liOccategoryWiseAdmitted.Count > 0)
+                                            {
+                                                Total_Admitted = Model.liOccategoryWiseAdmitted.Count();
+                                            }
+                                        }
+                                        else
+                                        {
+                                            var liTemp = Model.liCasteWiseAdmitted.Where(s => s.CASTE_ID == lstCaste.MAIN_COMMUNITY_ID && s.PROGRAMME_ID == item.PROGRAMME_ID).ToList();
+                                            if (liTemp != null && liTemp.Count > 0)
+                                            {
+                                                Total_Admitted = liTemp.Count;
+                                            }
+                                        }
+                                    }
+                                    var liCaste = Model.liProgram_Quata.Where(s => s.CASTE_ID == lstCaste.MAIN_COMMUNITY_ID && s.PROGRAMME_ID == item.PROGRAMME_ID).ToList();
+
+                                <td>
+                                    <div style="border:1px; width:60px; height:80px">
+                                        @if (liCaste != null && liCaste.Count > 0)
+                                            {
+                                            <label class="label label-danger">Selected:<b>@Total_Quata</b></label><br>
+                                            <label class="label label-success">Admitted:<b>@Total_Admitted</b></label><br>
+                                            <label class="label label-primary">Alloted:<b>@liCaste.FirstOrDefault().CQ_SEATS</b></label>
+
+                                            @*<span>Selected:</span><b>@Total_Quata</b>
+                                                <br>
+                                                <span>Admitted:</span><b>@Total_Admitted</b>
+                                                <br>
+                                                <span>Alloted:</span><b>@liCaste.FirstOrDefault().CQ_SEATS</b>
+                                                <br>*@
+
+                                            }
+                                            else
+                                            {<b> -- </b>}
+                                    </div>
+                                </td>
+                                }
+                <td>
+                    @{Total_Quata = 0;
+                                        Total_Admitted = 0;
+                    }
+                    @if (Model.liMinorityWise != null && Model.liMinorityWise.Count > 0)
+                                    {
+                                        Total_Quata = Model.liMinorityWise.Count();
+
+                                    }
+                    @if (Model.liMinorityWiseAdmitted != null && Model.liMinorityWiseAdmitted.Count > 0)
+                                    {
+                                        Total_Admitted = Model.liMinorityWiseAdmitted.Count();
+                                    }
+                    <div style="border:1px; width:60px; height:80px">
+
+                        <label class="label label-danger">Selected:<b>@Total_Quata</b></label><br>
+                        <label class="label label-success">Admitted:<b>@Total_Admitted</b></label><br>
+                        <label class="label label-primary">Alloted:<b>@Model.liProgram_Quata.FirstOrDefault().MINORITY </b></label>
+
+                    </div>
+                </td>
+            </tr>
+                        }
+                        //}
+                    }
+                    else
+                    {
+            <tr><td colspan="8" class="text-center">No Records Available !</td></tr>
+                    }
+                }
+
+
+            }
+        </tbody>
+    </table>
+
+    <br><br>
+
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>Hostel</th>
+                <th>Total</th>
+                <th>Selected</th>
+                <th>Admitted</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.liHostel != null && Model.liHostel.Count > 0)
+                {
+                    foreach (var item in Model.liHostel)
+                    {
+                <tr>
+                    <td>@item.HOSTEL_NAME</td>
+                    <td>@item.TOTAL_STRENGTH</td>
+                    <td>@item.SELECTED</td>
+                    <td>@item.ADMITTED</td>
+
+                </tr>
+
+                    }
+                <tr>
+                    @*<td></td>
+                    <td><label class="label label-info"><b>@Model.liHostel.Sum(o => Convert.ToInt32(o.TOTAL_STRENGTH))</b></label></td>
+                    <td>
+                        <label class="label label-success"><b>@Model.liHostel.Sum(o => Convert.ToInt32(o.SELECTED))</b></label>
+                    </td>
+                    <td>
+                        <label class="label label-success"><b>@Model.liHostel.Sum(o => Convert.ToInt32(o.ADMITTED))</b></label>
+                    </td>*@
+
+
+                </tr>
+                }
+                else
+                {
+                <tr>
+                    <td colspan="4">No Records Found...!</td>
+                </tr>
+                }
+
+        </tbody>
+    </table>
+
+</div>
+
+<label class="label label-success" id="lblcount"></label>
+<br>
+<table class="table table-hover table-bordered" id="ApplicationReceivedList">
+    <thead>
+        <tr>
+            <th style="width:12.5%">#</th>
+            <th style="width:12.5%">
+                @*<input type="checkbox" name="myTextEditBox" id="AllchkID" onchange="SelectOrUnselect()" />*@
+                Action
+            </th>
+            <th style="width:12.5%">App.No</th>
+            <th style="width:12.5%">Name</th>
+            <th style="width:12.5%">Mobile No</th>
+            @*<th>Gender</th>*@
+            <th style="width:12.5%">Total</th>
+            <th style="width:12.5%">Sec.Total</th>
+            <th style="width:12.5%">Cut Off</th>
+            <th style="width:12.5%">Caste</th>
+            <th style="width:12.5%">Religion</th>
+            @*<th>Occupation</th>
+                <th>Annual Income</th>*@
+            <th>Diff. Abled</th>
+            <th>Ex-Service Man Daughter</th>
+            <th>First Generation</th>
+            <th>Village</th>
+            <th>Last Studied </th>
+
+            @if (Model.liProgrammeEligibility != null)
+            {
+                foreach (var item in Model.liProgrammeEligibility)
+                {
+                    <th>
+                        @item.CODE
+                    </th>
+                }
+            }
+
+            <th>Applied Courses</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.liSelectionProccess != null)
+        {
+            
+            foreach (var item in Model.liSelectionProccess)
+            {
+                <tr>
+                    <td>
+                        @{ Ccount++;}@Ccount
+                    </td>
+                    <td>
+                        <input type="checkbox" onclick="CheckedCount()" name="myTextEditBox" id="chkID" cms-apptypeid="@item.APPLICATION_TYPE_ID"  cms-programmemode="@item.PROGRAMME_MODE" cms-receiveid="@item.RECEIVE_ID" cms-applicationno="@item.APPLICATION_NO" cms-hstotal="@item.HSTOTAL" cms-cutoff="@item.TOTAL_CUT_OFF_MARK" cms-maxmark="@item.HS_MAX_MARK" cms-issuedid="@item.ISSUE_ID" />
+                        <a href="#modal-without-animation" class="" data-toggle="modal" title="View Marks" onclick="bindMarks('@item.RECEIVE_ID','@item.APPLICATION_TYPE_ID')"><i class="fa  fa-eye"></i></a>
+                        <a href="#modal-uploaded-files" class="" data-toggle="modal" title="View Marks" onclick="FetchAppllicantUploadedFiles('@item.RECEIVE_ID')"><i class="fa  fa-eye"></i></a>
+                    </td>
+                    <td>@item.APPLICATION_NO</td>
+                    <td>@item.FIRST_NAME</td>
+                    <td>@item.MOBILE_NO</td>
+                    <td>@item.HS_MAX_MARK</td>
+                    <td>@item.HSTOTAL</td>
+                    <td>@item.TOTAL_CUT_OFF_MARK</td>
+                    <td>@item.COMMUNITY</td>
+                    <td>@item.RELIGION</td>
+                    @*<td>@item.OCCUPATION</td>
+                        <td>@item.ANNUAL_INCOME</td>*@
+                    <td>
+                        @if (item.SPECIALLYABLED_ID == "1")
+                        {@yes}
+                        else
+                        { @No}
+                    </td>
+                    <td>
+                        @if (item.EXSERVICE_MAN == "1")
+                        {@yes}
+                        else
+                        { @No}
+                    </td>
+                    <td>
+                        @if (item.IS_FIRSTGENERATION == "1")
+                        {@yes}
+                        else
+                        { @No}
+                    </td>
+                    <td>@item.CVILLAGE_AREA</td>
+                    @if (@item.LAST_STUDIED_SCHOOL != "")
+                    {
+                        <td>@item.LAST_STUDIED_SCHOOL</td>
+                    }
+                    else
+                    {
+                        <td>
+                            @if (item.UNIVERSITY != "")
+                            {@item.UNIVERSITY}
+                        </td>
+                    }
+                    @if (Model.liProgrammeEligibility != null)
+                    {
+                        foreach (var list in Model.liProgrammeEligibility)
+                        {
+                            if (Model.liADMStudentMarks != null)
+                            {
+                                var TempList = Model.liADMStudentMarks.Where(s => s.RECEIVE_STUID == item.RECEIVE_ID && s.SUBJECT_ID == list.SUBJECT_ID).ToList();
+                                <td>
+                                    @if (TempList != null && TempList.Count > 0)
+                                    {
+                                        @TempList.FirstOrDefault().MARK
+                                    }
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                        }
+                    }
+
+                    @if (Model.liCourses != null)
+                    {
+                        var CourseList = Model.liCourses.Where(s => s.RECEIVE_ID == item.RECEIVE_ID).ToList();
+                        <td>
+                            @if (CourseList != null && CourseList.Count > 0)
+                            {
+                                @CourseList.FirstOrDefault().PROGRAMME_ID
+                            }
+                        </td>
+
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+
+                </tr>
+                                }
+                            }
+
+    </tbody>
+</table>

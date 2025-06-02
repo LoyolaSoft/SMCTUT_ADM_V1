@@ -1,0 +1,143 @@
+﻿@model CMS.ViewModel.ViewModel.FeeTransactionViewModel
+
+@{
+    ViewBag.Title = "FeeReceipt";
+    Layout = null;
+}
+
+<div class="panel-body">
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @if (Model.liFeeReceiptGeneration != null && Model.liFeeTransaction != null)
+        {
+            <div>
+                @foreach (var dataitem in Model.liFeeReceiptGeneration)
+                {
+                    string sQRContent = string.Empty;
+                    var TransactionList = Model.liFeeTransaction.Where(s => s.TRANSACTION_ID == dataitem.TRANSACTION_ID).ToList();
+                    <div style="page-break-after:always !important;page-break-inside:avoid !important;">
+                        @*<div>*@
+                        @if (TransactionList != null && TransactionList.Count() > 0)
+                        {   //this to print receipt header
+                            int count = 0;
+                            <div class="col-md-8 col-lg-offset-2">
+                                <div class="pull-left">
+                                        <label>Receipt No:</label>@dataitem.RECEIPT_NO
+                                </div>
+                                <div class="pull-right">
+                                    @*<label>Payment Date:</label>@dataitem.PAYMENT_DATE*@
+                                    <label>Date:</label>@dataitem.SETTLEMENT_DATE
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-offset-2">
+
+                                <div class="col-md-10">
+                                    @if (Model.liCollegeDetails != null)
+                                    {
+                                        foreach (var item in Model.liCollegeDetails)
+                                        {
+                                            <center>
+                                                <img src="/Content/assets/img/hcc-img/hcclogo.jpg" width="50px;" class=" ">
+                                                <table>
+                                                    <tr>
+                                                        <td><center><strong>@item.COLLEGE_NAME</strong></center></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b> @item.GRADE</b></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            @item.UNIVERSITY
+                                                        </td>
+                                                    </tr>
+
+                                                </table>
+                                            </center>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-lg-offset-2">
+                                <table class="table-condensed" cellpadding="5">
+                                    <tr>
+                                        <td width="15%"><b>Name</b></td>
+                                        <td width="35%"><b>@dataitem.FIRST_NAME</b></td>
+                                        <td width="25%"><b>Admission No</b></td>
+                                        <td width="25%">@dataitem.APPLICATION_NO</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Payment Type</b></td>
+                                        <td>
+                                            @dataitem.PAYMENT_MODE
+                                        </td>
+                                        <td><b>Programme</b></td>
+                                        <td>@dataitem.PROGRAMME_NAME</td>
+                                    </tr>
+                                </table>
+                                @*@{sQRContent = string.Concat("Name:", Model.liFeeReport.FirstOrDefault().FIRST_NAME, "|", "Roll.No:", dataitem.ROLL_NO, "|PaymentMode:", dataitem.PAYMENT_MODE, "|Main:", @dataitem.PROGRAMME_NAME, "|PaidAmount:", dataitem.COLLECTED, "|ReceiptNo:", dataitem.RECEIPT_NO, "|PaymentDate:", dataitem.PAYMENT_DATE, "|College:", Model.liCollegeDetails.FirstOrDefault().COLLEGE_NAME, "|Key:", dataitem.TRANSACTION_ID);
+                                    }*@
+                            </div>
+                            <div class="col-md-8 col-lg-offset-2">
+                                <table class="table-bordered" cellpadding="50" width="100%">
+                                    <tr class="text-center">
+                                        <th width="70px">&nbsp;&nbsp;#</th>
+                                        <th>
+                                            &nbsp;&nbsp;PARTICULARS
+                                        </th>
+                                        <th>
+                                            &nbsp;&nbsp;AMOUNT
+                                        </th>
+                                    </tr>
+
+                                    @{ count = 0; }
+
+                                    @if (TransactionList.FirstOrDefault().FREQUENCY_TYPE_ID == CMS.Utility.Common.FrequencyType.AdmissionApplicationFee)
+                                    {
+                                        <tr>
+                                            <td width="70px">
+                                                <center>@{ count++;}@count</center>
+                                            </td>
+                                            <td> &nbsp;&nbsp;&nbsp; @TransactionList.FirstOrDefault().MAIN_HEAD</td>
+                                            <td class="text-right"><i class="fa fa-inr"></i>@TransactionList.Sum(o => Convert.ToDouble(o.DEBIT)) &nbsp;&nbsp;&nbsp;</td>
+                                        </tr>
+                                      }
+                                      else
+                                        {
+                                           foreach (var item in TransactionList)
+                                           {
+                                               <tr>
+                                                   <td width="70px">
+                                                       &nbsp;&nbsp;&nbsp;@{ count++;}@count
+                                                   </td>
+                                                   <td> &nbsp;&nbsp;&nbsp; @item.MAIN_HEAD</td>
+                                                   <td class="text-right"><i class="fa fa-inr"></i>@item.DEBIT &nbsp;&nbsp;&nbsp;</td>
+                                               </tr>
+                                            }
+                                       }
+                                    <tr>
+                                        <td></td>
+                                        <td class="text-right">TOTAL  &nbsp;&nbsp;&nbsp;</td>
+                                        <td class="text-right"><i class="fa fa-inr"></i>@dataitem.COLLECTED  &nbsp;&nbsp;&nbsp;</td>
+                                    </tr>
+                                </table>
+                                <div class="col-md-12">
+                                    <h5>This is a system generated receipt.It doesn't require any signature.</h5>
+                                    @*<h5>The Payment once paid will not be refunded at any cost.</h5>*@
+                                </div>
+                            </div>
+
+                            <br />
+
+                                                                        }
+                    </div>
+
+                                                                        }
+            </div>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <div class="alert alert-danger"><p class="text-center">No Receipt Found..!</p></div>
+                                                                        }
+
+    </div>
+</div>

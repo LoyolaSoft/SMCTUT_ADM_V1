@@ -1,0 +1,253 @@
+﻿@model CMS.ViewModel.Model.CourseWiseStaffModel
+
+@{
+    ViewBag.Title = "CourseWiseStaffInfo";
+    Layout = "~/Views/Shared/_AdminLayoutPage.cshtml";
+}
+@section styles{
+    <link href="~/Content/assets/plugins/multi-select/multiselect.css" rel="stylesheet" />
+}
+@*<h2 class="col-md-offset-2">Add Course Wise Staff</h2>*@
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="content" id="content">
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">Home</a></li>
+            <li><a href="@Url.Action("ListCourseWiseStaffInfo","Academics")">List Course Wise Staff</a></li>
+            <li class="active">Add Course Wise Staff</li>
+        </ol>
+        <h1 class="page-header">Add Course Wise Staff</h1>
+        <div class="panel">
+            <div class="panel-heading bg-primary">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                </div>
+                <h4 class="panel-title">Add Course Wise Staff</h4>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.DEPARTMENT, htmlAttributes: new { @class = "control-label col-md-4" })
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(model => model.DEPARTMENT, Model.DEPARTMENT, "-- Select --", new { @class = "drop-down form-control input-sm" })
+                                    @Html.ValidationMessageFor(model => model.DEPARTMENT, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.SHIFT, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.DropDownListFor(model => model.SHIFT, Model.SHIFT, "-- Select --", new { @class = "drop-down form-control input-sm" })
+                                    @Html.ValidationMessageFor(model => model.SHIFT, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CLASS_TYPE, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.DropDownListFor(model => model.CLASS_TYPE, Model.CLASS_TYPE, "-- Select --", new { @class = "drop-down form-control input-sm" })
+                                    @Html.ValidationMessageFor(model => model.CLASS_TYPE, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.CLASS_ID, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.DropDownListFor(model => model.CLASS_ID, Model.CLASS_ID, "-- Select --", new { @class = "drop-down form-control input-sm" })
+                                    @Html.ValidationMessageFor(model => model.CLASS_ID, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal">
+                        <div id="dvCourseWiseStaffBIND"></div>
+                    </div>
+                    <div>
+                        <div class="col-lg-12 pull-right">
+                            <div class="form-group pull-right">
+                                <a href="#" class="btn-primary btn" id="btnSubmit">Submit</a>
+                                <a id="btnCancel" value="Submit" class="btn btn-danger" href="@Url.Action("ListCourseWiseStaffInfo","Academics")">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section scripts{
+    <script src="~/Content/assets/plugins/multi-select/multiselect-js.js"></script>
+    <script>
+        $(document).ready(function () {
+            //  $('.sudo-multi-chekbox').SumoSelect({ search: true, searchText: 'Enter here' });
+        });
+    </script>
+    <script>
+        $('#SHIFT').on("change", function () {
+            var Shift = $('#SHIFT').val();
+            $.ajax({
+                url: "@Url.Action("GetClassTypeByShiftId", "Academics")",
+                data: { sShift: Shift },
+                success: function (option) {
+                    var select = $('#CLASS_TYPE');
+                    select.empty();
+                    select.append('<option value="0" >---Select---</option>' + option);
+                },
+                error: function (xhr, textStatus, error) {
+                    alert(error + "\n");
+                }
+            });
+        });
+    </script>
+    <script>
+        $('#DEPARTMENT').on("change", function () {
+            var ClassType = $('#CLASS_TYPE').val();
+            var Shift = $('#SHIFT').val();
+            var Department = $('#DEPARTMENT').val();
+            if (ClassType != null && Shift != null) {
+                $.ajax({
+                    url: "@Url.Action("GetClassListByClassTypeId", "Academics")",
+                    data: { sClassType: ClassType, sDepartment: Department, sShift: Shift },
+                    success: function (option) {
+                        var select = $('#CLASS_ID');
+                        select.empty();
+                        select.append('<option value="0" >---Select---</option>' + option);
+                    },
+                    error: function (xhr, textStatus, error) {
+                        alert(error + "\n");
+                    }
+                });
+            }
+        });
+    </script>
+    <script>
+        $('#CLASS_TYPE').on("change", function () {
+            var ClassType = $('#CLASS_TYPE').val();
+            var Shift = $('#SHIFT').val();
+            var Department = $('#DEPARTMENT').val();
+            $.ajax({
+                url: "@Url.Action("GetClassListByClassTypeId", "Academics")",
+                data: { sClassType: ClassType, sDepartment: Department, sShift: Shift },
+                success: function (option) {
+                    var select = $('#CLASS_ID');
+                    select.empty();
+                    select.append('<option value="0" >---Select---</option>' + option);
+                },
+                error: function (xhr, textStatus, error) {
+                    alert(error + "\n");
+                }
+            });
+        });
+    </script>
+    <script>
+        $("#CLASS_ID").on("change", function () {
+            if ($(this).val() != 0) {
+                var ClassId = $("#CLASS_ID").val();
+                var Shift = $("#SHIFT").val();
+                var ClassType = $("#CLASS_TYPE").val();
+                var Department = $("#DEPARTMENT").val();
+                $.ajax({
+                    url: "@Url.Action("BindStaffsbyClassId", "Academics")",
+                    data: { sClassId: ClassId, sDepartment: Department, sShift: Shift, sClassType: ClassType },
+                    success: function (option) {
+                        var divHtml = $('#dvCourseWiseStaffBIND');
+                        divHtml.empty();
+                        divHtml.html(option);
+                        $('.multiselect').multiselect({
+                            includeSelectAllOption: true,
+                            enableFiltering: true,
+                            enableCaseInsensitiveFiltering: true,
+                            maxHeight: 200,
+                            numberDisplayed: 1,
+                            templates: {
+                                button: '<button type="button" class="multiselect dropdown-toggle form-control input-sm col-md-9 " data-toggle="dropdown"><span class="multiselect-selected-text"></span> <b class="caret"></b></button>',
+                                ul: '<ul class="multiselect-container dropdown-menu" style="max-width:350px;"></ul>'
+                            }
+                        });
+                    },
+                    error: function (xhr, textStatus, error) {
+                        alert(error + "\n");
+                    }
+                });
+            } else {
+                var divHtml = $("#dvCourseWiseStaffBIND");
+                divHtml.empty();
+            }
+        });
+    </script>
+    @*<script>
+        $("#btnSubmit").on("click", function () {
+            var ClassId = $("#CLASS_ID").val();
+            var ShiftId = $("#SHIFT").val();
+            $('#CourseWiseStaff tbody tr').each(function () {
+                var CourseId;
+                //var SemesterId;
+                //var StaffId;
+                CourseId = $(this).find('input[type="number"]');
+                //SemesterId = $(this).find('input[type="number"]');
+            });
+        });
+    </script>*@
+    <script>
+        $("#btnSubmit").on("click", function () {
+            var ClassId = $("#CLASS_ID").val();
+            var ShiftId = $("#SHIFT").val();
+            //var Course = $("#ddlSCourse").val();
+            //var Staff = $("#ddlSStaff").val();
+            //var HrsPerWeek = $("#txtSHrsPerWeek").val();
+            //var hrsPerTerm = $("#txtSHrsPerTerm").val();
+            var sCourseId;
+            var sShiftId;
+            var sClassId;
+            var sStaffId;
+            var sSemesterId;
+            var JsonData;
+            if (JsonData == null) {
+                JsonData = '{"CourseWiseStaffList":[';
+                $('#CourseWiseStaff tbody tr').each(function () {
+                    sClassId = ClassId;
+                    sShiftId = ShiftId;
+                    sCourseId = $(this).attr("cms-rcourseid");
+                    sSemesterId = $(this).attr("cms-rsemesterid");
+                    sStaffId = String($(this).find("#Staff_List").val());
+                    var sArray = sStaffId.split(',');
+                    for (var i = 0; i < sArray.length; i++) {
+                        JsonData += '{"CLASS_ID":"' + sClassId + '","COURSE_ID":"' + sCourseId + '","STAFF_ID":"' + sArray[i] + '","SHIFT":"' + sShiftId + '","SEMESTER_ID":"' + sSemesterId + '"},';
+                    }
+                    JsonData += ',';
+                    JsonData = JsonData.slice(0, -1);
+                });
+                JsonData = JsonData.slice(0, -1);
+                JsonData += ']}';
+            }
+            $.ajax({
+                url: "@Url.Action("InsertCourseWiseStaff","Academics")",
+                method: "POST",
+                datatype: "html",
+                data: { sJsonCourseWiseStaff: JsonData },
+                success: function (data) {
+                    alert(data);
+                }, error: function (error) {
+                    alert('Record Not Saved Try Again...!')
+                }
+            });
+        });
+    </script>
+}
+
+

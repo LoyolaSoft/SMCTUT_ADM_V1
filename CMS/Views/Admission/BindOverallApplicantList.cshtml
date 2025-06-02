@@ -1,0 +1,44 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{int count = 0;}
+<table class="table table-hover table-responsive" id="OverallApplicantList">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>App No</th>
+            <th>Name</th>
+            <th>Caste</th>
+            <th>Mobile</th>
+            <th>City</th>
+            <th>Programme</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.liApplicant != null)
+        {
+            foreach (var item in Model.liApplicant)
+            {
+                <tr>
+                    <td>
+                        @{ count++;}@count
+                    </td>
+                    <td>@item.APPLICATION_NO</td>
+                    <td>@item.FIRST_NAME</td>
+                    <td>@item.COMMUNITY_ID</td>
+                    <td>@item.CONTACT_NO</td>
+                    <td>@item.CTALUK_CITY</td>
+                    <td>@item.PROGRAMME_NAME</td>
+                    @if (item.STATUS==null)
+                    {
+                        <td>Registered</td>
+                    }
+                    else
+                    {
+                        <td>@item.STATUS</td>
+                    }
+                </tr>
+                                }
+                            }
+                            
+    </tbody>
+</table>

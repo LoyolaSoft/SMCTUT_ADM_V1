@@ -1,0 +1,31 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{Layout = null; int Count = 0;}
+<div>
+    <table style="border:1px solid; page-break-after:always !important;page-break-inside:avoid !important;" width="100%">
+        <thead>
+            <tr>
+                <th style="border:1px solid ;padding-left:5px;" align="left" width="8%">#</th>
+                <th style="border:1px solid ;padding-left:5px;" align="left" width="25%">ApplicationNo</th>
+                <th style="border:1px solid ;padding-left:5px;" align="left" width="30%">ApplicantName</th>
+                <th style="border:1px solid ;padding-left:5px;" align="left" width="15%">MobileNo</th>
+                <th style="border:1px solid ;padding-left:5px;" align="left" width="22%">Mark</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.liIssuedApplictionsInfo != null && Model.liIssuedApplictionsInfo.Count > 0)
+            {
+                foreach (var item in Model.liIssuedApplictionsInfo)
+                {
+                    <tr>
+                        <td style="padding:5px 5px; border:1px solid;" align="left" width="8%">@{Count++;}@Count</td>
+                        <td style="padding:5px 5px; border:1px solid;" align="left" width="25%">@item.APPLICATION_NO</td>
+                        <td style="padding:5px 5px; border:1px solid;" align="left" width="30%">@item.FIRST_NAME</td>
+                        <td style="padding:5px 5px; border:1px solid;" align="left" width="15%">@item.SMS_MOBILE_NO</td>
+                        <td style="padding:5px 5px; border:1px solid;" align="left" width="22%">@item.ENTRANCE_MARK</td>
+                    </tr>
+                                }
+
+                            }
+        </tbody>
+    </table>
+</div>

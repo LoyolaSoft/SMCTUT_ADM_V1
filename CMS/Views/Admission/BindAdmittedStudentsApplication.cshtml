@@ -1,0 +1,36 @@
+﻿
+@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{int count = 0; Layout = null;}
+<table class="table table-hover table-bordered" id="SelectionProcessList">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Application No</th>
+            <th>Name</th>
+            <th>Mobile No</th>
+            <th>Action</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.liSelectionProcess != null)
+        {
+
+            foreach (var item in Model.liSelectionProcess)
+            {
+
+                <tr>
+                    <td>
+                        @{ count++;}@count
+                    </td>
+                    <td>@item.APPLICATION_NO</td>
+                    <td>@item.FIRST_NAME</td>
+                    <td>@item.SMS_MOBILE_NO</td>
+                    <td>
+                        <a class="btn btn-primary viewbtn" href="#" onclick="loadContent('/Admission/ApplicationPrintViewByReceiveId?id=@item.RECEIVE_ID&sProgrammeId=@item.PROGRAMME_ID')" title="Click to view the Applicant Details">View Application</a>
+                    </td>
+                </tr>
+                                }
+                            }
+    </tbody>
+</table>

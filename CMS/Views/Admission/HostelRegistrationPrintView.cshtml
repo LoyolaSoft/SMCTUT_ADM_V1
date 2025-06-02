@@ -1,0 +1,178 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{
+    ViewBag.Title = "HostelRegistrationPrintView";
+    string YES = "YES";
+    string No = "NO";
+}
+@if (Model.liApplicant != null && Model.liApplicant.Count > 0)
+{
+    <div class="col-md-12 row">
+        <div class="col-md-9 pull-left ">
+            <center>
+                <table>
+                    <tr>
+                        <td class="text-center"><h1>St. Mary's College HOSTEL</h1></td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"><h3>TIRUCHIRAPPALLI - 620002.</h3></td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">
+                            <center><h2>HOSTEL APPLICATION FORM</h2></center>
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        </div>
+        <div class="col-md-3 pull-right">
+            <div id="dvImportStudentImage">
+                @*<label class="col-md-3 control-label">Photo</label>*@
+                <div class="fileupload fileupload-new" data-provides="fileupload">
+                    <div class="thumbnail" style="width: 150px; height: 195px;">
+                        <img src="@Model.liApplicant.FirstOrDefault().PHOTO_PATH" style="width: 145px; height: 185px;" accesskey=".jpg,.jpeg,.png" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+
+
+    <div class="col-md-12 row">
+        <table class="table table-bordered table-responsive" width="100%">
+            <tr>
+                <th><b>Name</b></th>
+                <td>@Model.liApplicant.FirstOrDefault().FIRST_NAME @Model.liApplicant.FirstOrDefault().LAST_NAME</td>
+                <th><b>DOB</b></th>
+                <td>@Model.liApplicant.FirstOrDefault().DOB</td>
+            </tr>
+            <tr>
+                <th>Major</th>
+                <td>@Model.liApplicant.FirstOrDefault().PROGRAMME_NAME</td>
+                <th><b>Class</b></th>
+                <td>@Model.liApplicant.FirstOrDefault().CLASS_NAME</td>
+            </tr>
+            <tr>
+                <th>Caste</th>
+                <td>@Model.liApplicant.FirstOrDefault().CASTE</td>
+                <th><b>Religion</b></th>
+                <td>@Model.liApplicant.FirstOrDefault().RELIGION_ID</td>
+            </tr>
+            <tr>
+                <th>Father Name</th>
+                <td>@Model.liApplicant.FirstOrDefault().FATHER_NAME</td>
+                <th><b>Occupation</b></th>
+                <td>@Model.liApplicant.FirstOrDefault().OCCUPATION</td>
+            </tr>
+            <tr>
+                <th><b>Extra Curricular</b></th>
+                <td>@Model.liApplicant.FirstOrDefault().EXTRA_CURRICULAR</td>
+                <th><b>Blood Group</b></th>
+                <td>@Model.liApplicant.FirstOrDefault().BLOOD_GROUP</td>
+            </tr>
+            <tr>
+                <th>Roman Cathelic</th>
+                <td>
+                    @if (Model.liApplicant.FirstOrDefault().IS_ROMAN_CATHOLIC == "1")
+                { @YES}
+                else
+                { @No}
+                </td>
+                <th><b>Relation in Campus</b></th>
+                <td>
+                    @if (Model.liApplicant.FirstOrDefault().COLLEGE_RELATION == "1")
+                { @YES}
+                else
+                { @No}
+                </td>
+            </tr>
+            <tr>
+                <th><b>Contact Mobile</b></th>
+                <td>@Model.liApplicant.FirstOrDefault().CONTACT_NO</td>
+                <th><b>Email</b></th>
+                <td>@Model.liApplicant.FirstOrDefault().EMAIL_ID</td>
+            </tr>
+            <tr>
+                <th><b>Village</b></th>
+                <td>@Model.liApplicant.FirstOrDefault().CVILLAGE_AREA</td>
+                <th><b>Place of Birth</b></th>
+                <td>@Model.liApplicant.FirstOrDefault().PLACE_OF_BIRTH</td>
+            </tr>
+            <tr>
+                <th><b>City</b></th>
+                <td>@Model.liApplicant.FirstOrDefault().CTALUK_CITY</td>
+                <th><b>District</b></th>
+                <td>@Model.liApplicant.FirstOrDefault().CDISTRICT</td>
+            </tr>
+
+        </table>
+    </div>
+    <div class="col-md-12 row">
+        if (Model.liADMStudentStudentRelations != null && Model.liADMStudentStudentRelations.Count > 0)
+        {
+        <table class="table table-bordered table-responsive">
+            <caption><b>Details of the family members :</b></caption>
+            <thead>
+                <tr>
+                    <th>
+                        Relationship
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Occupation
+                    </th>
+                    <th>
+                        Income
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.liADMStudentStudentRelations != null && Model.liADMStudentStudentRelations.Count > 0)
+                {
+                    foreach (var item in Model.liADMStudentStudentRelations)
+                    {
+
+                        <tr class="tr_clone" cms-relationid="@item.RELATION_ID">
+                            <td>
+                                @item.RELATION_SHIP
+                            </td>
+                            <td>
+                                @item.RELATION_NAME
+                            </td>
+                            <td>
+                                @item.INCOME
+                            </td>
+                            <td>
+                                @item.INCOME
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        }
+    </div>
+
+    <div class="col-md-12 row">
+        <div id="dvImportFamilyPhoto">
+            <div class="fileupload fileupload-new" data-provides="fileupload">
+                <div class="fileupload-new thumbnail" style="width: 720px; height: 350px;">
+                    <img src="@Model.liApplicant.FirstOrDefault().FAMILY_PHOTO" style="width: 720px; height: 350px;" accesskey=".jpg,.jpeg,.png" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <br />
+        <div class="col-md-8 col-lg-offset-2">
+            <div class="col-md-4 col-lg-offset-1">
+                <div class="m-b-10 pull-left"><b>Signature of the Parent</b></div>
+            </div>
+            <div class="col-md-4 col-lg-offset-1">
+                <div class="m-b-10 pull-right"><b>Applicant's Signature</b></div>
+            </div>
+        </div>
+    </div>
+}

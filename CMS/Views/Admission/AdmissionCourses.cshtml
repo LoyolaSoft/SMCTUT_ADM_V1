@@ -1,0 +1,76 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+
+@{
+    ViewBag.Title = "Courses";
+    Layout = "~/Views/Shared/_HCCAdmissionLayoutPage.cshtml";
+}
+<div id="colorlib-about">
+    <div class="container">
+
+        <ol class="breadcrumb " style="box-shadow: 0 2px 4px 0 rgba(0,0,0,0.10);">
+            <li><a href="@Url.Action("AdmissionCourses","admission")">Home</a></li>
+
+            <li class="active">Programmes</li>
+        </ol>
+        <div class="row">
+            <div class="about-desc animate-box">
+                <div class="fancy-collapse-panel">
+                    @{
+                        var ApplicationTypes = Model.LiApplictionType.GroupBy(o => o.APPLICATION_TYPE_ID);
+                        foreach (var item in ApplicationTypes)
+                        {
+                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" role="tab" id="heading_@item.FirstOrDefault().APPLICATION_TYPE_ID" style="box-shadow: 0 2px 4px 0 rgba(0,0,0,0.10);">
+                                        <center>
+                                            <h3 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#accordion" href="#@item.FirstOrDefault().APPLICATION_TYPE_ID" aria-expanded="false" aria-controls="@item.FirstOrDefault().APPLICATION_TYPE_ID" class="text-white" style="font-size:16px;">
+                                                    @item.FirstOrDefault().APPLICATION_TYPE
+                                                </a>
+                                            </h3>
+                                        </center>
+                                    </div>
+                                    <div id="@item.FirstOrDefault().APPLICATION_TYPE_ID" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_@item.FirstOrDefault().APPLICATION_TYPE_ID">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                @{
+                                                    var ApplicationTypeProgramme = Model.liCourses.Where(s => s.APPLICATION_TYPE_ID == item.FirstOrDefault().APPLICATION_TYPE_ID).ToList();
+                                                    int count = 0;
+                                                    <table class="table table-hover table-bordered" style="color: #000;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th><center>S.No.</center></th>
+                                                                <th><center>Programme Name</center></th>
+                                                                @*<th>SHIFT</th>*@
+                                                                @*<th>TIME</th>*@
+                                                                <th><center>Action</center></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var course in ApplicationTypeProgramme)
+                                                            {
+                                                                count++;
+                                                                <tr>
+                                                                    <td><center>@count</center></td>
+                                                                    <td>@course.PROGRAMME_NAME</td>
+                                                                    @*<td>@course.SHIFT_NAME</td>*@
+                                                                    @*<td>@course.TIME</td>*@
+                                                                    <td><center><a href="@Url.Action("ProgrammeDescription","Admission",new {@sProgrammeGroupId=course.PROGRAMME_GROUP_ID})" class="btn-cta">More Info..</a> </center></td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

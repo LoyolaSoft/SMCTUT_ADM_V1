@@ -1,0 +1,49 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{
+    ViewBag.Title = "BindNotCreatedList";
+    Layout =null;
+   
+}
+<table class="table table-bordered" id="studentlist" >
+<thead>
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Application No
+        </th>
+        <th>
+            Programme
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            Roll No
+        </th>
+    </tr>
+</thead>
+<tbody>
+    @if(Model.liApplicant!=null && Model.liApplicant.Count>0)
+    {
+        foreach(var item in Model.liApplicant)
+        {
+      
+            <tr>
+              
+                <td>@item.FIRST_NAME</td>
+                <td>@item.APPLICATION_NO</td>
+                <td>@item.PROGRAMME_NAME</td>
+                <td>@item.STATUS_NAME</td>
+                <td>@item.ROLL_NO</td>
+            </tr>
+        }
+    }
+
+</tbody>
+
+</table>
+
+
+

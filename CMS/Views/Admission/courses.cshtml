@@ -1,0 +1,161 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+
+@{
+    ViewBag.Title = "Courses";
+    Layout = "~/Views/Shared/_AdmissionLayoutPage.cshtml";
+}
+
+@section styles{
+
+    <style>
+
+        .heartbit {
+            position: absolute;
+            top: 25px;
+            right: 10px;
+            height: 25px;
+            width: 25px;
+            z-index: 10;
+            border-radius: 70px;
+            -webkit-animation-name: example; /* Safari 4.0 - 8.0 */
+            -webkit-animation-duration: 4s; /* Safari 4.0 - 8.0 */
+            -webkit-animation-iteration-count: infinite; /* Safari 4.0 - 8.0 */
+            animation-name: example;
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-out;
+        }
+
+        /* Safari 4.0 - 8.0 */
+        @@-webkit-keyframes example {
+            from {
+                border: 1px solid red;
+            }
+
+            to {
+                border: 10px solid #fff;
+            }
+        }
+
+        /* Standard syntax */
+        @@keyframes example {
+            from {
+                border: 1px solid red;
+            }
+
+            to {
+                border: 10px solid #fff;
+            }
+        }
+    </style>
+}
+
+<div id="content" class="content">
+    <!-- begin breadcrumb -->
+    <ol class="breadcrumb pull-right">
+        <li><a href="javascript:;">Home</a></li>
+
+        <li class="active">Courses</li>
+    </ol>
+    <!-- end breadcrumb -->
+    <!-- begin page-header -->
+    <h1 class="page-header">Courses <small></small></h1>
+    <!-- end page-header -->
+    <!-- begin row -->
+    <div class="row">
+        @{
+                string is_new = string.Empty;
+                if (Model.programmeType != null && Model.programmeType.Count > 0)
+                {
+                    foreach (var item in Model.programmeType)
+                    {
+                        if (Model.liCourses != null && Model.liCourses.Count > 0)
+                        {
+                            var liTemp = Model.liCourses.Where(o => o.PROGRAMME_LEVEL_ID == item.PROGRAMME_LEVEL_ID).ToList();
+                            var links = "http://bcombpo.stmaryscollege.edu.in/";
+                            if (liTemp != null && liTemp.Count > 0)
+                            {
+                            <div class="col-md-6">
+                                <!-- begin panel -->
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <div class="panel-heading-btn">
+                                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                            @*<a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>*@
+                                        </div>
+                                        <h4 class="panel-title">@item.PROGRAMME_LEVEL Courses</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <b>
+                                            <ul>
+                                                @{
+
+                                                    var liGroupProgam = liTemp.GroupBy(s => s.PROGRAMME_ID).Select(s => new CMS.ViewModel.Model.ADM_APPTYPE_PROG_GROUPS() { APPTYPE_ID = s.FirstOrDefault().APPTYPE_ID, PRO_GROUPS_ID = s.FirstOrDefault().PRO_GROUPS_ID, PROGRAMME_ID = s.FirstOrDefault().PROGRAMME_ID, PROGRAMME_NAME = s.FirstOrDefault().PROGRAMME_NAME, SHIFT = s.FirstOrDefault().SHIFT, SHIFT_NAME = s.FirstOrDefault().SHIFT_NAME, APPLICATION_TYPE_ID = s.FirstOrDefault().APPLICATION_TYPE_ID, APPLICATION_TYPE = s.FirstOrDefault().APPLICATION_TYPE, APPLICATION_COST = s.FirstOrDefault().APPTYPE_ID, PROGRAMME_MODE_ID = s.FirstOrDefault().PROGRAMME_MODE_ID, PROGRAMME_MODE = s.FirstOrDefault().PROGRAMME_MODE }).ToList();
+                                                    foreach (var liItem in liGroupProgam)
+                                                    {
+                                                        var sShift = "";
+                                                        var sProgramme = "";
+
+                                                        int count = 0;
+                                                        var liProgram = liTemp.Where(s => s.APPLICATION_TYPE_ID == liItem.APPLICATION_TYPE_ID && s.PROGRAMME_ID == liItem.PROGRAMME_ID).ToList();
+
+                                                        if (liProgram != null && liProgram.Count > 0)
+                                                        {
+                                                            foreach (var lstProgram in liProgram)
+                                                            {
+                                                                if (count == 0)
+                                                                {
+                                                                    sProgramme = lstProgram.PROGRAMME_NAME;
+                                                                    sShift = lstProgram.PROGRAMME_MODE + " Shift - " + lstProgram.SHIFT_NAME+" " +lstProgram.TIME;
+                                                                    if (liProgram.FirstOrDefault().IS_NEW == "1")
+                                                                    {
+                                                                        is_new = "1";
+
+                                                                    }
+
+                                                                }
+                                                                else
+                                                                {
+                                                                    sShift += " & " + lstProgram.PROGRAMME_MODE + " Shift - " + lstProgram.SHIFT_NAME + " " + lstProgram.TIME;
+                                                                }
+                                                                count++;
+                                                            }
+                                                            <li style="border-bottom: 1px solid #e6e6e6;margin-bottom:5px; ">
+                                                                <p class="">
+                                                                    <a href="@if (sProgramme.Contains("BPO")) {@links } " style=" color:#000 !important;"> @sProgramme (@sShift) </a>
+                                                                    @if (!string.IsNullOrEmpty(is_new) && is_new == "1")
+    {
+                                                                <span class="label label-danger">NEW</span><img src="/Content/assets/img/red-arrow-left.gif" />
+is_new = string.Empty;
+}
+                                                                    
+                                                                </p>
+                                                            </li>
+                                                            
+                                                        }
+
+                                                    }
+                                                }
+
+                                            </ul>
+
+                                        </b>
+                                    </div>
+                                </div>
+                            </div> }
+                        else { }
+                    }
+                }
+
+            }
+            else
+            {
+
+            }
+        }
+
+    </div>
+    <!-- end row -->
+</div>

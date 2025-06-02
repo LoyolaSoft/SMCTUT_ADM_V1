@@ -1,0 +1,250 @@
+﻿@model CMS.ViewModel.ViewModel.AccountViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>SMC | Login </title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    @Styles.Render("~/bundles/basecss")
+    @Scripts.Render("~/bundles/headerbasejs")
+    <link href="~/Content/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
+    <link href="~/Content/assets/plugins/parsley/src/parsley.css" rel="stylesheet" />
+</head>
+<body class="pace-top bg-white" style="background-color: #e8e8e8 !important" @*ng-app="myApp"*@>
+    <div @*ng-controller="loginController"*@>
+        <!-- begin #page-loader -->
+        <div id="page-loader" class="fade in"><span class="spinner"></span></div>
+        <!-- end #page-loader -->
+        <!-- begin #page-container -->
+        <div id="page-container" class="fade">
+            <!-- begin login -->
+            <div class="login bg-black animated fadeInDown" style="background-color:#26c6da !important">                          
+                <!-- begin right-content -->
+                <div class="right-content">
+                    <!-- begin login-header -->
+                    <div class="login-header">
+                        <div class="brand">
+                            <span class="logo">
+                                <i class="">
+                                    <!-- ion-ios-cloud-->
+                                    <img src="~/Content/assets/img/hcc-img/hcclogo.jpg" width="50px;" class="img-circle " />
+                                </i>
+                            </span>&nbsp; St. Mary's College 
+                            <small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;&nbsp;&nbsp; <b>Live by Faith<b></small>
+                        </div>
+                        <div class="icon">
+                            <i class="ion-ios-locked "><i class="heartbit"></i></i>
+                        </div>
+                    </div>
+                    <!-- end login-header -->
+                    @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                    {<!-- begin login-content -->
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="login-content" id="parsley-form" data-parsley-validate="true">
+                            <div action="" class="margin-bottom-0">
+                                <div class="form-group m-b-15">
+                                     @Html.EditorFor(model => model.objLoginViewModel.Username, new { htmlAttributes = new { @class = "form-control input-lg", placeholder = "Username", @data_parsley_required = "true" } })
+                                    @Html.ValidationMessageFor(model => model.objLoginViewModel.Username, "", new { @class = "text-danger" })
+                                    @*<input type="text" id="txtUsername" ng-model="txtUsername" class="form-control input-lg" placeholder="Username" required autofocus />*@
+                                </div>
+                                <div class="form-group m-b-15">
+                                    @Html.EditorFor(model => model.objLoginViewModel.Password, new { htmlAttributes = new { @class = "form-control input-lg", placeholder = "Password", @data_parsley_required = "true" } })
+                                    @Html.ValidationMessageFor(model => model.objLoginViewModel.Password, "", new { @class = "text-danger" })
+                                </div>
+                              
+                                <div class="login-buttons">
+                                    <button type="submit" id="btnLogin" class="btn btn-black btn-block btn-lg" style="background-color:#000 !important;color:#fff;">Sign in</button>
+                                </div>
+                                <div class="m-t-20 m-b-40 p-b-40 text-inverse">
+                                    <a href="#Head-dialog" style="color:#fff;" data-toggle="modal">Forgot password?</a>
+                                </div>
+                                <i class=""></i>
+                                <hr />
+                                <p class="text-center text-white">
+                                    &copy; @DateTime.Today.Year   All Rights Reserved by SMC
+                                </p>
+                            </div>
+                        </div>
+                <!-- end login-content -->
+                    }
+                </div>
+                <!-- end right-container -->
+            </div>
+          
+            <!-- end theme-panel -->
+        </div>
+        <!-- end page container -->
+    </div>
+    <div class="modal" id="Head-dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" id="modal-cls" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Password Reset</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Email ID</label>
+                            <div class="col-md-8">
+                                <input type="text" id="email" class="form-control" placeholder="Enter ther E-mail Id">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Last appeared Register No</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="hscno" placeholder="Enter Last appeared Register No" maxlength="15">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12 col-md-offset-5">
+                                <button class="btn btn-primary" id="btnconfirm">Confirm</button>
+                            </div>
+                        </div>
+                        <br>
+                        <div id="pwdiv" class="hidden">
+                            <input type="text" class="hidden" id="useracid">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Password</label>
+                                <div class="col-md-8">
+                                    <input type="password" id="password" class="form-control" placeholder="Password">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Confirm Password</label>
+                                <div class="col-md-8">
+                                    <input type="password" id="confirmpw" class="form-control" placeholder="Confirm Password">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer hidden" id="footer">
+                    <a href="javascript:;" id="btnSave" class="btn btn-sm btn-primary" @*data-dismiss="modal"*@>Save</a>
+                    <a href="javascript:;" class="btn btn-sm btn-danger" data-dismiss="modal">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/footerbasejs")
+   
+    <script  defer src="~/Content/assets/plugins/parsley/dist/parsley.js"></script>
+    <script defer src="~/Content/assets/plugins/gritter/js/jquery.gritter.js"></script>
+    @*<script src="~/Content/assets/plugins/flot/jquery.flot.min.js"></script>*@
+    <script defer src="~/Content/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    @Scripts.Render("~/bundle/pagebeginjs")
+    @*@Scripts.Render("~/bundles/jquery")*@
+    @*@Scripts.Render("~/bundles/bootstrap")*@
+    <script defer>
+        $(document).ready(function (e) {
+            App.init();
+            $('#btnLogin').click(function (e) {
+                var isValid = true;
+                if ($('#parsley-form').parsley().validate() !== true) isValid = false;
+                if (!isValid) {
+                    e.preventDefault();
+                } else {
+                    myfunction('Please wait...');
+                }
+            });
+            myfunction('@TempData["ErrorMessage"]');
+        });
+        function myfunction(e) {
+            if (e != '') {
+                $.gritter.add({
+                    title: "Message",
+                    text: e,
+                    time: 50000
+                });
+            }
+        }
+        
+    </script>
+    @*<script>
+            //(function (i, s, o, g, r, a, m) {
+            //    i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            //        (i[r].q = i[r].q || []).push(arguments)
+            //    }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            //        m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+            //})(window, document, 'script', '../../../../www.google-analytics.com/analytics.js', 'ga');
+            //ga('create', 'UA-53034621-1', 'auto');
+            //ga('send', 'pageview');
+        </script>*@
+    <script defer>
+        handleDatepicker = function () {
+            "use strict";
+            $("#dob").datepicker({
+                todayHighlight: true,
+                autoclose: true,
+                endDate: new Date(),
+                format: "dd/mm/yyyy",
+                orientation: "bottom"
+                // 'top': top,
+                // 'left': left
+            }
+            )
+        }
+        handleDatepicker();
+        $('#btnconfirm').on('click', function () {
+            if ($('#email').val() != '' && $('#hscno').val() != '') {
+                var email = $('#email').val();
+                var hscno = $('#hscno').val();
+                $.ajax({
+                    url: '/Admission/CheckIsUserExit',
+                    method: 'POST',
+                    type: 'json',
+                    data: { semail: email, sHscno: hscno },
+                    success: function (data) {
+                        if (data.Message == null) {
+                            $('#pwdiv').removeClass('hidden');
+                            $('#footer').removeClass('hidden');
+                            $('#useracid').val(data.sResult);
+                        }
+                        else {
+                            alert(data.Message);
+                        }
+                    },
+                    error: function (data) {
+                        alert('Internal Server Error..!');
+                    }
+                })
+            }
+            else {
+                alert('Please Fill the Fields...!');
+            }
+        });
+        $('#btnSave').on('click', function () {
+            if ($('#password').val() != '' && $('#confirmpw').val() != '') {
+                var pw = $('#password').val();
+                var cpw = $('#confirmpw').val();
+                var useracid = $('#useracid').val();
+                if (pw == cpw) {
+                    $.ajax({
+                        url: '/Admission/SavePasswordReset',
+                        method: 'POST',
+                        type: 'json',
+                        data: { sPassword: cpw, sAcid: useracid },
+                        success: function (data) {
+                            alert(data.Message);
+                            loadContent('/Account/index');
+                        },
+                        error: function (data) {
+                            alert('Internal Server Error..!');
+                        }
+                    })
+                }
+                else {
+                    alert('Invalid Confirm Password..!')
+                }
+            }
+            else {
+                alert('Please Fill the Fields...!');
+            }
+        })
+    </script>
+</body>
+</html>

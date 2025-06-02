@@ -1,0 +1,194 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+
+@{
+    ViewBag.Title = "AdmittedStudentView";
+    //Layout = "~/Views/Shared/_AdminLayoutPage.cshtml";
+    Layout = null; 
+
+}
+
+<div class="content" id="content">
+    <ol class="breadcrumb pull-right">
+        <li><a href="javascript:;">Home</a></li>
+        <li class="active">Admission Cancel Student Details</li>
+    </ol>
+    <h2 class="page-header"> Admission Cancel Student Details</h2>
+    <div class="panel">
+        <div class="panel-heading bg-primary">
+            <div class="panel-heading-btn">
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+            </div>
+            <h4 class="panel-title">Admission Cancel Student Details</h4>
+        </div>
+        <div class="panel-body">
+         @if (Model.liIssueApplication != null && Model.liIssueApplication.Count > 0)
+         {
+            <div class="col-lg-offset-2 col-lg-8 table-bordered" id="divPrint">
+                <div class="form-horizontal">
+                    <h4 class="lead"><img src="~/Content/assets/img/hcc-img/hcclogo.jpg" width="70px" style="box-shadow:1px 1px #eee;" class="img-circle img" alt="HCC Logo" /> St. Mary's College,Thoothukudi-620002</h4>
+                    <hr />
+
+                    <table class="table table-bordered">
+                        <tr>
+                            <td><strong> Name </strong></td>
+                            <td>@Model.liIssueApplication.FirstOrDefault().FIRST_NAME </td>
+                        </tr>
+                        <tr>
+                            <td><strong> Application No</strong></td>
+                            <td>@Model.liIssueApplication.FirstOrDefault().APPLICATION_NO</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Course</strong></td>
+                            <td>@Model.liIssueApplication.FirstOrDefault().PROGRAMME_NAME</td>
+                        </tr>
+                        @*<tr>
+                            <td><strong>Application Type</strong></td>
+                            <td>@Model.liIssueApplication.FirstOrDefault().APPLICATION_TYPE</td>
+                        </tr>*@
+                      
+                        @*<tr>
+                            <td><strong>Application Fee</strong></td>
+                            <td>@Model.liIssueApplication.FirstOrDefault().APP_FEE</td>
+                        </tr>*@
+                        <tr>
+                            <td><strong>Total Fee</strong></td>
+                            <td>@Model.AMOUNT</td>
+                        </tr>
+                        @*<tr>
+                            <td><strong>Fee Paid</strong></td>
+                            <td>@Model.PAID</td>
+                        </tr>*@
+                        @*<tr>
+                            <td><strong>Shift</strong></td>
+                            <td>@Model.liIssueApplication.FirstOrDefault().SHIFT_NAME</td>
+                        </tr>*@
+                        <tr>
+                            <td><strong>Mobile</strong></td>
+                            <td>@Model.liIssueApplication.FirstOrDefault().SMS_MOBILE_NO</td>
+                        </tr>
+                        @*<tr>
+                            <td><strong>E-Mail</strong></td>
+                            <td>@Model.liIssueApplication.FirstOrDefault().EMAIL_ID</td>
+                        </tr>*@
+                        @*<tr>
+                            <td><strong>Total</strong></td>
+                            <td>@Model.liIssueApplication.FirstOrDefault().HS_MAX_MARK</td>
+                        </tr>*@
+                        @*<tr>
+                            <td><strong>Main Subject Total</strong></td>
+                            <td>@Model.liIssueApplication.FirstOrDefault().TOTAL_CUT_OFF_MARK</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Mark Secured</strong></td>
+                            <td>@Model.liIssueApplication.FirstOrDefault().HSTOTAL</td>
+                        </tr>*@
+                        <tr>
+                            <td><strong>Status</strong></td>
+                            <td id="status">@Model.liIssueApplication.FirstOrDefault().STATUS_NAME</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Reason</strong></td>
+                            <td id="reason"><textarea class="form-control" cols="3" id="txtReason" maxlength="250" placeholder="Please Enter The Reason To Cancel This Student"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Is_Hostel_Cancel</strong></td>
+                            <td id="hostel">
+                                <div class="checkbox checkbox-css checkbox-inline" id="checkdiv">
+                                    <input type="checkbox" value="" id="inlineCssCheckbox1" checked="">
+                                    <label for="inlineCssCheckbox1"></label>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+
+            </div>
+         <br>
+                <div class="col-md-11" style="margin-top:20px"> 
+                   <div class="col-md-3 pull-right"> <a href="#" onclick="loadContent('/Admission/ListAdmittedStudentList')" class="btn btn-primary">Back</a>
+                    <a href='#' class="btn btn-danger" onclick="CancelAdmission(@Model.liIssueApplication.FirstOrDefault().ISSUED_ID)" id="btnCancel">Cancel</a>
+                    <a href='#' class="btn btn-success hidden" id="print"  onclick="printDiv('divPrint')">Print</a></div>
+                </div>
+          
+         }
+        </div>
+    </div>
+</div>
+
+<!-- Hidden Field-->
+@Html.HiddenFor(model=>model.CancelAdmissionId)
+@Html.Hidden("ishostel");
+<!-- Hidden Field-->
+    <script>
+       
+        function printDiv(divName)
+        {
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
+        function CancelAdmission(IssueId) 
+        {
+            if (!$('#txtReason').val())
+            {
+                alert('Please Enter Reason To Continue !');
+                return false;
+            }
+            if (!confirm('Are You Sure To Cancel This Admission ?'))
+            {
+                return false;
+            }
+            var Refund=null;
+            if ($('#inlineCssCheckbox1').prop("checked") == true)
+            {
+                
+               Refund = "1";
+            }
+            $('#ishostel').val(Refund);
+            $.ajax({
+                url:'@Url.Action("SaveAdmissionCancel", "Admission")',
+                method:'POST',
+                datatype:'json',
+                data: { sIssueId: IssueId, sReason: $('#txtReason').val(), sHostel: Refund },
+                success:function (data) 
+                {
+                    if (data.ErrorCode =="408")
+                    {
+                       window.location.href='@Url.Action("ErrorMessage", "Error")';
+                    } else
+                    {
+                        alert(data.Message);
+                        $('#print').removeClass('hidden');
+                        $('#reason').text(data.sResult);
+                        $('#status').text("Canceled");
+                        if ($('#ishostel').val() == "1")
+                        {
+                            $('#hostel').text("Yes");
+                        }
+                        else
+                        {
+                            $('#checkdiv').text("No");
+                        }
+                        $('#btnCancel').addClass('hidden');
+                        $('#txtReason').addClass('hidden');
+                        $('#txtReason').addClass('hidden');
+                    }
+                },error:function (error) 
+                {
+                    alert('Internal Server Error !'); 
+                }
+            });
+        }
+    </script>
+
+
+
+
+
+

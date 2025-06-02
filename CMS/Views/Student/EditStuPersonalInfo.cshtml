@@ -1,0 +1,390 @@
+﻿@model CMS.ViewModel.Model.StuPersonalInfo
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Personal Details</h4>
+        <hr />
+        <div class="col-md-6">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.FIRSTNAME, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.FIRSTNAME, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter First Name",id= "txtfirstName", @data_parsley_required = "true", @data_parsley_length = "[3,50]" } })
+                    @Html.ValidationMessageFor(model => model.FIRSTNAME, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.LASTNAME, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.LASTNAME, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Last Name", id = "txtLName", @data_parsley_length = "[3,50]" } })
+                    @Html.ValidationMessageFor(model => model.LASTNAME, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.GENDERID, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.GENDERID, Model.GENDERID, "-- Select --", new { @class = "drop-down form-control input-sm", id = "ddlGender", @data_parsley_required = "true" })
+                    @Html.ValidationMessageFor(model => model.GENDERID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.COMMUNITY, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.COMMUNITY, Model.COMMUNITY, "-- Select --", new { @class = "drop-down form-control input-sm", id = "ddlCommunity" })
+                    @Html.ValidationMessageFor(model => model.COMMUNITY, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.CASTE, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.CASTE, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Caste", id = "txtCaste", @data_parsley_length = "[5,100]" } })
+                    @Html.ValidationMessageFor(model => model.CASTE, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DATEOFBIRTH, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    <div class="input-group date" id="datetimepicker1">
+                        @Html.EditorFor(model => model.DATEOFBIRTH, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Date of Birth", id = "txtDOB", @data_parsley_required = "true" } })
+                        @Html.ValidationMessageFor(model => model.DATEOFBIRTH, "", new { @class = "text-danger" })
+                        <span class="input-group-addon bg-purple"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.MOTHERTONGUE, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.MOTHERTONGUE, Model.MOTHERTONGUE, "-- Select --", new { @class = "drop-down form-control input-sm", id = "ddlMotherTongue" })
+                    @Html.ValidationMessageFor(model => model.MOTHERTONGUE, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.FIRSTLANGUAGE, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.FIRSTLANGUAGE, Model.FIRSTLANGUAGE, "-- Select --", new { @class = "drop-down form-control input-sm", id = "ddlFirstLanguage" })
+                    @Html.ValidationMessageFor(model => model.FIRSTLANGUAGE, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.SECONDLANGUAGE, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.SECONDLANGUAGE, Model.SECONDLANGUAGE, "-- Select --", new { @class = "drop-down form-control input-sm", id = "ddlSecondLang" })
+                    @Html.ValidationMessageFor(model => model.SECONDLANGUAGE, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.BLOODGROUP, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.BLOODGROUP, Model.BLOODGROUP, "-- Select --", new { @class = "drop-down form-control input-sm", id = "ddlBloodGroup" })
+                    @Html.ValidationMessageFor(model => model.BLOODGROUP, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.RELIGION, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.RELIGION, Model.RELIGION, "-- Select --", new { @class = "drop-down form-control input-sm", id = "ddlReligion" })
+                    @Html.ValidationMessageFor(model => model.RELIGION, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.NATIONALITY, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.NATIONALITY, Model.NATIONALITY, "-- Select --", new { @class = "form-control input-sm", id = "ddlNationality" })
+                    @Html.ValidationMessageFor(model => model.NATIONALITY, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PLACEOFBIRTH, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.PLACEOFBIRTH, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Place Of Birth", id = "txtPlaceofBirth", @data_parsley_length = "[3,50]" } })
+                    @Html.ValidationMessageFor(model => model.PLACEOFBIRTH, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ANNUALINCOME, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.ANNUALINCOME, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Annual Income", id = "txtAnnulIncome", @data_parsley_type = "number", @data_parsley_length = "[3,7]" } })
+                    @Html.ValidationMessageFor(model => model.ANNUALINCOME, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            
+            <div class="form-group">
+                @Html.LabelFor(model => model.RESIDENCENO, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.RESIDENCENO, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Residence Number", id = "ResidenceNo", @data_parsley_type = "number", @data_parsley_length = "[3,8]" } })
+                    @Html.ValidationMessageFor(model => model.RESIDENCENO, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            @*<div class="form-group">
+        @Html.LabelFor(model => model.PASSPORT_NUMBER, htmlAttributes: new { @class = "control-label col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.PASSPORT_NUMBER, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Passport Number" ,id="txtPassport"} })
+            @Html.ValidationMessageFor(model => model.PASSPORT_NUMBER, "", new { @class = "text-danger" })
+        </div>
+    </div>*@
+
+            @*<div class="form-group">
+                    @Html.LabelFor(model => model.SPOKEN_LANGUAGE, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(model => model.SPOKEN_LANGUAGE, Model.SPOKEN_LANGUAGE, "-- Select --", new { @class = "drop-down form-control input-sm"})
+                        @Html.ValidationMessageFor(model => model.SPOKEN_LANGUAGE, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+            <div class="form-group">
+                @Html.LabelFor(model => model.STUMOBILENO, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.STUMOBILENO, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Mobile Number", id = "txtSMobile", @data_parsley_type = "number", @data_parsley_length = "[9,10]" } })
+                    @Html.ValidationMessageFor(model => model.STUMOBILENO, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @*<div class="form-group">
+        @Html.LabelFor(model => model.VISA_SPONSOR, htmlAttributes: new { @class = "control-label col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.VISA_SPONSOR, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Visa Number",id="txtVSponser" } })
+            @Html.ValidationMessageFor(model => model.VISA_SPONSOR, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.VISA_NUMBER, htmlAttributes: new { @class = "control-label col-md-4" })
+        <div class="col-md-8">
+            @Html.EditorFor(model => model.VISA_NUMBER, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Visa Number",id="txtVNo" } })
+            @Html.ValidationMessageFor(model => model.VISA_NUMBER, "", new { @class = "text-danger" })
+        </div>
+    </div>*@
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.SPECIALLYABLED, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.SPECIALLYABLED, Model.SPECIALLYABLED, "-- Select --", new { @class = "drop-down form-control input-sm", id = "SplyAbled" })
+                    @Html.ValidationMessageFor(model => model.SPECIALLYABLED, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.RESIDENCYTYPE, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.RESIDENCYTYPE, Model.RESIDENCYTYPE, "-- Select --", new { @class = "drop-down form-control input-sm", id = "ddlResidentType" })
+                    @Html.ValidationMessageFor(model => model.RESIDENCYTYPE, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IDENTIFICATIONMARK1, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.TextAreaFor(model => model.IDENTIFICATIONMARK1, 3, 20, new { maxlength = 250, @class = "form-control", id = "txtid1", placeholder = "Identification Mark 1", @data_parsley_length = "[3,250]" })
+                    @Html.ValidationMessageFor(model => model.IDENTIFICATIONMARK1, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IDENTIFICATIONMARK2, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.TextAreaFor(model => model.IDENTIFICATIONMARK2, 3, 20, new { maxlength = 250, @class = "form-control", id = "txtid2", placeholder = "Identification Mark 2", @data_parsley_length = "[3,250]" })
+                    @Html.ValidationMessageFor(model => model.IDENTIFICATIONMARK2, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.HOMEPHONE, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.HOMEPHONE, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Home Phone Number", id = "txtHomePhone", @data_parsley_type = "number", @data_parsley_required = "true", @data_parsley_length = "[9,15]" } })
+                    @Html.ValidationMessageFor(model => model.HOMEPHONE, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.MARITALSTATUS, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.MARITALSTATUS, Model.MARITALSTATUS, "-- Select --", new { @class = "drop-down form-control input-sm", id = "MaritalStatus" })
+                    @Html.ValidationMessageFor(model => model.MARITALSTATUS, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.AADHARNUMBER, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.AADHARNUMBER, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Aadhar Number", id = "txtAathar", @data_parsley_type = "number", @data_parsley_length = "[9,20]" } })
+                    @Html.ValidationMessageFor(model => model.AADHARNUMBER, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @*<div class="form-group">
+                @Html.LabelFor(model => model.PHOTOPATH, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.PHOTOPATH, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter First Name", id = "Photo" } })
+                    @Html.ValidationMessageFor(model => model.PHOTOPATH, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+            @*<div class="form-group">
+                @Html.LabelFor(model => model.Role, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.Role, Model.Role, "-- Select --", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.UserType, htmlAttributes: new { @class = "control-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.UserType, Model.UserType, "-- Select --", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.UserType, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+            <div class="form-group pull-right">
+                <div class="col-md-12 pull-right">
+                    <a id="EditbtnPersonalInfo" class="btn btn-primary">Submit</a>
+                </div>
+            </div>
+        </div>
+
+<script>
+    $(document).ready(function ()
+    {
+        // DatePicker ...
+        handleDatepicker = function () {
+            "use strict";
+            $("#txtDOB").datepicker({
+                todayHighlight: true,
+                autoclose: true,
+                endDate: new Date(),
+                format: "dd/mm/yyyy",
+                orientation: "right bottom"
+                // 'top': top,
+                // 'left': left
+            }
+            )
+        }
+        handleDatepicker();
+
+        // Fetch Personal Infomation ...
+        GetPersonal=function()
+        {
+           
+            $.ajax({
+                url:"@Url.Action("FetchPersonalInfo", "Student")",
+                method:"POST",
+                datatype:"html",
+                success:function(data)
+                {                    
+                    $("#txtfirstName").val(data.firstName);
+                    $("#txtLName").val(data.LastName);
+                    $("#ddlGender").val(data.Gender);
+                    $("#ddlCommunity").val(data.Community);
+                    $("#ddlNationality").val(data.Nationality);
+                    $("#MaritalStatus").val(data.MaritalStatus);
+                    $("#ddlMotherTongue").val(data.MotherTongue);
+                    $("#txtAathar").val(data.AadharNumber);
+                    $("#txtAnnulIncome").val(data.AnnulIncome);
+                    $("#ddlBloodGroup").val(data.BloodGroup);
+                    $("#txtCaste").val(data.Caste);
+                    $("#txtDOB").val(data.DateOfBirth);
+                    $("#txtHomePhone").val(data.HomePhone);
+                    $("#txtid1").val(data.Identity1);
+                    $("#txtid2").val(data.Identity2);
+                    $("#txtPlaceofBirth").val(data.PlaceOfBirth);
+                    $("#txtPassport").val(data.PossportNo);
+                    $("#ddlReligion").val(data.Religion);
+                    $("#ResidenceNo").val(data.ResidencyNo);
+                    $("#txtSMobile").val(data.StuMobileNo);
+                    $("#txtVNo").val(data.VisaNumber);
+                    $("#txtVSponser").val(data.VisaSponser);
+                    $("#ddlFirstLanguage").val(data.FirstLanguage);
+                    $("#ddlSecondLang").val(data.SecondLanguage);
+                    $("#SplyAbled").val(data.SpecillyAblled);
+                    $("#ddlResidentType").val(data.ResidencyType);
+                    $("#Role").val(data.Role);
+                    $("#UserType").val(data.UserType);
+                },error:function(error)
+                {
+                    alert('No data found ...!');
+                }
+            });
+        }
+    });
+    GetPersonal();
+</script>
+<script>
+    
+
+    // Student PersonalInfo ..
+    $("#EditbtnPersonalInfo").on("click", function ()
+    {
+        var isValid = true;
+        if ($('#nav-tab2-2').parsley().validate() !== true) isValid = false;
+        if (!isValid) {
+            //gritter-info,danger,success,warning,default
+            myAlert('Something went wrong ! Please check your inputs !', 'gritter-warning', '');
+            return false;
+        }
+        var firstName = $("#txtfirstName").val();
+        var LastName = $("#txtLName").val();
+        var Caste = $("#txtCaste").val();
+        var DateOfBirth = $("#txtDOB").val();
+        var AnnulIncome = $("#txtAnnulIncome").val();
+        var ResidencyNo = $("#ResidenceNo").val();
+        var PossportNo = $("#txtPassport").val();
+        var PhotoPath = $("#PHOTO_PATH").val();
+        var VisaSponser = $("#txtVSponser").val();
+        var VisaNumber = $("#txtVNo").val();
+        var Identity1 = $("#txtid1").val();
+        var Identity2 = $("#txtid2").val();
+        var HomePhone = $("#txtHomePhone").val();
+        var AadharNumber = $("#txtAathar").val();
+        var StuMobileNo = $("#txtSMobile").val();
+        var PlaceOfBirth = $("#txtPlaceofBirth").val();
+        var MaritalStatus = $("#MaritalStatus").val();
+        var Gender = $("#ddlGender").val();
+        var Community = $("#ddlCommunity").val();
+        var MotherTongue = $("#ddlMotherTongue").val();
+        var BloodGroup = $("#ddlBloodGroup").val();
+        var Religion = $("#ddlReligion").val();
+        var Nationality = $("#ddlNationality").val();
+        var FirstLanguage= $("#ddlFirstLanguage").val();
+        var SecondLanguage= $("#ddlSecondLang").val();
+        var SpecillyAblled= $("#SplyAbled").val();
+        var ResidencyType = $("#ddlResidentType").val();
+        var Role = $("#Role").val();
+        var UserType = $("#UserType").val();
+        var JsonData;
+        if (JsonData==null)
+        {
+            JsonData = '{"UserType":"' + UserType + '","Role":"' + Role + '","FirstLanguage":"' + FirstLanguage + '","SecondLanguage":"' + SecondLanguage + '","SpecillyAblled":"' + SpecillyAblled + '","ResidencyType":"' + ResidencyType + '","firstName":"' + firstName + '","LastName":"' + LastName + '","Caste":"' + Caste + '","DateOfBirth":"' + DateOfBirth + '","AnnulIncome":"' + AnnulIncome + '","ResidencyNo":"' + ResidencyNo + '","PossportNo":"' + PossportNo + '","PhotoPath":"' + PhotoPath + '","VisaSponser":"' + VisaSponser + '","VisaNumber":"' + VisaNumber + '","Identity1":"' + Identity1 + '","Identity2":"' + Identity2 + '","HomePhone":"' + HomePhone + '","AadharNumber":"' + AadharNumber + '","StuMobileNo":"' + StuMobileNo + '","PlaceOfBirth":"' + PlaceOfBirth + '","MaritalStatus":"' + MaritalStatus + '","Gender":"' + Gender + '","Community":"' + Community + '","MotherTongue":"' + MotherTongue + '","BloodGroup":"' + BloodGroup + '","Religion":"' + Religion + '","Nationality":"' + Nationality + '"}';
+        }
+
+        $.ajax({
+            url:"@Url.Action("EditPersoalInfo", "Student")",
+            method: "POST",
+            datatype: "html",
+            data: { str: JsonData },
+            success:function(data)
+            {
+                alert(data);
+            },error:function(error)
+            {
+                alert('Your record not saved try again ...!');
+            }
+        });
+    });
+        </script>
+</div>
+}
+

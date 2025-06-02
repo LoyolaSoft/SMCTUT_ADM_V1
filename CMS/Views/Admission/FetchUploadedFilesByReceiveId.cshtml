@@ -1,0 +1,55 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{ Layout = null;}
+@if (Model.liUploadedFile != null && Model.liUploadedFile.Count > 0)
+{
+    <div class="table-responsive">
+        <div class="superbox" data-offset="50" id="div-img">
+            @foreach (var item in Model.liUploadedFile)
+            {
+                <div class="superbox-list col-md-4">                    
+                        <img src="@item.FILE_PATH" class="thumbnail"style="width: 145px; height: 185px;"  />                                            
+                </div>
+            }
+            @if (!string.IsNullOrEmpty(Model.PHOTO_PATH))
+            {
+                <div class="superbox-list col-md-4">
+                    <a href="javascript:;" class="superbox-img">
+                        <img src="@Model.PHOTO_PATH" class="thumbnail" style="width: 145px; height: 185px;" />
+                        <span style="background: url(@Model.PHOTO_PATH);"></span>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+    @*<div id="myModal" class="modal col-md-8 col-md-offset-2">
+        <span class="close cursor" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            @{ var size = 1;}
+            @foreach (var item in Model.liUploadedFile)
+            {
+                <div class="mySlides">
+                    <div class="numbertext">@size</div>
+                    <img src="@item.FILE_PATH" style="width:100%;height:100%">
+                </div>
+                size++;
+            }
+
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+            <div class="caption-container">
+                <p id="caption"></p>
+            </div>
+
+            @{ var length = 1;}
+            @foreach (var item in Model.liUploadedFile)
+                {
+                <div class="column">
+                    <img class="hover-shadow demo cursor thumbnail" height="160" width="110" onclick="currentSlide(@length)" src="@item.FILE_PATH" />
+                </div>
+                length++;
+            }
+        </div>
+    </div>*@
+                }
+

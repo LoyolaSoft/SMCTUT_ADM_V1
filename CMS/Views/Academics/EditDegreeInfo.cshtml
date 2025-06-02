@@ -1,0 +1,181 @@
+﻿@model CMS.ViewModel.Model.DegreeModel
+@using CMS.Utility;
+
+@{
+    ViewBag.Title = "EditDegreeInfo";
+    Layout = "~/Views/Shared/_AdminLayoutPage.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="content" id="content">
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">Home</a></li>
+            <li><a href="@Url.Action("ListDegreeInfo","Academics")">List Degree</a></li>
+            <li class="active">Edit Degree</li>
+        </ol>
+        <h2 class="page-header">Degree Details</h2>
+        <div class="panel">
+            <div class="panel-heading bg-primary">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                </div>
+                <h4 class="panel-title">Edit Degree</h4>
+            </div>
+            <div class="panel-body">
+
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.DEGREE, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.DEGREE, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "Enter Degree " } })
+                                @Html.ValidationMessageFor(model => model.DEGREE, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.PROGRAMME_TYPE, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.DropDownListFor(model => model.PROGRAMME_TYPE, Model.PROGRAMME_TYPE, "-- Select --", new { @class = "drop-down form-control input-sm" })
+                                @Html.ValidationMessageFor(model => model.PROGRAMME_TYPE, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.PROGRAMME_LEVEL, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.DropDownListFor(model => model.PROGRAMME_LEVEL, Model.PROGRAMME_LEVEL, "-- Select --", new { @class = "drop-down form-control input-sm" })
+                                @Html.ValidationMessageFor(model => model.PROGRAMME_LEVEL, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.DEGREE_ORDER, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.DEGREE_ORDER, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "Enter Degree Order " } })
+                                @Html.ValidationMessageFor(model => model.DEGREE_ORDER, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.FACULTY, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.DropDownListFor(model => model.FACULTY, Model.FACULTY, "-- Select --", new { @class = "drop-down form-control input-sm" })
+                                @Html.ValidationMessageFor(model => model.FACULTY, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.BOS_NAME, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.BOS_NAME, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "Enter BOID Name " } })
+                                @Html.ValidationMessageFor(model => model.BOS_NAME, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.PREFIX, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.PREFIX, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "Enter Prefix " } })
+                                @Html.ValidationMessageFor(model => model.PREFIX, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.BOS_SERIES_ROLLNO, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.BOS_SERIES_ROLLNO, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "Enter BOID Series Roll Number " } })
+                                @Html.ValidationMessageFor(model => model.BOS_SERIES_ROLLNO, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.BOS_SERIES_REGNO, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.BOS_SERIES_REGNO, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "Enter BOID Series Register Number " } })
+                                @Html.ValidationMessageFor(model => model.BOS_SERIES_REGNO, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.BOS_SERIES_ADMNO, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+                                @Html.EditorFor(model => model.BOS_SERIES_ADMNO, new { htmlAttributes = new { @class = "form-control input-sm", placeholder = "Enter BOID Series Admission Number " } })
+                                @Html.ValidationMessageFor(model => model.BOS_SERIES_ADMNO, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group pull-right">
+                            <div class="col-md-12 pull-right">
+                                <a id="btnSubmit" value="Submit" class="btn btn-primary">Submit</a>
+                                <a id="btnCancel" value="Submit" class="btn btn-danger" href="@Url.Action("ListDegreeInfo","Academics")">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var ID=@Session[Common.SESSION_VARIABLES.DEGREE_ID];
+            $.ajax({
+                url:"@Url.Action("FetchDegreeInfoById", "Academics")",
+                method:"POST",
+                datatype:"html",
+                data:{id:ID},
+                success:function(data){
+                    $("#DEGREE").val(data.DEGREE);
+                    $("#PROGRAMME_TYPE").val(data.PROGRAMME_TYPE);
+                    $("#PROGRAMME_LEVEL").val(data.PROGRAMME_LEVEL);
+                    $("#DEGREE_ORDER").val(data.DEGREE_ORDER);
+                    $("#FACULTY").val(data.FACULTY);
+                    $("#BOS_NAME").val(data.BOS_NAME);
+                    $("#PREFIX").val(data.PREFIX);
+                    $("#BOS_SERIES_ROLLNO").val(data.BOS_SERIES_ROLLNO);
+                    $("#BOS_SERIES_REGNO").val(data.BOS_SERIES_REGNO);
+                    $("#BOS_SERIES_ADMNO").val(data.BOS_SERIES_ADMNO);
+                },error:function(error){
+                    alert('No Data Found');
+                }
+            });
+        });
+    </script>
+    <script>
+        $('#btnSubmit').on("click", function () {
+            var Degree = $('#DEGREE').val();
+            var ProgrammeType = $('#PROGRAMME_TYPE').val();
+            var ProgrammeLevel = $('#PROGRAMME_LEVEL').val();
+            var DegreeOrder = $('#DEGREE_ORDER').val();
+            var Faculty = $('#FACULTY').val();
+            var BosName = $('#BOS_NAME').val();
+            var Prefix = $('#PREFIX').val();
+            var BosSeriesRollNo = $('#BOS_SERIES_ROLLNO').val();
+            var BosSeriesRegNo = $('#BOS_SERIES_REGNO').val();
+            var BosSeriesAdmissionNo = $('#BOS_SERIES_ADMNO').val();
+            var JsonData;
+            JsonData = '{"DEGREE":"' + Degree + '","PROGRAMME_TYPE":"' + ProgrammeType + '","PROGRAMME_LEVEL":"' + ProgrammeLevel + '","DEGREE_ORDER":"' + DegreeOrder + '","FACULTY":"' + Faculty + '","BOS_NAME":"' + BosName + '","PREFIX":"' + Prefix + '","BOS_SERIES_ROLLNO":"' + BosSeriesRollNo + '","BOS_SERIES_REGNO":"' + BosSeriesRegNo + '","BOS_SERIES_ADMNO":"' + BosSeriesAdmissionNo + '"}';
+            alert(JsonData);
+            $.ajax({
+                url: "@Url.Action("UpdateDegreeInfo", "Academics")",
+                method: "POST",
+                datatype: "html",
+                data: { JsonDegree: JsonData },
+                success: function (data) {
+                    if (data != 'False') {
+                        alert('Record Updated successfully..!');
+                    } else {
+                        alert('Record not Updated try again ..!');
+                    }
+                            
+                }, error: function (error) {
+                    alert('Record not Updated try again ..!');
+                }
+            });
+        });
+    </script>
+}

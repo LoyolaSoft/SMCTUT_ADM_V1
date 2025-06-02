@@ -1,0 +1,152 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+
+@{
+    ViewBag.Title = "AddProgrammeDescription";
+    Layout = "~/Views/Shared/_AdminLayoutPage.cshtml";
+}
+@section styles{
+    <link href="~/Content/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="~/Content/assets/plugins/parsley/src/parsley.css" rel="stylesheet" />
+<link href="~/Content/assets/plugins/summernote/summernote.css" rel="stylesheet" />
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="content" id="content">
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">Home</a></li>
+            <li class="active">Programme Description</li>
+        </ol>
+        <h1 class="page-header">Programme Description</h1>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-success" data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
+                </div>
+                <h3 class="panel-title">Programme Description</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    <div class="col-md-12">
+                        <div class="" id="Validate" data-parsley-validate="true">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ProgrammeList, "Programme", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DropDownListFor(model => model.ProgrammeList, (Model.ProgrammeList != null) ? Model.ProgrammeList : Enumerable.Empty<SelectListItem>(), "--Select--", new { @class = "form-control selectpicker show-menu-arrow show-tick", @data_live_search = "true", @data_parsley_required = "true", @data_size = 5 })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ProgrammeDescription.PROGRAMME_DESCRIPTION,"Description", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextAreaFor(model => model.ProgrammeDescription.PROGRAMME_DESCRIPTION, new { @class = "summernote table-bordered", style = "width:90%; height:90%", rows = "50" })
+                                    @Html.ValidationMessageFor(model => model.ProgrammeDescription.PROGRAMME_DESCRIPTION, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ProgrammeDescription.COURSE_OBJECTIVE,"Course Objective", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextAreaFor(model => model.ProgrammeDescription.COURSE_OBJECTIVE, new {  @class = "summernote table-bordered", style = "width:90%; height:90%", rows = "50" })
+                                    @Html.ValidationMessageFor(model => model.ProgrammeDescription.COURSE_OBJECTIVE, "", new { @class = "text-danger" })
+                                </div>                                
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ProgrammeDescription.PROGRAMME_OUTCOME,"Outcome", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextAreaFor(model => model.ProgrammeDescription.PROGRAMME_OUTCOME, 3, 20, new {  @class = "summernote table-bordered", style = "width:90%; height:90%", rows = "50" })
+                                    @Html.ValidationMessageFor(model => model.ProgrammeDescription.PROGRAMME_OUTCOME, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ProgrammeDescription.PROGRAMME_CONTENT,"Content", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextAreaFor(model => model.ProgrammeDescription.PROGRAMME_CONTENT,  new { @class = "summernote table-bordered", style = "width:90%; height:90%", rows = "50" })
+                                    @Html.ValidationMessageFor(model => model.ProgrammeDescription.PROGRAMME_CONTENT, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ProgrammeDescription.PROGRAMME_ELIGIBLITY,"Eligiblity", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.TextAreaFor(model => model.ProgrammeDescription.PROGRAMME_ELIGIBLITY,new { @class = "summernote table-bordered", style = "width:90%; height:90%", rows = "50" })
+                                    @Html.ValidationMessageFor(model => model.ProgrammeDescription.PROGRAMME_ELIGIBLITY, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            @*<div class="form-group">
+                                @Html.LabelFor(model => model.ProgrammeDescription.PROGRAMME_ELIGIBLITY, "Eligiblity", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    <input type="file" class="form-control" id="fuSyllabus" data-parsley-required="true">
+                                </div>
+                            </div>*@
+                            <div class="form-group pull-right ">
+                                <div class="col-md-12">
+                                    <a id="btnSubmit" class="btn btn-primary">Submit</a>
+                                    <a href="#" onclick="loadContent('/Admission/ListProgrammeDescription')" class="btn btn-danger">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section Scripts{
+    <script src="~/Content/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/Content/assets/plugins/parsley/dist/parsley.js"></script>
+<script src="~/Content/assets/plugins/summernote/summernote.min.js"></script>
+    <script>
+        $('.selectpicker').selectpicker('refresh');
+        $(".summernote").summernote();
+        $('#btnSubmit').on('click', function () {
+
+            var isValid = true;
+            if ($('#Validate').parsley().validate() !== true) isValid = false;
+            if (!isValid) {
+                alert('Please Check Your Inputs!!!');
+                return false;
+            }            
+            var JsonData = null;
+
+            var sumPROGRAMME_DESCRIPTION = $('#ProgrammeDescription_PROGRAMME_DESCRIPTION').summernote('code');            
+            var sumCOURSE_OBJECTIVE = $('#ProgrammeDescription_COURSE_OBJECTIVE').summernote('code');
+            var sumPROGRAMME_OUTCOME = $('#ProgrammeDescription_PROGRAMME_OUTCOME').summernote('code');
+            var sumPROGRAMME_CONTENT = $('#ProgrammeDescription_PROGRAMME_CONTENT').summernote('code');
+            var sumPROGRAMME_ELIGIBLITY = $('#ProgrammeDescription_PROGRAMME_ELIGIBLITY').summernote('code');
+            var strsumPROGRAMME_DESCRIPTION = btoa(unescape(encodeURIComponent(sumPROGRAMME_DESCRIPTION)));
+            var strsumCOURSE_OBJECTIVE = btoa(unescape(encodeURIComponent(sumCOURSE_OBJECTIVE)));
+            var strsumPROGRAMME_OUTCOME = btoa(unescape(encodeURIComponent(sumPROGRAMME_OUTCOME)));
+            var strsumPROGRAMME_CONTENT = btoa(unescape(encodeURIComponent(sumPROGRAMME_CONTENT)));
+            var strsumPROGRAMME_ELIGIBLITY = btoa(unescape(encodeURIComponent(sumPROGRAMME_ELIGIBLITY)));
+            if (true) {
+                JsonData = '{"PROGRAMME_GROUP_ID":"' + $('#ProgrammeList').val() + '","PROGRAMME_DESCRIPTION":"' + strsumPROGRAMME_DESCRIPTION + '","COURSE_OBJECTIVE":"' + strsumCOURSE_OBJECTIVE + '","PROGRAMME_OUTCOME":"' + strsumPROGRAMME_OUTCOME + '","PROGRAMME_CONTENT":"' + strsumPROGRAMME_CONTENT + '","PROGRAMME_ELIGIBLITY":"' + strsumPROGRAMME_ELIGIBLITY + '","PROGRAMME_NAME":"' + $('#ProgrammeList Option:selected').text() + '"}';
+                //var File = $("#fuSyllabus").get(0);                
+                var fileData = new FormData();
+                //if (File != null) {                                                         
+                //    fileData.append("dfg",File.files[0]);                    
+                //}
+                fileData.append("sJsonProgrammeDescription", JsonData);
+                $.ajax({
+                    url: '@Url.Action("InsertProgrammeDescription", "Admission")',
+                    method: 'POST',
+                    contentType: false, // Not to set any content header
+                    processData: false,                 
+                    data:fileData,                  
+                    success: function (data)
+                    {
+                        alert(data.Message);                        
+                    }, error: function (error) {
+                        alert('Internal Server Error !');
+                    }
+                });               
+            } else {
+                alert('Please Fill All The Filed To Continue !');
+                return false;
+            }
+        });
+
+    </script>
+}

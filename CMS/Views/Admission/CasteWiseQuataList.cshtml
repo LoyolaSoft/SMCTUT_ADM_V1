@@ -1,0 +1,58 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+
+@{ Layout = null; int Count = 0; int Total_Quata = 0; int columnCount = 2;}
+<div class="form-group table-responsive">
+    <table class="table table-hover table-bordered">
+        <thead>
+            @{
+                if (Model.liCaste != null && Model.liCaste.Count > 0)
+                {
+                    <tr><th>#</th><th>Program</th>@foreach (var item in Model.liCaste){<th>@item.COMMUNITY</th>}</tr>
+                }
+            }
+        </thead>
+        <tbody>
+            @{ 
+                if (Model.liCaste != null && Model.liCaste.Count > 0)
+                {
+                    columnCount +=Model.liCaste.Count;
+                    if (Model.liProgram_Quata != null && Model.liProgram_Quata.Count > 0)
+                    {
+                        if (Model.liCasteWise_Quata != null && Model.liCasteWise_Quata.Count > 0)
+                        {
+                            var liTempList = Model.liProgram_Quata.GroupBy(o => o.PROGRAMME_ID).Select(x => new CMS.ViewModel.Model.ADM_CASTEWISE_QUATA()
+                            { INTAKE_ID = x.FirstOrDefault().INTAKE_ID,
+                                NO_OF_SEATS = x.FirstOrDefault().NO_OF_SEATS,
+                                PROGRAMME_ID = x.FirstOrDefault().PROGRAMME_ID,
+                                PROGRAMME_NAME = x.FirstOrDefault().PROGRAMME_NAME,
+                                CASTE_ID = x.FirstOrDefault().CASTE_ID,
+                                CQ_SEATS = x.FirstOrDefault().CQ_SEATS }).ToList();
+                            foreach (var item in liTempList)
+                            {
+                                <tr>
+                                    <td>@{Count++;} @Count</td>
+                                    <td>@item.PROGRAMME_NAME - @item.NO_OF_SEATS</td>
+                                    @foreach (var lstCaste in Model.liCaste)
+                                    {
+                                        Total_Quata = 0;
+                                        var liTemp = Model.liCasteWise_Quata.Where(s => s.CASTE_ID == lstCaste.COMMUNITYID && s.PROGRAMME_ID == item.PROGRAMME_ID).ToList();
+                                        var liCaste = Model.liProgram_Quata.Where(s => s.CASTE_ID == lstCaste.COMMUNITYID && s.PROGRAMME_ID == item.PROGRAMME_ID).ToList();
+                                        if (liTemp!=null && liTemp.Count>0)
+                                        {
+                                            Total_Quata= liTemp.Count;
+                                        }
+                                        <td>
+                                            <div style="border:1px; width:50px; height:50px">@if (liCaste != null && liCaste.Count > 0) { @Total_Quata <span>/</span> @liCaste.FirstOrDefault().CQ_SEATS; }
+                                            else
+                                            {<b> -- </b> }</div>
+                                        </td>
+                                    }
+                                </tr>
+                             }
+                        }else{<tr><td colspan="@columnCount" class="text-center">No Records Available !</td></tr>}
+                      }else{<tr><td colspan="@columnCount" class="text-center">No Records Available !</td></tr>}
+                    }else{<tr><td>No Records Available !</td></tr>}
+            }
+        </tbody>
+    </table>
+</div>

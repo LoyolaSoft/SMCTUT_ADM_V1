@@ -1,0 +1,180 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{
+    ViewBag.Title = "UpdateStudentClass";
+    Layout = null;
+   
+    // @Model.liApplicant.FirstOrDefault().PREFIX
+}
+@if (Model.liApplicant != null && Model.liApplicant.Count>0)
+{
+    int runid = Convert.ToInt32(Model.liApplicant.FirstOrDefault().RUN_ID);
+    string runningid = string.Empty;
+    runid = runid + 1;
+    
+<div class="col-md-12 col-md-offset-8" style="padding-bottom:20px">
+<div class="col-md-2">
+    <input type="text" id="runid" value="@runid" class="hidden">
+    <input type="text" id="prefix" value="@Model.liApplicant.FirstOrDefault().PREFIX" class="hidden">
+    @*<input type="text" id="rollno" class="form-control"  value="@Model.liApplicant.FirstOrDefault().PREFIX@runningid">*@
+</div>
+<div class="col-md-1"><a href="#" class="btn btn-primary" id="btnpromote" onclick="PromoteStudents()">Promote</a></div>
+</div>
+<table class="table table-bordered" id="tblstudentrollno" >
+<thead>
+    <tr>
+        <td>Application No</td>
+        <td>Name</td>
+        <td>D.O.B</td>
+        <td>Class</td>
+        <td>Roll No</td>
+        <td>Status</td>
+    </tr>
+</thead>
+    <tbody>
+       @if (Model.liApplicant != null)
+       {
+           foreach (var item in Model.liApplicant)
+           {
+
+                <tr>
+                    <td>@item.APPLICATION_NO</td>
+                    <td>@item.FIRST_NAME</td>
+                    <td>@item.DATE_OF_BIRTH</td>
+                    <td>@item.CLASS_NAME</td>
+                    <td type="text" id="rollno" shift="@item.SHIFT"  appno="@item.APPLICATION_NO" promode="@item.PROGRAMME_MODE" proid="@item.PROGRAMME_ID"  classid="@item.CLASS" depid="@item.DEPARTMENT"  receiveid="@item.RECEIVE_ID">@item.ROLL_NO</td>
+                    <td>@item.STATUS_NAME</td>
+                </tr>
+           }
+       }
+    </tbody>
+</table>
+}
+
+<script>
+    $(function ()
+    {
+        
+
+            var runid = $('#runid').val();
+            var prefix = $('#prefix').val();
+            var runningid;
+          
+            if (runid != null) {
+                $('#tblstudentrollno tbody tr').each(function () {
+                    if (runid < 10)
+                    {
+                        runningid = "00" + runid;
+                    }
+                    else if (runid >= 10 && runid <= 100) {
+                        runningid = "0" + runid;
+                    }
+                    else
+                    {
+                        runningid = runid;
+                    }
+                 
+                    if ($(this).find("td").eq(4).text() == '')
+                        {
+                           
+                            $(this).find("td").eq(4).text(prefix + runningid);
+                            runid++;
+                        }
+
+                    
+
+                });
+                if (runid != null) {
+                    $('#lastrunid').val(runid);
+                }
+
+            }
+
+                var lastid = $('#lastrunid').val();
+                var programmeid = $('#ProgrammeList').val();
+                if (lastid != null)
+                {
+                    lastid = lastid - 1;
+                   
+                    var JsonData;
+                    JsonData = '{"JSON_ADM_RECEIVE":[';
+                    $('#tblstudentrollno tbody tr').each(function () {
+                
+                        var rollno = ($(this).find("td").eq(4).text());
+                    
+                        if (rollno != '' && rollno != null)
+                        {
+
+                            JsonData += '{"ROLL_NO":"' + rollno + '","RUN_ID":"' + lastid + '","PROGRAMME_ID":"' + programmeid + '",';
+                            JsonData += '"' + "RECEIVE_ID" + '":"' + $(this).find('td:eq(4)').attr("receiveid") + '","' + "SHIFT" + '":"' + $(this).find('td:eq(4)').attr("shift") + '","' + "PROGRAMME_MODE" + '":"' + $(this).find('td:eq(4)').attr("promode") + '",},';
+                        }
+                
+                    });
+                    JsonData = JsonData.slice(0, -1);
+                    JsonData +=
+                    ']}';
+                    $.ajax({
+                        url: "@Url.Action("SaveStudentRollno", "Admission")",
+                        method: "POST",
+                    data: { sStudentDetails: JsonData },
+                    datatype: "json",
+                    async: false,
+                    success: function (data)
+                    {
+                        alert(data.Message);
+                       
+
+                    }, error: function (xhr, textStatus, error) {
+                        alert(error + "\n" + textStatus + error);
+                    }
+                });
+            }
+    
+        
+    });
+    function PromoteStudents()
+    {
+
+       
+        if (!confirm('Are you sure to promote these student?'))
+        {
+                return false;
+        }
+        
+        var JsonData;
+
+        JsonData = '{"JSON_ADM_RECEIVE":[';
+        $('#tblstudentrollno tbody tr').each(function ()
+        {
+            var rollno = ($(this).find("td").eq(4).text());
+
+            if (rollno != '' && rollno != null)
+            {
+
+                JsonData += '{"ROLL_NO":"' + rollno + '",';
+                JsonData += '"' + "RECEIVE_ID" + '":"' + $(this).find('td:eq(4)').attr("receiveid") + '","' + "SHIFT" + '":"' + $(this).find('td:eq(4)').attr("shift") + '","' + "PROGRAMME_MODE" + '":"' + $(this).find('td:eq(4)').attr("promode") + '","' + "CLASS" + '":"' + $(this).find('td:eq(4)').attr("classid") + '","' + "DEPARTMENT" + '":"' + $(this).find('td:eq(4)').attr("depid") + '","' + "PROGRAMME_GROUP_ID" + '":"' + $(this).find('td:eq(4)').attr("proid") + '","' + "APPLICATION_NO" + '":"' + $(this).find('td:eq(4)').attr("appno") + '",},';
+            }
+
+        });
+        JsonData = JsonData.slice(0, -1);
+        JsonData +=
+        ']}';
+        $.ajax({
+         url: "@Url.Action("PromoteStudent", "Admission")",
+         method: "POST",
+        data: { sStudentDetails: JsonData },
+        datatype: "json",
+        async: false,
+        success: function (data)
+        {
+            alert(data.Message);
+           
+
+        }, error: function (xhr, textStatus, error) {
+            alert(error + "\n" + textStatus + error);
+        }
+    });
+
+
+        }
+
+</script>

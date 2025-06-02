@@ -1,0 +1,422 @@
+﻿@model CMS.ViewModel.ViewModel.AdmissionViewModel
+@{
+    ViewBag.Title = "OnlineApplication";
+    Layout = "~/Views/Shared/_HCCAdmissionLayoutPage.cshtml";
+}
+
+
+@*<link href="~/Content/assets/plugins/bootstrap-wizard/css/bwizard.min.css" rel="stylesheet" />
+    <link href="~/Content/assets/plugins/parsley/src/parsley.css" rel="stylesheet" />
+    <link href="~/Content/assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+    <link href="~/Content/assets/plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" />*@
+
+
+<div id="colorlib-intro" style=" margin-top:120px !important; color:#000 !important;">
+    <div class="container">
+        <!-- begin breadcrumb -->
+        <ol class="breadcrumb ">
+            <li><a href="@Url.Action(" hccindex","admission")">Home</a></li>
+
+            <li class="active">Registration</li>
+        </ol>
+        <!-- end breadcrumb -->
+        <!-- begin page-header -->
+        <!-- end page-header -->
+        <!-- begin row -->
+        <div class="row">
+            <!-- begin col-12 -->
+            <div class="col-md-12">
+                <!-- begin panel -->
+                <div class="panel panel-primary">
+
+                    <div class="panel-body">
+                        <div class="alert alert-info">
+                            <a href="@Url.Action("index","admission")">Click here for Login panel, If already registered. </a><br />
+
+                        </div>
+                        <div class="alert alert-info">
+
+                            <ul>
+                                <li><p>UG - Please choose UG as Application Type.</p></li>
+                                <li><p>PG -  Please choose PG as Application Type</p></li>
+                                @*<li><p>BASLP - Please choose BASLP as Application Type.</p></li>
+                                    <li><p>MCA - Please choose MCA as Application Type.</p></li>
+                                    <li><p>DIPLOMA - Please choose DIPLOMA as Application Type.</p></li>
+                                    <li><p>CERTIFICATE COURSE - Please choose CERTIFICATE COURSE as Application Type.</p></li>*@
+                            </ul>
+                        </div>
+
+
+                        <div id="devForm" data-parsley-validate="true">
+                            <!-- begin wizard step-1 -->
+                            <div class="">
+                                <fieldset>
+                                    <legend class="pull-left width-full">New Registration</legend>
+                                    <!-- begin row -->
+                                    <div class="row ">
+                                        <!-- begin col-4 -->
+                                        <div class="form-horizontal col-lg-12">
+
+                                            <div class="form-group block1">
+                                                <div class="col-lg-3">
+                                                    <label>Name of the Applicant as in SSLC TC (in English - USE CAPTIAL LETTERS )</label>
+                                                    @*<label><small>விண்ணப்பதாரரின் பெயர் (பத்தாம் வகுப்பு TC யில் இருப்பது போல் )</small></label>*@
+                                                </div>
+                                                <div class="col-lg-9">
+                                                    <input type="text" name="firstname" placeholder="MARIA J" class="form-control" id="txtFirstName" data-parsley-group="wizard-step-1" required />
+                                                </div>
+                                            </div>
+                                            <div class="form-group block1">
+                                                <div class="col-md-3">
+                                                    <label><small>விண்ணப்பதாரரின் பெயர் (பத்தாம் வகுப்பு TC யில் இருப்பது போல் (தமிழில்))</small></label>
+                                                </div>
+                                                <div class="col-lg-9">
+                                                    <input type="text" name="txtName" id="txtName" placeholder="உங்கள் பெயரை உள்ளிடவும்" class="form-control tamil" data-parsley-group="wizard-step-1" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-lg-3">
+                                                    <label>Application Type /</label>
+                                                    <label>விண்ணப்பத்தின் வகை</label>
+
+                                                </div>
+                                                <div class="col-lg-9">
+                                                    <select placeholder="--Select--" data-parsley-group="wizard-step-1" required id="ddlApplicationType" onchange="FetchGender()" data-parsley-required="true" class="form-control">
+                                                        <option value="">--Select--</option>
+                                                        @if (Model.applicationType != null && Model.applicationType.Count > 0)
+                                                        {
+                                                            foreach (var item in Model.applicationType)
+                                                            {
+                                                                <option value="@item.APPLICATION_TYPE_ID">@item.APPLICATION_TYPE</option>
+                                                            }
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-lg-3">
+                                                    <label>Programme /</label>
+                                                    <label>விண்ணப்பத்தின் வகை</label>
+                                                </div>
+                                                <div class="col-lg-9">
+                                                    @*<select placeholder="--Select--" data-parsley-group="wizard-step-1" required id="ProgrammeList" data-parsley-required="true" class="form-control">
+            <option value="">--Select--</option>
+        </select>*@
+                                                    @Html.DropDownListFor(model => model.ProgrammeList, (Model.ProgrammeList != null) ? Model.ProgrammeList : Enumerable.Empty<SelectListItem>(), "-- Select --", new { @class = " selectpicker show-menu-arrow show-tick drop-down form-control  input-sm", @data_live_search = "true", multiple = "multiple", @data_actions_box = "true" })
+        @Html.ValidationMessageFor(model => model.ProgrammeList, "", new { @class = "text-danger" })
+                                                    @*<div class="col-lg-9">
+                                                        <select placeholder="--Select--" data-parsley-group="wizard-step-1" required id="ProgrammeList" data-parsley-required="true" class="form-control "multiple>
+                                                            <option value="">--Select--</option>
+                                                        </select>
+                                                        
+                                                    </div>*@
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-lg-3">
+                                                    <label>Gender / </label>
+                                                    <label>பாலினம்</label>
+                                                </div>
+                                                <div class="col-lg-9">
+                                                    <select placeholder="--Select--" data-parsley-group="wizard-step-1" required id="GENDER" data-parsley-required="true" class="form-control ">
+                                                        <option value="">--Select--</option>
+                                                    </select>
+                                                    @*@Html.DropDownListFor(model => model.GENDER, (Model.GENDER != null) ? Model.GENDER : Enumerable.Empty<SelectListItem>(), "--select--", new { @class = "form-control", @data_live_search = "true", @data_parsley_required = "true",@required= "required" })
+                                                    @Html.ValidationMessageFor(model => model.GENDER, "", new { @class = "text-danger" })*@
+                                                </div>
+                                            </div>
+                                            <div class="form-group block1">
+                                                <div class="col-lg-3">
+                                                    <label>Last appeared Register No /</label>
+                                                    <label>கடைசியாக எழுதப்பட்ட பதிவு எண்</label>
+                                                </div>
+                                                <div class="col-lg-9">
+                                                    <input type="text" id="txtHSCNo" placeholder="Last appeared Register No" class="form-control" data-parsley-group="wizard-step-1" maxlength="15" required />
+                                                </div>
+                                            </div>
+                                            <div class="form-group block1">
+                                                <div class="col-lg-3">
+                                                    <label>Mobile Number /</label>
+                                                    <label>கைபேசி எண்</label>
+                                                </div>
+                                                <div class="col-lg-9">
+                                                    <input type="text" name="phone" id="txtPhone" placeholder="934524xxxx" class="form-control" data-parsley-group="wizard-step-1" data-parsley-type="number" maxlength="10" required />
+                                                    <label class="label label-success">All information will be sent to this mobile number</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-lg-3">
+                                                    <label>Email ID /</label>
+                                                    <label>மின்னஞ்சல் முகவரி</label>
+                                                </div>
+                                                <div class="col-lg-9">
+                                                    <input type="email" name="email" id="txtEmail" placeholder="someone@example.com" class="form-control" data-parsley-group="wizard-step-1" data-parsley-type="email" required />
+                                                    <label class="label label-success">Your Email-ID is your username</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-lg-3">
+                                                    <label>Password/</label>
+                                                    <label>கடவுச்சொல்</label>
+                                                </div>
+                                                <div class="col-lg-9">
+                                                    <input type="password" name="password" id="txtPassword" placeholder="Password" class="form-control" data-parsley-group="wizard-step-1" required />
+
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-lg-3">
+                                                    <label>Confirm Password/</label>
+                                                    <label>உறுதிப்படுத்தவும்</label>
+                                                </div>
+                                                <div class="col-lg-9">
+                                                    <input type="password" name="password" id="txtConfirmPassword" placeholder="Confirm Password" data-parsley-group="wizard-step-1" data-parsley-equalto="#txtPassword" class="form-control" required />
+
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-lg-offset-3 col-lg-9">
+                                                    <input type="submit" value="Register" onclick="sendOTP()" class="btn btn-primary">
+                                                    <a href="#" data-toggle="modal" id="OTP-modal" data-target="#verification-modal" class="disabled"></a>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end row -->
+                                </fieldset>
+                            </div>
+                            <!-- end wizard step-1 -->
+                            <!-- begin wizard step-2 -->
+
+                            <div class="modal fade" id="verification-modal" data-backdrop="static" data-keyboard="false">
+
+                                <div class="modal-dialog">
+
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                                            <label class="modal-title">Verification</label>
+
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <!-- begin col-6 -->
+                                                <div class="form-horizontal">
+                                                    <div class="col-lg-12">
+
+                                                        <div class="form-group">
+                                                            <div class="col-lg-2"> <label>OTP</label></div>
+                                                            <div class="col-lg-10">
+                                                                <input type="text" name="text" id="txtOTP" placeholder="Please enter OTP which is sent to registered mobile no." class="form-control col-lg-9" data-parsley-group="wizard-step-2" data-parsley-type="number" required />
+                                                                <a href="#" id="resend" onclick="resend()">Resend Verification code</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- end col-6 -->
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" onclick="Validate()" class="btn btn-success">Submit</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- end wizard step-2 -->
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end panel -->
+            </div>
+            <!-- end col-12 -->
+        </div>
+        <!-- end row -->
+    </div>
+
+    <!-- end #content -->
+    <script src="~/AdmissionContent/js/jquery.min.js"></script>
+    <script src="~/AdmissionContent/js/tamil.js"></script>
+    <script src="~/AdmissionContent/js/utf.js"></script>
+    <script>
+        $(document).ready(function ()
+        {
+            $('#txtName').on('keydown', function (event) {
+                if (event.which == 121) {
+                    $(this).toggleClass('tamil');
+                    return false;
+                }
+                if ($(this).hasClass('tamil')) {
+                    toggleKBMode(event);
+                } else {
+                    return true;
+                }
+            });
+            $('#txtName').on('keypress', function (event) {
+                if ($(this).hasClass('tamil')) {
+                    convertThis(event);
+                }
+            });
+        });
+        $('#GENDER').on('change', function () {
+        });
+
+        $('#ddlApplicationType').on('change', function () {
+            $.ajax({
+                url: "@Url.Action("FetchProgrammeByAppType", "Admission")",
+                method: "POST",
+                data: { sApptype: $('#ddlApplicationType').val() },
+            success: function (data)
+            {
+                $('#ProgrammeList').empty();
+                $('#ProgrammeList').append("<option value=''>--Select--</option>" + data);
+            }, error: function (error)
+            {
+                alert('Try Again!!');
+                return false;
+            }
+        });
+        });
+
+        function FetchGender()
+        {
+
+            $.ajax({
+                url: "@Url.Action("FetchGenderByAppType", "Admission")",
+                method: "POST",
+                data: { sApptype: $('#ddlApplicationType').val() },
+            success: function (data)
+            {
+                $('#GENDER').empty();
+                $('#GENDER').append("<option value=''>--Select--</option>" + data);
+            }, error: function (error)
+            {
+                alert('Try Again!!');
+                return false;
+            }
+        });
+        }
+        function Validate() {
+            var returnValue = false;
+            var json;
+            json = '{"APPLICATION_TYPE_ID":"' + $('#ddlApplicationType').val() + '","PROGRAMME_ID":"' + String($('#ProgrammeList').val()) + '","FIRST_NAME":"' + $('#txtFirstName').val() + '","SMS_MOBILE_NO":"' + $('#txtPhone').val() + '","DOB":"' + $('#txtDOB').val() + '","HSC_NO":"' + $('#txtHSCNo').val() + '","EMAIL_ID":"' + $('#txtEmail').val() + '","PASSWORD":"' + $('#txtPassword').val() + '","OTP":"' + $("#txtOTP").val() + '","NAME_IN_NATIVE":"' + $('#txtName').val() + '","GENDER":"' + $('#GENDER').val() + '"}'
+            $.ajax({
+                url: "@Url.Action("ValidateOTP", "Admission")",
+                method: "POST",
+                async: false,
+                data: { sJson: json },
+                success: function (data) {
+                    var result = String(data);
+                    if ('false' === result) {
+                        alert('Invalid OTP!!!');
+                        return false;
+                    } else {
+                        alert('Your Login credentials has been sent to registered phone number.')
+                        returnValue = true;
+                        window.location = '@Url.Action("index", "account")';
+                    }
+                }, error: function (error) {
+                    alert('Try Again!!');
+                    return false;
+                }
+            });
+            return returnValue;
+        }
+        function SaveOrUpdateIssue() {
+            var json;
+            json = '{"APPLICATION_TYPE_ID":"' + $('#ddlApplicationType').val() + '","FIRST_NAME":"' + $('#txtFirstName').val() + '","CONTACT_NO":"' + $('#txtPhone').val() + '","DOB":"' + $('#txtDOB').val() + '","HSC_NO":"' + $('#txtHSCNo').val() + '","EMAIL_ID":"' + $('#txtEmail').val() + '","PASSWORD":"' + $('#txtPassword').val() + '","OTP":"' + $("#txtOTP").val() + '","NAME_IN_NATIVE":"' + $('#txtName').val() + '","GENDER":"' + $('#GENDER').val() + '"}'
+            $.ajax({
+
+                url: "@Url.Action("SaveOrUpdateForIssueApplicaiton", "Admission")",
+
+                method: "POST",
+                data: { sJson: json },
+                async: false,
+                success: function (data) {
+                    if (!data) {
+                        return false;
+                    }
+                }, error: function (error) {
+                    alert('Try Again!!');
+                    return false;
+                }
+            });
+        }
+        function getApplicant() {
+            $.ajax({
+                url: '@Url.Action("FetchApplicantInfo", "admission")',
+                type: 'GET',
+                cache: false,
+                success: function (result) {
+                    if (result.ErrorCode == '200') {
+                        $('#txtContact').val(result.oResult.CONTACT_NO);
+                        $('#txtamount').val(result.oResult.APP_FEE);
+                        $('#txtfname').val(result.oResult.FIRST_NAME);
+                        $('#txtemailid').val(result.oResult.EMAIL_ID);
+                    } else {
+                        alert(result.Message);
+                    }
+                }
+            });
+        }
+
+
+
+        function resend() {
+            $.ajax({
+
+                url: "@Url.Action("ResendOTP", "Admission")",
+                method: "POST",
+                data: { sContactNo: $('#txtPhone').val(), sEmailId: $('#txtEmail').val(), sFirstName: $('#txtFirstName').val() },
+                success: function (data) {
+                    alert(data);
+                }, error: function (error) {
+                    alert('Try Again!!');
+                    return false;
+                }
+            });
+        }
+
+        function sendOTP() {
+            if (false === $('#devForm').parsley().validate("wizard-step-1")) {
+                return false
+            }
+            var bResult = true;
+            var json;
+            json = '{"APPLICATION_TYPE_ID":"' + $('#ddlApplicationType').val() + '","PROGRAMME_GROUP_ID":"' + $('#ddlCourses').val() + '","FIRST_NAME":"' + $('#txtFirstName').val() + '","LAST_NAME":"' + $('#txtLastName').val() + '","CONTACT_NO":"' + $('#txtPhone').val() + '","DOB":"' + $('#txtDOB').val() + '","SHIFT":"' + $('#ddlShift').val() + '","HSC_NO":"' + $('#txtHSCNo').val() + '","EMAIL_ID":"' + $('#txtEmail').val() + '"}';
+            $.ajax({
+                url: "@Url.Action("SendOTP", "Admission")",
+                async: false,
+                method: "POST",
+                data: { sJson: json },
+                success: function (data) {
+                    if (data != '') {
+                        alert(data);
+                        bResult = false;
+                    } else {
+                        $('#OTP-modal').click();
+                    }
+                }, error: function (error) {
+                    alert('Try Again!!');
+                    return false;
+                }
+            });
+            return bResult;
+        }
+
+        function divBar(e) {
+            $("#divBar").attr('style', 'width:' + e + ';');
+            $('.previous').addClass('disabled');
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#Admissioninfo').modal('show');
+
+            $('#startModal').trigger("click");
+        });
+    </script>

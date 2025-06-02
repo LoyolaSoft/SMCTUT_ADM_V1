@@ -1,0 +1,98 @@
+﻿@model CMS.ViewModel.ViewModel.CommunicationViewModel
+@{Layout = null;}
+<div class="col-lg-12">
+    <div class="row">
+
+    </div>
+    <div class="col-lg-5" id="divToSelect">
+        <div class="table-responsive">
+            <table class="table table-hover" id="StudentToSelect">
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" name="myTextEditBox" id="AllchkID" onchange="SelectOrUnselect()" /> Select All
+                        </th>
+                        <th>Name</th>
+                        <th>Class</th>
+                        <th>Mobile</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ if (Model.LIStudentDetails != null)
+                        {
+                            foreach (var item in Model.LIStudentDetails)
+                            {
+                                <tr cms-studentid="@item.USER_ID" cms-StuClassId="@item.CLASS_ID">
+                                    <td>
+                                        <input type="checkbox" name="myTextEditBox" id="chkID" cms-studentid="@item.USER_ID" />
+                                    </td>
+                                    <td>@Html.DisplayFor(modelItem => item.FIRST_NAME)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.CLASS)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.MOBILE)</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td><p>No records available !!!</p></td>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <h3 id="divArrow" class="col-lg-1"><i class="fa fas fa-angle-double-right" onclick="SendSelectedStudent()"></i></h3>
+    <h3 id="leftArrow" class="col-lg-1"><i class="fa fas fa-angle-double-left" onclick="SendBackSelectedStudent()"></i></h3>
+    <div class="col-lg-5 hidden" id="SelectedTable">
+        <div class="table-responsive">
+            <table class="table table-hover" id="SelectedStudent">
+                <thead>
+                    <tr>
+                        <th>
+                            Select
+                        </th>
+                        <th>Name</th>
+                        <th>Class</th>
+                        <th>Mobile</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    function SendBackSelectedStudent() {
+        $('#SelectedStudent tbody tr').each(function () {
+            var StudentId = $(this).attr("cms-studentid");
+            var StuClassId = $(this).attr("cms-StuClassId");
+            // alert(StudentId);
+            $(this).find('td').each(function () {
+                var chkBox = $(this).find('input[type="checkbox"]');
+                var Class = ($(this).closest('tr').find('td:eq(1)').text());
+                var Name = ($(this).closest('tr').find('td:eq(2)').text());
+                var Email = ($(this).closest('tr').find('td:eq(3)').text());
+                if (chkBox.is(':checked')) {
+                    $(this).parents("tr").remove();
+                    var createchkBox = '<input type="checkbox" name="myTextEditBox" id="chkID"/>';
+                    var table = document.getElementById("StudentToSelect");
+                    var row = table.insertRow(1);
+                    row.setAttribute("cms-studentid", StudentId);
+                    row.setAttribute("cms-StuClassId", StuClassId);
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    var cell3 = row.insertCell(2);
+                    var cell4 = row.insertCell(3);
+                    cell1.innerHTML = createchkBox;
+                    cell2.innerHTML = Class;
+                    cell3.innerHTML = Name;
+                    cell4.innerHTML = Email;
+                }
+            });
+        });
+        $('#lblCount').text($("#SelectedStudent tbody tr").length);
+    };
+</script>
